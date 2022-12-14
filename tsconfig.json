@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "declaration": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
+    "module": "CommonJS",
+    "lib": [
+      "DOM",
+      "es2020",
+    ],
+    "types": [
+      "jest",
+      "webrtc",
+      "node"
+    ],
+    "moduleResolution": "node",
+    "removeComments": true,
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "target": "ES6"
+  },
+  "exclude": [
+    "**/dist/**",
+    "node_modules",
+    "**/*.test.?s",
+    "**/*.spec.?s",
+  ],
+  "include": [
+    "./src"
+  ],
+}

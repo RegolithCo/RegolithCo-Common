@@ -1,0 +1,41 @@
+# Ignore node_modules
+node_modules
+
+# Ignore test files
+*.test.js
+*.test.ts
+*.spec.js
+*.spec.ts
+
+# Ignore configuration files
+*.config.js
+*.config.ts
+*.config.json
+tsconfig.json
+tsconfig.*
+*.code-workspace
+codegen.yml
+
+# Ignore environment files
+.env
+.env.*
+
+# Ignore log files
+*.log
+
+# Ignore temporary files
+*.tmp
+*.swp
+*.bak
+*.orig
+
+# Ignore IDE specific files
+.vscode
+.idea
+.yarn
+data
+scripts
+
+# Ignore other unnecessary files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,24 @@
+type PaginatedSessions {
+  items: [Session!]!
+  nextToken: String
+}
+type PaginatedCrewShares {
+  items: [CrewShare!]!
+  nextToken: String
+}
+type PaginatedScoutingFinds {
+  items: [ScoutingFind!]!
+  nextToken: String
+}
+type PaginatedWorkOrders {
+  items: [WorkOrder!]!
+  nextToken: String
+}
+type PaginatedUsers {
+  items: [User!]!
+  nextToken: String
+}
+type PaginatedSessionUsers {
+  items: [SessionUser!]!
+  nextToken: String
+}

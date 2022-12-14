@@ -1,0 +1,361 @@
+interface WorkOrderInterface {
+  orderId: ID!
+  sessionId: ID! # GUID
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  ownerId: ID!
+  version: String! # Semantic star citizen version
+  owner: User
+  """
+  This is the user that the work order is delegated to. It is optional and if not set, 
+  the owner is assumed to be the delegate
+  """
+  sellerscName: String # Optional
+  sellerUserId: ID # Super Optional but useful if we want to do reverse lookups
+  seller: User
+
+  state: WorkOrderStateEnum!
+  failReason: String
+  includeTransferFee: Boolean
+  orderType: ActivityEnum!
+  note: String
+  expenses: [WorkOrderExpense!]
+  isSold: Boolean # set when the order is sold defaults to false for ship orders and true for everything else
+  # This is the total amount of aUEC that the user sold for. It is optional and a purely calculated value is used if it is not set
+  shareAmount: Int
+  # The UEX code for the sell store.
+  sellStore: String
+  
+
+  # Derivative fields
+  crewShares: [CrewShare!]
+  session: Session # backwards lookup
+}
+
+type WorkOrderExpense {
+  name: String!
+  amount: Int!
+}
+
+input WorkOrderExpenseInput {
+  name: String!
+  amount: Int!
+}
+
+enum ActivityEnum {
+  VEHICLE_MINING
+  SHIP_MINING
+  SALVAGE
+  OTHER
+}
+
+type VehicleMiningOrder implements WorkOrderInterface {
+  orderId: ID!
+  sessionId: ID! # GUID
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  ownerId: ID!
+  version: String! # Semantic star citizen version
+  owner: User
+  """
+  This is the user that the work order is delegated to. It is optional and if not set, 
+  the owner is assumed to be the delegate
+  """
+  sellerscName: String
+  sellerUserId: ID # Super Optional but useful if we want to do reverse lookups
+  seller: User
+
+  state: WorkOrderStateEnum!
+  failReason: String
+  includeTransferFee: Boolean
+  orderType: ActivityEnum!
+  note: String
+  expenses: [WorkOrderExpense!]
+  isSold: Boolean # set when the order is sold defaults to false for ship orders and true for everything else
+  # This is the total amount of aUEC that the user sold for. It is optional and a purely calculated value is used if it is not set
+  shareAmount: Int
+  # The UEX code for the sell store.
+  sellStore: String  
+
+  # Derivative fields
+  crewShares: [CrewShare!]
+  session: Session # backwards lookup
+
+  # For mining jobs
+  vehicleOres: [VehicleMiningRow!]!
+
+}
+
+type OtherOrder implements WorkOrderInterface {
+  orderId: ID!
+  sessionId: ID! # GUID
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  ownerId: ID!
+  version: String! # Semantic star citizen version
+  owner: User
+  """
+  This is the user that the work order is delegated to. It is optional and if not set, 
+  the owner is assumed to be the delegate
+  """
+  sellerscName: String
+  sellerUserId: ID # Super Optional but useful if we want to do reverse lookups
+  seller: User
+
+  state: WorkOrderStateEnum!
+  failReason: String
+  includeTransferFee: Boolean
+  orderType: ActivityEnum!
+  note: String
+  expenses: [WorkOrderExpense!]
+  isSold: Boolean # set when the order is sold defaults to false for ship orders and true for everything else
+  # This is the total amount of aUEC that the user sold for. It is optional and a purely calculated value is used if it is not set
+  shareAmount: Int
+  # The UEX code for the sell store.
+  sellStore: String  
+
+  # Derivative fields
+  crewShares: [CrewShare!]
+  session: Session # backwards lookup
+
+
+}
+
+type SalvageOrder implements WorkOrderInterface {
+  orderId: ID!
+  sessionId: ID! # GUID
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  ownerId: ID!
+  version: String! # Semantic star citizen version
+  owner: User
+  """
+  This is the user that the work order is delegated to. It is optional and if not set, 
+  the owner is assumed to be the delegate
+  """
+  sellerscName: String
+  sellerUserId: ID # Super Optional but useful if we want to do reverse lookups
+  seller: User
+
+  state: WorkOrderStateEnum!
+  failReason: String
+  includeTransferFee: Boolean
+  orderType: ActivityEnum!
+  note: String
+  expenses: [WorkOrderExpense!]
+  isSold: Boolean # set when the order is sold defaults to false for ship orders and true for everything else
+  # This is the total amount of aUEC that the user sold for. It is optional and a purely calculated value is used if it is not set
+  shareAmount: Int
+  # The UEX code for the sell store.
+  sellStore: String  
+
+  # Derivative fields
+  crewShares: [CrewShare!]
+  session: Session # backwards lookup
+
+  # For mining jobs
+  salvageOres: [SalvageRow!]!
+}
+
+type ShipMiningOrder implements WorkOrderInterface {
+  orderId: ID!
+  sessionId: ID! # GUID
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  ownerId: ID!
+  version: String! # Semantic star citizen version
+  owner: User
+  """
+  This is the user that the work order is delegated to. It is optional and if not set, 
+  the owner is assumed to be the delegate
+  """
+  sellerscName: String
+  sellerUserId: ID # Super Optional but useful if we want to do reverse lookups
+  seller: User
+
+  state: WorkOrderStateEnum!
+  failReason: String
+  includeTransferFee: Boolean
+  orderType: ActivityEnum!
+  note: String
+  expenses: [WorkOrderExpense!]
+  isSold: Boolean # set when the order is sold
+  # This is the total amount of aUEC that the user sold for. It is optional and a purely calculated value is used if it is not set
+  shareAmount: Int
+  # The UEX code for the sell store.
+  sellStore: String  
+
+  # For mining jobs
+  shareRefinedValue: Boolean
+  isRefined: Boolean
+  processStartTime: Timestamp
+  processDurationS: Int
+  processEndTime: Timestamp
+  refinery: RefineryEnum
+  method: RefineryMethodEnum
+  shipOres: [RefineryRow!]!
+
+
+  # Derivative fields
+  crewShares: [CrewShare!]
+  session: Session # backwards lookup
+}
+type ShipMiningOrderCapture  {
+  expenses: [WorkOrderExpense!]
+  processDurationS: Int
+  refinery: RefineryEnum
+  method: RefineryMethodEnum
+  shipOres: [RefineryRowCapture!]!
+}
+type RefineryRowCapture {
+  ore: ShipOreEnum!
+  amt: Int
+  # yield is calculated from the size
+  yield: Int
+}
+
+type WorkOrderDefaults {
+  includeTransferFee: Boolean
+  lockedFields: [String!]
+
+  # Ship
+  isRefined: Boolean
+  refinery: RefineryEnum
+  shareRefinedValue: Boolean
+  method: RefineryMethodEnum
+
+  sellStores: SellStores
+
+  # These we break out
+  crewShares: [CrewShareTemplate!]
+  shipOres: [ShipOreEnum!]
+  # Vehicle
+  vehicleOres: [VehicleOreEnum!]
+  # Salvage
+  salvageOres: [SalvageOreEnum!]
+
+}
+
+# These will be the preferred sell locations
+type SellStores {
+  oreRefined: String
+  oreRaw: String
+  gem: String
+  salvage: String
+}
+
+input WorkOrderDefaultsInput {
+  includeTransferFee: Boolean
+  lockedFields: [String!]
+
+  # Ship
+  isRefined: Boolean
+  refinery: RefineryEnum
+  shareRefinedValue: Boolean
+  method: RefineryMethodEnum
+  # other
+  shareAmount: Int
+  # The UEX code for the sell store.
+  sellStore: String  
+}
+
+enum WorkOrderStateEnum {
+  REFINING_STARTED # AUTO set when the start property is set
+  REFINING_COMPLETE # AUTO set when the calculated time has ellapsed
+  DONE # AUTO set when all crewshares are paid
+  FAILED # MANUAL: triggered by a failure state
+  UNKNOWN # AUTO: set before the start property is set
+}
+
+enum RefineryEnum {
+  ARCL1
+  ARCL2
+  ARCL4
+  CRUL1
+  HURL1
+  HURL2
+  MICL1
+  MICL2
+  MICL5
+  PYROG
+  TERRG
+  MAGNG
+  # PYRO: Ruin Station, Orbituary, Checkmate, Stanton Gateway
+  PYRO_RUIN
+  PYRO_ORBITUARY
+  PYRO_CHECKMATE
+  PYRO_STANTG
+}
+
+enum SystemEnum {
+  STANTON
+  PYRO
+}
+
+enum RefineryMethodEnum {
+  CORMACK
+  ELECTROSTAROLYSIS
+  FERRON_EXCHANGE
+  DINYX_SOLVENTATION
+  GASKIN_PROCESS
+  KAZEN_WINNOWING
+  PYROMETRIC_CHROMALYSIS
+  THERMONATIC_DEPOSITION
+  XCR_REACTION
+}
+
+input WorkOrderInput {
+  shareRefinedValue: Boolean
+  includeTransferFee: Boolean
+  processStartTime: Timestamp
+  processDurationS: Int
+  isRefined: Boolean
+  refinery: RefineryEnum
+  method: RefineryMethodEnum
+  isSold: Boolean # set when the order is sold
+
+  profit: Int
+  shareAmount: Int
+  sellStore: String
+  """
+  This is the user that the work order is delegated to. It is optional and if not set, 
+  the owner is assumed to be the delegate
+  """
+  sellerscName: String # Either this or sellerUserId is required
+  sellerUserId: ID # Either this or sellerscName is required
+
+  expenses: [WorkOrderExpenseInput!]
+  note: String
+}
+
+union WorkOrder = SalvageOrder | ShipMiningOrder | VehicleMiningOrder | OtherOrder
+
+type VehicleMiningRow {
+  ore: VehicleOreEnum!
+  amt: Int! 
+}
+input VehicleMiningRowInput {
+  ore: VehicleOreEnum!
+  amt: Int! 
+}
+
+type RefineryRow {
+  ore: ShipOreEnum!
+  amt: Int!
+  # yield is calculated from the size
+  yield: Int!
+}
+input RefineryRowInput {
+  ore: ShipOreEnum!
+  amt: Int!
+}
+
+type SalvageRow {
+  ore: SalvageOreEnum!
+  amt: Int!
+  # yield is calculated from the size
+}
+input SalvageRowInput {
+  ore: SalvageOreEnum!
+  amt: Int!
+}

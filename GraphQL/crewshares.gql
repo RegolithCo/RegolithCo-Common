@@ -1,0 +1,79 @@
+enum ShareTypeEnum {
+  PERCENT
+  AMOUNT
+  SHARE
+}
+
+type CrewShare {
+  sessionId: ID!
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  # If the user is a named user then we store their SCName here
+  payeeScName: String!
+  # If the user is a session user then we store their userId here
+  payeeUserId: ID
+  orderId: ID!
+
+  """
+  We explicitly require the name of the share type to be passed in in case the user is deleted OR
+  if they change their SCName. This way we can still track who paid whom.
+  """
+  shareType: ShareTypeEnum!
+  # Can be a 0-1 percent: 0.34, an actual amount: 10000 or a share integer: 1 
+  share: Float!
+  
+  note: String
+  # State is either paid (true) or not paid (false)
+  state: Boolean
+  # Derivative fields
+  workOrder: WorkOrder # backwards lookup
+  session: Session # backwards lookup
+}
+
+type CrewShareTemplate {
+  """
+  We explicitly require the name of the share type to be passed in in case the user is deleted OR
+  if they change their SCName. This way we can still track who paid whom.
+  """
+  payeeScName: String!  # Mandatory
+  shareType: ShareTypeEnum!
+  share: Float!
+  note: String
+}
+
+input CrewShareTemplateInput {
+  """
+  We explicitly require the name of the share type to be passed in in case the user is deleted OR
+  if they change their SCName. This way we can still track who paid whom.
+  """
+  payeeScName: String!  # Mandatory
+  shareType: ShareTypeEnum!
+  share: Float!
+  note: String
+}
+
+input CrewShareInput {
+  """
+  We explicitly require the name of the share type to be passed in in case the user is deleted OR
+  if they change their SCName. This way we can still track who paid whom.
+  """
+  payeeScName: String  # Either this or payeeUserId is mandatory
+  payeeUserId: ID      # If the user is registered we do this for reverse lookups later
+  shareType: ShareTypeEnum!
+  share: Float!
+  note: String
+  state: Boolean!
+}
+
+input CrewShareUpdate {
+  """
+  We explicitly require the name of the share type to be passed in in case the user is deleted OR
+  if they change their SCName. This way we can still track who paid whom.
+  """
+  payeeScName: String  # Either this or payeeUserId is mandatory
+  payeeUserId: ID      # If the user is registered we do this for reverse lookups later
+  shareType: ShareTypeEnum
+  share: Float
+  note: String
+  state: Boolean
+}

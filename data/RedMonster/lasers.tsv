@@ -1,0 +1,13 @@
+size	name	code	price	optimumRange	maxRange	minPower	minPowerPct	maxPower	extrPower	slots	resistance	instability	optimalChargeRate	optimalChargeWindow	inertMaterials	HURL1	HURL2	CRUL1	ARCL1	ARCL2	ARCL4	MICL1	MICL2	MICL5	TAMM	DDGH	DDA18	SINB
+1	Lancet MH1	LancetMH1	23000	30	90	504	0.20	2520	1850	1	1.00	0.90	1.40	0.40	0.70		X	X	X	X	X	X	K		X			X
+2	Lancet MH2	LancetMH2	23500	45	135	900	0.25	3600	2590	2	1.00	0.90	1.40	0.40	0.60	X						X		X	X	X	X	X
+1	Hofstede S1	HofstedeS1	12750	45	135	105	0.05	2100	1295	1	0.70	1.10	1.20	1.60	0.70	X		X						X	X		X	X
+2	Hofstede S2	HofstedeS2	12000	60	180	336	0.10	3360	1295	2	0.70	1.10	1.20	1.60	0.60		X		X	X	X	X	X		X	X		X
+1	Klein S1	KleinS1	10150	45	135	378	0.17	2220	2220	0	0.55	1.35	1.00	1.20	0.70	X	X	X	X	X	X	X	X	X	X	X	X	X
+2	Klein S2	KleinS2	10150	60	180	720	0.20	3600	2775	1	0.55	1.35	1.00	1.20	0.60	X	X	X	X	X	X	X	X	X	X	X	X	X
+1	Impact I	ImpactI	57000	45	135	420	0.20	2100	2775	2	1.10	0.90	0.60	1.20	0.70				X		X			X	X	X	X	X
+2	Impact II	ImpactII	57750	60	180	840	0.25	3360	3145	3	1.10	0.90	0.60	1.20	0.60	X	X	X							X		X	X
+1	Helix I	HelixI	100000	15	45	630	0.20	3150	1850	2	0.70	1.00	1.00	0.60	0.70		X	X		X		X	X		X	X	X	X
+2	Helix II	HelixII	108000	30	90	1020	0.25	4080	2590	3	0.70	1.00	1.00	0.60	0.70	X		X				X	X	X	X		X	X
+1	Arbor MH1	ArborMH1	1450	60	180	189	0.10	1890	1850	1	1.25	0.65	1.00	1.40	0.70													X
+2	Arbor MH2	ArborMH2	1450	90	270	480	0.20	2400	2590	2	1.25	0.65	1.00	1.40	0.60												X	X

@@ -1,0 +1,129 @@
+enum LoadoutShipEnum {
+  PROSPECTOR
+  MOLE
+}
+
+# NOTE: THese are not the same as the UEX Codes. That's a bit unforunate but it's the way it is.
+enum MiningStoreEnum {
+  HURL1
+  HURL2
+  CRUL1
+  ARCL1
+  ARCL2
+  ARCL4
+  MICL1
+  MICL2
+  MICL5
+  TAMM # Tammany and Sons Lorville
+  DDGH # Dumper's Depot GrimHEX
+  DDA18 # Dumper's Depot Area18
+  SINB # Shubin Interstellar New Babbage
+
+  ORB # Orbituary
+  PYGT # Pyro Gateway
+  STGT # Stanton Gateway
+  TEGT # Terra Gateway
+  MGGT # Magnus Gateway
+  PYBR # Pyro Bueno Ravine
+  PYOC # Pyro Ostler's claim
+  PYYP # Pyro Yang's place
+  CHK # Checkmate (Pyro)
+  RUN # Ruin Station (Pyro)
+}
+
+enum MiningLaserEnum {
+  LancetMH1
+  LancetMH2
+  HofstedeS1
+  HofstedeS2
+  KleinS1
+  KleinS2
+  ImpactI
+  ImpactII
+  HelixI
+  HelixII
+  ArborMH1
+  ArborMH2
+}
+
+enum MiningModuleEnum {
+  Brandt
+  Forel
+  Lifeline
+  Optimum
+  Rime
+  Stampede
+  Surge
+  Torpid
+  FLTR
+  FLTRL
+  FLTRXL
+  Focus
+  FocusII
+  FocusIII
+  Rieger
+  RiegerC2
+  RiegerC3
+  Torrent
+  TorrentII
+  TorrentIII
+  Vaux
+  VauxC2
+  VauxC3
+  XTR
+  XTRL
+  XTRXL
+}
+
+enum MiningGadgetEnum {
+  Optimax
+  Okunis
+  Sabir
+  Stalwart
+  Boremax
+  Waveshift
+}
+
+type MiningLoadout {
+  loadoutId: ID!
+  owner: User!
+  name: String!
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  ship: LoadoutShipEnum!
+  # Active lasers ARE part of the inventory but they can also be null
+  activeLasers: [ActiveMiningLaserLoadout]!
+  # This is the inventory
+  inventoryLasers: [MiningLaserEnum!]!
+  inventoryModules: [MiningModuleEnum!]!
+  inventoryGadgets: [MiningGadgetEnum!]!
+  # One of the gadgets can be active
+  activeGadgetIndex: Int
+}
+
+type ActiveMiningLaserLoadout {
+  laser: MiningLaserEnum!
+  laserActive: Boolean!
+  # Modules can be null
+  modules: [MiningModuleEnum]!
+  modulesActive: [Boolean!]!
+}
+
+
+input MiningLoadoutInput {
+  name: String!
+  ship: LoadoutShipEnum!
+  activeLasers: [ActiveMiningLaserLoadoutInput]!
+  inventoryLasers: [MiningLaserEnum!]!
+  inventoryModules: [MiningModuleEnum!]!
+  inventoryGadgets: [MiningGadgetEnum!]!
+  activeGadgetIndex: Int
+}
+
+input ActiveMiningLaserLoadoutInput {
+  laser: MiningLaserEnum!
+  laserActive: Boolean!
+  modules: [MiningModuleEnum]!
+  modulesActive: [Boolean!]!
+}
+

@@ -1,0 +1,224 @@
+
+scalar JSONObject
+scalar Timestamp
+
+directive @admin_only on FIELD_DEFINITION
+directive @logged_in on FIELD_DEFINITION
+
+schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
+# GraphQL schema
+type Query { 
+  profile: UserProfile @logged_in
+  user(userId: ID!): User @logged_in
+  session(sessionId: ID!): Session @logged_in
+  
+  # This goes on the public resolver
+  sessionShare(joinId: ID!): SessionShare
+  lookups: LookupData
+  surveyData(epoch: String!, dataName: String!): SurveyData
+
+  sessionUser(sessionId: ID!): SessionUser @logged_in
+  workOrder(sessionId: ID!, orderId: ID!): WorkOrder @logged_in
+  scoutingFind(sessionId: ID!, scoutingFindId: ID!): ScoutingFind @logged_in
+  crewShares(sessionId: ID!, orderId: ID, nextToken: String): PaginatedCrewShares @logged_in
+
+  captureShipRockScan(imgUrl: String!): ShipRockCapture @logged_in
+  captureRefineryOrder(imgUrl: String!): ShipMiningOrderCapture @logged_in
+  
+  sessionUpdates(sessionId: ID!, lastCheck: String): [SessionUpdate] @logged_in
+}
+
+type Mutation { 
+  setLookupData(key: String!, lookupType: LookupTypeEnum!, data: JSONObject!): Boolean @admin_only
+
+  # --------------------------------
+  # Profile Endpoints
+  # --------------------------------
+  updateUserProfile(
+    userProfile: UserProfileInput!
+    sessionSettings: SessionSettingsInput
+    workOrderDefaults: WorkOrderDefaultsInput
+    crewSharesDefaults: [CrewShareTemplateInput!]
+    shipOreDefaults: [ShipOreEnum!]
+    vehicleOreDefaults: [VehicleOreEnum!]
+    salvageOreDefaults: [SalvageOreEnum!]
+  ): UserProfile @logged_in
+  refreshAvatar(remove: Boolean): UserProfile @logged_in
+
+  setUserPlan(userId: ID!, plan: UserPlanEnum!): UserProfile @admin_only
+  userAPIKey(userId: ID, revoke: Boolean): UserProfile @logged_in
+
+  deleteUserProfile(leaveData: Boolean): ID @logged_in
+  
+  # Verify the profile by scraping their profile page for a hash
+  requestVerifyUserProfile: String @logged_in
+  verifyUserProfile(code: String): UserProfile @logged_in
+
+  addFriends(friends: [String]!): UserProfile @logged_in
+  removeFriends(friends: [String]!): UserProfile @logged_in
+  
+  # When users submit enough bad data we need to block them
+  blockProspector(userId: ID!, block: Boolean!): UserProfile @admin_only
+  
+  # --------------------------------
+  # Mining WorkOrder Endpoints
+  # --------------------------------
+  createWorkOrder(
+    sessionId: ID!
+    workOrder: WorkOrderInput!
+    shipOres: [RefineryRowInput!]
+    vehicleOres: [VehicleMiningRowInput!]
+    salvageOres: [SalvageRowInput!]
+    shares: [CrewShareInput!]!
+  ): WorkOrder @logged_in
+
+  updateWorkOrder(
+    sessionId: ID!
+    orderId: ID!
+    workOrder: WorkOrderInput
+    shipOres: [RefineryRowInput!]
+    vehicleOres: [VehicleMiningRowInput!]
+    salvageOres: [SalvageRowInput!]
+    shares: [CrewShareInput!]
+  ): WorkOrder @logged_in
+
+  """
+  This is for when a user wants to claim a work order that has been delegated to them
+  """
+  claimWorkOrder(sessionId: ID!, orderId: ID!): WorkOrder @logged_in
+
+  failWorkOrder(
+    sessionId: ID!
+    orderId: ID!
+    reason: String
+  ): WorkOrder @logged_in
+
+  deliverWorkOrder(
+    sessionId: ID!
+    orderId: ID!
+    isSold: Boolean!
+  ): WorkOrder @logged_in
+
+  deleteWorkOrder(sessionId: ID!, orderId: ID!): WorkOrder @logged_in
+
+  # --------------------------------
+  # Session Endpoints
+  # --------------------------------
+  createSession(
+    session: SessionInput!
+    sessionSettings: SessionSettingsInput
+    workOrderDefaults: WorkOrderDefaultsInput
+    crewSharesDefaults: [CrewShareTemplateInput!]
+    shipOreDefaults: [ShipOreEnum!]
+    vehicleOreDefaults: [VehicleOreEnum!]
+    salvageOreDefaults: [SalvageOreEnum!]
+  ): Session @logged_in
+
+  updateSession(
+    sessionId: ID!
+    session: SessionInput!
+    sessionSettings: SessionSettingsInput
+    workOrderDefaults: WorkOrderDefaultsInput
+    crewSharesDefaults: [CrewShareTemplateInput!]
+    shipOreDefaults: [ShipOreEnum!]
+    vehicleOreDefaults: [VehicleOreEnum!]
+    salvageOreDefaults: [SalvageOreEnum!]
+  ): Session @logged_in
+
+  updatePendingUsers(sessionId: ID!, pendingUsers: [PendingUserInput!]!): Session @logged_in
+
+
+  """
+  We need this for users who cannot/will not use the app
+  """
+  addSessionMentions(sessionId: ID!, scNames: [String]!): Session @logged_in
+  removeSessionMentions(sessionId: ID!, scNames: [String]!): Session @logged_in
+  # This means evicting the actual user 
+  removeSessionCrew(sessionId: ID!, scNames: [String]!): Session @logged_in
+
+  deleteSession(sessionId: ID!): ID @logged_in
+
+  joinSession(joinId: ID!): SessionUser @logged_in
+  # THis call only allows you to update your own session user
+  upsertSessionUser(sessionId: ID!, workSessionUser: SessionUserInput): SessionUser @logged_in
+
+  # This call allows you to update any session user in a limited way and with a lot of checks
+  updateSessionUser(sessionId: ID!, userId: ID!, sessionUser: SessionUserUpdate!): SessionUser @logged_in
+
+
+  rotateShareId(sessionId: ID!): Session @logged_in
+  leaveSession(sessionId: ID!): ID @logged_in
+
+  # For marking a job as paid or unmarking it as such
+  markCrewSharePaid(sessionId: ID!, orderId: ID!, payeeScName: String!, isPaid: Boolean!): CrewShare @logged_in
+  upsertCrewShare(sessionId: ID!, orderId: ID!, crewShare: CrewShareInput!): CrewShare @logged_in
+  deleteCrewShare(sessionId: ID!, orderId: ID!, payeeScName: String!): CrewShare @logged_in
+
+  # --------------------------------
+  # Rock Scouting Endpoints
+  # --------------------------------
+  addScoutingFind(
+    sessionId: ID!
+    scoutingFind: ScoutingFindInput!
+    shipRocks: [ShipRockInput!]
+    vehicleRocks: [VehicleRockInput!]
+    wrecks: [SalvageWreckInput!]
+  ): ScoutingFind @logged_in
+  updateScoutingFind(
+    sessionId: ID!
+    scoutingFindId: ID!
+    scoutingFind: ScoutingFindInput!
+    shipRocks: [ShipRockInput!]
+    vehicleRocks: [VehicleRockInput!]
+    wrecks: [SalvageWreckInput!]
+  ): ScoutingFind @logged_in
+
+  joinScoutingFind(sessionId: ID!, scoutingFindId: ID!, enRoute: Boolean): ScoutingFind @logged_in
+
+  leaveScoutingFind(sessionId: ID!, scoutingFindId: ID!): ScoutingFind @logged_in
+
+  deleteScoutingFind(sessionId: ID!, scoutingFindId: ID!): ScoutingFind @logged_in
+
+  # --------------------------------
+  # Ship Loadout Endpoints 
+  # --------------------------------
+  createLoadout(shipLoadout: MiningLoadoutInput!): MiningLoadout @logged_in
+  updateLoadout(loadoutId: String!, shipLoadout: MiningLoadoutInput!): MiningLoadout @logged_in
+  deleteLoadout(loadoutId: String!): MiningLoadout @logged_in
+
+  mergeAccount(authToken: String!, authType: AuthTypeEnum!): UserProfile @admin_only
+  mergeAccountAdmin(primaryUserId: String!, secondaryUserId: String!): UserProfile @admin_only
+
+}
+
+enum EventNameEnum {
+  INSERT
+  MODIFY
+  REMOVE
+}
+
+union SessionUpdateUnion = Session | ShipMiningOrder | VehicleMiningOrder | SalvageOrder | OtherOrder | CrewShare | SessionUser | ShipClusterFind | VehicleClusterFind | SalvageFind
+type SessionUpdate {
+  sessionId: ID!
+  eventDate: Timestamp!
+  eventName: EventNameEnum
+  data: SessionUpdateUnion
+}
+
+
+
+type Subscription {
+  apiSubscription: APIEvent
+}
+
+
+type SurveyData {
+  epoch: String!
+  dataName: String!
+  lastUpdated: Timestamp
+  data: JSONObject
+}

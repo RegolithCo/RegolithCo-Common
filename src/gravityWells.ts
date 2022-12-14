@@ -1,0 +1,191 @@
+import { SystemEnum } from './gen/schema.types'
+import { GravityWell, GravityWellTypeEnum, Lookups } from './types'
+
+type GravWellTsv = {
+  code: string
+  name: string
+  wellType: GravityWellTypeEnum
+  system: SystemEnum
+  parent: string
+  isSpace: boolean
+  isSurface: boolean
+  hasRocks: boolean
+  hasGems: boolean
+}
+
+export const getGravityWells = (
+  systemLookup: [string, string, string, string, string, string, string, string, string][]
+): GravityWell[] => {
+  if (!systemLookup || systemLookup.length === 0) return []
+
+  const bodies = systemLookup.reduce(
+    (acc, [code, name, well_type, system, parent, is_space, is_surface, has_rocks, has_gems]) => {
+      const body: GravWellTsv = {
+        code,
+        name,
+        wellType: well_type as GravityWellTypeEnum,
+        system: system as SystemEnum,
+        parent,
+        isSpace: is_space === '1',
+        isSurface: is_surface === '1',
+        hasRocks: has_rocks === '1',
+        hasGems: has_gems === '1',
+      }
+      acc.push(body)
+      return acc
+    },
+    [] as GravWellTsv[]
+  )
+
+  const systems = bodies.filter(({ wellType }) => wellType === GravityWellTypeEnum.SYSTEM)
+  //  Need to output all values in the format of { label: 'SYSTEMNAME - PLANETNAME - SATNAME', id: 'PY' }
+  const planetOptions = systems.reduce((acc, system, key) => {
+    acc.push({
+      label: system.name,
+      wellType: GravityWellTypeEnum.SYSTEM,
+      id: system.code,
+      system: system.code as SystemEnum,
+      depth: 0,
+      parent: null,
+      parents: [],
+      parentType: null,
+      isSpace: system.isSpace,
+      isSurface: system.isSpace,
+      hasGems: system.hasGems,
+      hasRocks: system.hasRocks,
+    })
+    bodies
+      .filter(({ wellType, parent }) => wellType === GravityWellTypeEnum.BELT && parent === system.code)
+      .forEach((belt, idx) => {
+        acc.push({
+          label: belt.name,
+          wellType: GravityWellTypeEnum.BELT,
+          id: belt.code,
+          system: belt.system as SystemEnum,
+          depth: 1,
+          parent: belt.parent,
+          parents: [system.code],
+          parentType: GravityWellTypeEnum.SYSTEM,
+          isSpace: belt.isSpace,
+          isSurface: belt.isSurface,
+          hasGems: belt.hasGems,
+          hasRocks: belt.hasRocks,
+        })
+      })
+
+    // Now we descend into planets
+    bodies
+      .filter(({ wellType, parent }) => wellType === GravityWellTypeEnum.PLANET && parent === system.code)
+      .forEach((planet, idx) => {
+        acc.push({
+          label: planet.name,
+          wellType: GravityWellTypeEnum.PLANET,
+          id: planet.code,
+          system: planet.system as SystemEnum,
+          depth: 1,
+          parent: planet.parent,
+          parents: [system.code],
+          parentType: GravityWellTypeEnum.SYSTEM,
+          isSpace: planet.isSpace,
+          isSurface: planet.isSurface,
+          hasGems: planet.hasGems,
+          hasRocks: planet.hasRocks,
+        })
+        bodies
+          .filter(({ wellType, parent }) => wellType === GravityWellTypeEnum.BELT && parent === planet.code)
+          .forEach((belt, idx) => {
+            acc.push({
+              label: belt.name,
+              wellType: GravityWellTypeEnum.BELT,
+              id: belt.code,
+              system: belt.system as SystemEnum,
+              depth: 2,
+              parent: belt.parent,
+              parents: [system.code, planet.code],
+              parentType: GravityWellTypeEnum.PLANET,
+              isSpace: belt.isSpace,
+              isSurface: belt.isSurface,
+              hasGems: belt.hasGems,
+              hasRocks: belt.hasRocks,
+            })
+          })
+        bodies
+          .filter(({ wellType, parent }) => wellType === GravityWellTypeEnum.LAGRANGE && parent === planet.code)
+          .forEach((lagrange, idx) => {
+            acc.push({
+              label: lagrange.name,
+              wellType: GravityWellTypeEnum.LAGRANGE,
+              id: lagrange.code,
+              system: lagrange.system as SystemEnum,
+              depth: 2,
+              parent: lagrange.parent,
+              parents: [system.code, planet.code],
+              parentType: GravityWellTypeEnum.PLANET,
+              isSpace: lagrange.isSpace,
+              isSurface: lagrange.isSurface,
+              hasGems: lagrange.hasGems,
+              hasRocks: lagrange.hasRocks,
+            })
+          })
+        bodies
+          .filter(({ wellType, parent }) => wellType === GravityWellTypeEnum.SATELLITE && parent === planet.code)
+          .forEach((sat, idx) => {
+            acc.push({
+              label: sat.name,
+              wellType: GravityWellTypeEnum.SATELLITE,
+              id: sat.code,
+              system: sat.system as SystemEnum,
+              depth: 2,
+              parent: sat.parent,
+              parents: [system.code, planet.code],
+              parentType: GravityWellTypeEnum.PLANET,
+              isSpace: sat.isSpace,
+              isSurface: sat.isSurface,
+              hasGems: sat.hasGems,
+              hasRocks: sat.hasRocks,
+            })
+            bodies
+              .filter(({ wellType, parent }) => wellType === GravityWellTypeEnum.BELT && parent === sat.code)
+              .forEach((belt, idx) => {
+                acc.push({
+                  label: belt.name,
+                  wellType: GravityWellTypeEnum.BELT,
+                  id: belt.code,
+                  depth: 3,
+                  parent: belt.parent,
+                  system: belt.system as SystemEnum,
+                  parents: [system.code, planet.code, sat.code],
+                  parentType: GravityWellTypeEnum.PLANET,
+                  isSpace: belt.isSpace,
+                  isSurface: belt.isSurface,
+                  hasGems: belt.hasGems,
+                  hasRocks: belt.hasRocks,
+                })
+              })
+          })
+      })
+
+    // Finally we put the CLUSTERS that are system level
+    bodies
+      .filter(({ wellType, parent }) => wellType === GravityWellTypeEnum.CLUSTER && parent === system.code)
+      .forEach((cluster, idx) => {
+        acc.push({
+          label: cluster.name,
+          wellType: GravityWellTypeEnum.CLUSTER,
+          id: cluster.code,
+          system: cluster.system as SystemEnum,
+          depth: 1,
+          parent: cluster.parent,
+          parents: [system.code],
+          parentType: GravityWellTypeEnum.SYSTEM,
+          isSpace: cluster.isSpace,
+          isSurface: cluster.isSurface,
+          hasGems: cluster.hasGems,
+          hasRocks: cluster.hasRocks,
+        })
+      })
+
+    return acc
+  }, [] as GravityWell[])
+  return planetOptions
+}

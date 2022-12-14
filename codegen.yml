@@ -1,0 +1,37 @@
+# This is the file that compiles all the GRAPHQL APIS into typescript types
+# and introspection schemas
+overwrite: true
+schema: 
+  - ./GraphQL/**/*.gql
+generates:
+  # This is the master schema .graphql file that everything else should consume
+  dist/schema.graphql:
+    plugins:
+      - schema-ast
+    config:
+      includeDirectives: true
+  src/gen/gqlSchema.ts:
+    plugins:
+      # We're cramming it into a typescript file so we can import it as a schema
+      - add:
+          content: "import gql from 'graphql-tag'\n\nexport default gql`"
+      - add:
+          placement: 'append'
+          content: '`'
+      - schema-ast
+    config:
+      includeDirectives: true
+  # These are internal types we do not export.
+  src/gen/schema.types.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+    config:
+      nonOptionalTypename: true
+      enumsAsConst: true
+      arrayInputCoercion: false
+      strictScalars: true
+      scalars:
+        Timestamp: number
+        JSONObject: Record<string, any>
+        RockType: ../types#RockType

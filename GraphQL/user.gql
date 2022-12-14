@@ -1,0 +1,104 @@
+interface UserInterface {
+  userId: ID!
+  scName: String!
+  avatarUrl: String
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  state: UserStateEnum!
+}
+
+type User implements UserInterface {
+  userId: ID!
+  scName: String!
+  avatarUrl: String
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  state: UserStateEnum!
+}
+
+enum UserPlanEnum {
+  FREE
+  ETERNAL_GRATITUDE
+  GRIZZLED_PROSPECTOR
+  ADMIN
+}
+
+type UserProfile implements UserInterface{
+  userId: ID!
+  scName: String!
+  avatarUrl: String
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  lastActive: Timestamp!
+  state: UserStateEnum!
+  verifyCode: String
+  plan: UserPlanEnum!
+  apiKey: String
+  friends: [String!]!  # Friends are just a convenience list of scNames
+  userSettings: JSONObject
+
+  # Set up commonly used defaults the user can lock in for when they create
+  # a new session. They are given the opportunity to override these each time
+  sessionSettings: SessionSettings!
+
+  # This is the ship to start all sessions with
+  sessionShipCode: String
+  # This is the ship to use for delvieries
+  deliveryShipCode: String
+
+  loadouts: [MiningLoadout!]!
+
+  # Who owes us?
+  # NOTE: taking this offline for now until we can fiigure it all out
+  # crewSharesPayer(nextToken: String, paid: Boolean): PaginatedCrewShares
+  # Who do we owe?
+  # NOTE: taking this offline for now until we can fiigure it all out
+  # crewSharesPayee(nextToken: String, paid: Boolean): PaginatedCrewShares
+  workOrders(nextToken: String, stateFilter: WorkOrderStateEnum): PaginatedWorkOrders
+  # Descending chronological
+  mySessions(nextToken: String): PaginatedSessions
+  joinedSessions(nextToken: String): PaginatedSessions
+  
+  # surveyorName is the name to use on the leaderboards (if any)
+  surveyorName: String
+  # Opt-in to the global survey
+  isSurveyor: Boolean
+  # Set by admin.
+  isSurveyorBanned: Boolean 
+  surveyorScore: Int
+}
+
+
+
+input UserProfileInput {
+  scName: String
+
+  # Settings are arbitrary key value pairs we make up to do things
+  # Like have a view default to open
+  userSettings: JSONObject 
+  sessionShipCode: String
+  deliveryShipCode: String
+
+  surveyorName: String
+  isSurveyor: Boolean
+}
+
+
+enum ShipManufacturerEnum {
+  AEGS
+  ANVL
+  ARGO
+  CNOU
+  CRUS
+  DRAK
+  MISC
+  MIRA
+  GRIN
+  RSIN
+  TUMBRIL
+}
+
+enum UserStateEnum {
+  UNVERIFIED
+  VERIFIED
+}

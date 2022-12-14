@@ -1,0 +1,287 @@
+
+
+"""
+SessionUser is the type we use to link users who are not the owner to the 
+session
+"""
+type SessionUser  {
+  sessionId: ID!
+  ownerId: ID!
+  owner: User
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  # This is a bit redundant but it basically means there is no captainId
+  isPilot: Boolean!
+  
+  sessionRole: String
+  shipRole: String
+  
+  # Make this a soft link so we don't need to clean it up later
+  captainId: ID # If this user is a passenger or crew member then who is the pilot?
+  shipName: String # Optional. This ship might have a name like "Molissa"
+  state: SessionUserStateEnum!
+  
+  # Users can optionally provide a ship and a loadout
+  vehicleCode: String # The user's vehicle code in this session
+  loadout: MiningLoadout
+}
+
+input SessionUserInput {
+  isPilot: Boolean
+  captainId: ID
+  shipName: String # Optional. This ship might have a name
+  vehicleCode: String # The user's vehicle in this session
+
+  sessionRole: String
+  shipRole: String
+
+
+  loadoutId: String
+  state: SessionUserStateEnum
+}
+input SessionUserUpdate {
+  captainId: ID
+  sessionRole: String
+  shipRole: String
+  state: SessionUserStateEnum
+}
+
+type PendingUser {
+  scName: String!
+  captainId: ID # If this user is a passenger or crew member then who is the pilot?
+  sessionRole: String
+  shipRole: String
+}
+
+input PendingUserInput {
+  scName: String!
+  captainId: ID # If this user is a passenger or crew member then who is the pilot?
+  sessionRole: SessionRoleEnum # Not required. Can be a string too
+  shipRole: ShipRoleEnum # Not required. Can be a string too
+}
+
+enum SessionUserStateEnum {
+  TRAVELLING # Travelling to ... somewhere
+  SCOUTING # Looking for rocks
+  ON_SITE # Currently mining
+  AFK # Potty break
+  REFINERY_RUN # Making a refinery run
+  # REQUEST_COMBAT_AID # Asking for help
+  # REQUEST_MEDICAL_AID # Asking for help
+  # PROVIDING_COMBAT_AID # Asking for help
+  # PROVIDING_MEDICAL_AID # Asking for help
+  UNKNOWN # Does not want to say
+}
+
+type Session {
+  sessionId: ID!
+  joinId: ID! # only some people can see this
+  ownerId: ID!
+  owner: User
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  finishedAt: Timestamp
+  state: SessionStateEnum!
+  version: String # Semantic star citizen version
+  # Name is optional. If not provided you get a name like 'Saturday Session'
+  name: String
+  # Note is optional
+  note: String
+  # Derived frim the current user and the mentionedUsers list
+  onTheList: Boolean
+
+  # Session Goals and presecribed activities
+  sessionSettings: SessionSettings!
+
+  # Just a manual list of usernames. These get claimed when people join the session
+  mentionedUsers: [PendingUser!]!
+
+  # These are derivative row types
+  activeMemberIds: [String!]
+  activeMembers(nextToken: String): PaginatedSessionUsers
+  scouting(nextToken: String): PaginatedScoutingFinds
+  workOrders(nextToken: String): PaginatedWorkOrders
+
+  # Summary of the session
+  summary: SessionSummary
+}
+
+# The public URL shares the session id and a few other things needed for
+# The Lambda SSR to render the page
+type SessionShare {
+  sessionId: ID!
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  finishedAt: Timestamp
+  state: SessionStateEnum!
+  version: String # Semantic star citizen version
+  # Always false if this is called from a public URL
+  onTheList: Boolean!
+  # Name is optional. If not provided you get a name like 'Saturday Session'
+  name: String
+  # Note is optional
+  note: String
+
+  # Note that even if we expose settings we will be filtering out sensitive settings completely
+  activity: ActivityEnum
+  specifyUsers: Boolean
+  allowUnverifiedUsers: Boolean
+  lockToDiscordGuild: DiscordGuild
+}
+
+
+# This is a purely queried type that we store on the session object
+# Any action will invalidate this summary
+type SessionSummary {
+  aUEC: Int
+  collectedSCU: Float
+  # This one is a special number because boxes of individual ore round up.
+  yieldSCU: Float
+  allPaid: Boolean
+  lastJobDone: Timestamp
+  refineries: [RefineryEnum!]!
+  activeMembers: Int
+  totalMembers: Int
+  workOrdersByType: SessionSummaryTotals
+  scoutingFindsByType: SessionSummaryTotals
+  workOrderSummaries: [SessionSummaryWorkOrder!]!
+}
+
+type SessionSummaryTotals {
+  ship: Int
+  vehicle: Int
+  salvage: Int
+  other: Int
+}
+
+type SessionSummaryWorkOrder {
+    orderType: ActivityEnum!
+    isSold: Boolean
+    isFailed: Boolean
+    unpaidShares: Int
+    paidShares: Int
+}
+
+type DiscordGuild {
+  id: ID!
+  name: String!
+  iconUrl: String
+  # hasPermission: Boolean # We add this on the client side
+}
+input DiscordGuildInput {
+  id: ID!
+  name: String!
+  iconUrl: String
+}
+
+type SessionSettings {
+  activity: ActivityEnum
+  specifyUsers: Boolean
+  allowUnverifiedUsers: Boolean
+  usersCanAddUsers: Boolean
+  usersCanInviteUsers: Boolean
+  lockToDiscordGuild: DiscordGuild
+  gravityWell: String
+  location: LocationEnum
+  systemFilter: SystemEnum
+  lockedFields: [String!]
+  controlledSessionRole: Boolean
+  controlledShipRole: Boolean
+  # Nested but we break it out for inputs
+  workOrderDefaults: WorkOrderDefaults
+}
+
+input SessionSettingsInput {
+  activity: ActivityEnum
+  specifyUsers: Boolean
+  allowUnverifiedUsers: Boolean
+  usersCanAddUsers: Boolean
+  usersCanInviteUsers: Boolean
+  lockToDiscordGuild: DiscordGuildInput
+  gravityWell: String
+  location: LocationEnum
+  systemFilter: SystemEnum
+  lockedFields: [String!]
+  controlledSessionRole: Boolean
+  controlledShipRole: Boolean
+}
+
+enum SessionStateEnum {
+  ACTIVE
+  CLOSED
+}
+
+enum ShipOreEnum {
+  GOLD
+  TITANIUM
+  QUANTANIUM
+  QUARTZ
+  AGRICIUM
+  BERYL
+  BEXALITE
+  CORUNDUM
+  DIAMOND
+  HEPHAESTANITE
+  LARANITE
+  TARANITE
+  ALUMINUM
+  BORASE
+  COPPER
+  TUNGSTEN
+  IRON
+  # New Pyro Materials
+  ICE
+  SILICON
+  STILERON
+  TIN
+  RICCITE
+  # INERT
+  INERTMATERIAL
+}
+
+enum VehicleOreEnum {
+  HADANITE
+  JANALITE
+  APHORITE
+  DOLIVINE
+}
+
+enum SalvageOreEnum {
+  RMC
+  CMAT
+}
+
+enum LocationEnum {
+  SURFACE
+  CAVE
+  SPACE
+  RING
+}
+
+input SessionInput {
+  name: String
+  note: String
+  state: SessionStateEnum
+  # Just a manual list of usernames. These get claimed when people join the session
+  mentionedUsers: [PendingUserInput!]
+}
+
+enum SessionRoleEnum {
+  MANAGER
+  SCOUT
+  MEDICAL
+  SECURITY
+  LOGISTICS
+  TRANSPORT
+}
+
+enum ShipRoleEnum {
+  PILOT
+  COPILOT
+  ENGINEER
+  TURRET
+  LASER_OPERATOR
+  SECURITY
+  MEDIC
+  STEVEDORE
+}

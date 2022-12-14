@@ -1,0 +1,1296 @@
+{
+  "lasers": {
+    "LancetMH1": {
+      "size": 1,
+      "code": "LancetMH1",
+      "name": "Lancet MH1",
+      "price": 23000,
+      "slots": 1,
+      "stats": {
+        "optimumRange": 30,
+        "maxPower": 2520,
+        "maxRange": 90,
+        "minPower": 504,
+        "minPowerPct": 0.2,
+        "extrPower": 1850,
+        "instability": 0.9,
+        "inertMaterials": 0.7,
+        "optimalChargeRate": 1.4,
+        "optimalChargeWindow": 0.4,
+        "resistance": 1
+      },
+      "stores": [
+        "HURL2",
+        "CRUL1",
+        "ARCL1",
+        "ARCL2",
+        "ARCL4",
+        "MICL1",
+        "TAMM",
+        "SINB"
+      ]
+    },
+    "LancetMH2": {
+      "size": 2,
+      "code": "LancetMH2",
+      "name": "Lancet MH2",
+      "price": 23500,
+      "slots": 2,
+      "stats": {
+        "optimumRange": 45,
+        "maxPower": 3600,
+        "maxRange": 135,
+        "minPower": 900,
+        "minPowerPct": 0.25,
+        "extrPower": 2590,
+        "instability": 0.9,
+        "inertMaterials": 0.6,
+        "optimalChargeRate": 1.4,
+        "optimalChargeWindow": 0.4,
+        "resistance": 1
+      },
+      "stores": [
+        "HURL1",
+        "MICL1",
+        "MICL5",
+        "TAMM",
+        "DDGH",
+        "DDA18",
+        "SINB"
+      ]
+    },
+    "HofstedeS1": {
+      "size": 1,
+      "code": "HofstedeS1",
+      "name": "Hofstede S1",
+      "price": 12750,
+      "slots": 1,
+      "stats": {
+        "optimumRange": 45,
+        "maxPower": 2100,
+        "maxRange": 135,
+        "minPower": 105,
+        "minPowerPct": 0.05,
+        "extrPower": 1295,
+        "instability": 1.1,
+        "inertMaterials": 0.7,
+        "optimalChargeRate": 1.2,
+        "optimalChargeWindow": 1.6,
+        "resistance": 0.7
+      },
+      "stores": [
+        "HURL1",
+        "CRUL1",
+        "MICL5",
+        "TAMM",
+        "DDA18",
+        "SINB"
+      ]
+    },
+    "HofstedeS2": {
+      "size": 2,
+      "code": "HofstedeS2",
+      "name": "Hofstede S2",
+      "price": 12000,
+      "slots": 2,
+      "stats": {
+        "optimumRange": 60,
+        "maxPower": 3360,
+        "maxRange": 180,
+        "minPower": 336,
+        "minPowerPct": 0.1,
+        "extrPower": 1295,
+        "instability": 1.1,
+        "inertMaterials": 0.6,
+        "optimalChargeRate": 1.2,
+        "optimalChargeWindow": 1.6,
+        "resistance": 0.7
+      },
+      "stores": [
+        "HURL2",
+        "ARCL1",
+        "ARCL2",
+        "ARCL4",
+        "MICL1",
+        "MICL2",
+        "TAMM",
+        "DDGH",
+        "SINB"
+      ]
+    },
+    "KleinS1": {
+      "size": 1,
+      "code": "KleinS1",
+      "name": "Klein S1",
+      "price": 10150,
+      "slots": 0,
+      "stats": {
+        "optimumRange": 45,
+        "maxPower": 2220,
+        "maxRange": 135,
+        "minPower": 378,
+        "minPowerPct": 0.17,
+        "extrPower": 2220,
+        "instability": 1.35,
+        "inertMaterials": 0.7,
+        "optimalChargeRate": 1,
+        "optimalChargeWindow": 1.2,
+        "resistance": 0.55
+      },
+      "stores": [
+        "HURL1",
+        "HURL2",
+        "CRUL1",
+        "ARCL1",
+        "ARCL2",
+        "ARCL4",
+        "MICL1",
+        "MICL2",
+        "MICL5",
+        "TAMM",
+        "DDGH",
+        "DDA18",
+        "SINB"
+      ]
+    },
+    "KleinS2": {
+      "size": 2,
+      "code": "KleinS2",
+      "name": "Klein S2",
+      "price": 10150,
+      "slots": 1,
+      "stats": {
+        "optimumRange": 60,
+        "maxPower": 3600,
+        "maxRange": 180,
+        "minPower": 720,
+        "minPowerPct": 0.2,
+        "extrPower": 2775,
+        "instability": 1.35,
+        "inertMaterials": 0.6,
+        "optimalChargeRate": 1,
+        "optimalChargeWindow": 1.2,
+        "resistance": 0.55
+      },
+      "stores": [
+        "HURL1",
+        "HURL2",
+        "CRUL1",
+        "ARCL1",
+        "ARCL2",
+        "ARCL4",
+        "MICL1",
+        "MICL2",
+        "MICL5",
+        "TAMM",
+        "DDGH",
+        "DDA18",
+        "SINB"
+      ]
+    },
+    "ImpactI": {
+      "size": 1,
+      "code": "ImpactI",
+      "name": "Impact I",
+      "price": 57000,
+      "slots": 2,
+      "stats": {
+        "optimumRange": 45,
+        "maxPower": 2100,
+        "maxRange": 135,
+        "minPower": 420,
+        "minPowerPct": 0.2,
+        "extrPower": 2775,
+        "instability": 0.9,
+        "inertMaterials": 0.7,
+        "optimalChargeRate": 0.6,
+        "optimalChargeWindow": 1.2,
+        "resistance": 1.1
+      },
+      "stores": [
+        "ARCL1",
+        "ARCL4",
+        "MICL5",
+        "TAMM",
+        "DDGH",
+        "DDA18",
+        "SINB"
+      ]
+    },
+    "ImpactII": {
+      "size": 2,
+      "code": "ImpactII",
+      "name": "Impact II",
+      "price": 57750,
+      "slots": 3,
+      "stats": {
+        "optimumRange": 60,
+        "maxPower": 3360,
+        "maxRange": 180,
+        "minPower": 840,
+        "minPowerPct": 0.25,
+        "extrPower": 3145,
+        "instability": 0.9,
+        "inertMaterials": 0.6,
+        "optimalChargeRate": 0.6,
+        "optimalChargeWindow": 1.2,
+        "resistance": 1.1
+      },
+      "stores": [
+        "HURL1",
+        "HURL2",
+        "CRUL1",
+        "TAMM",
+        "DDA18",
+        "SINB"
+      ]
+    },
+    "HelixI": {
+      "size": 1,
+      "code": "HelixI",
+      "name": "Helix I",
+      "price": 100000,
+      "slots": 2,
+      "stats": {
+        "optimumRange": 15,
+        "maxPower": 3150,
+        "maxRange": 45,
+        "minPower": 630,
+        "minPowerPct": 0.2,
+        "extrPower": 1850,
+        "instability": 1,
+        "inertMaterials": 0.7,
+        "optimalChargeRate": 1,
+        "optimalChargeWindow": 0.6,
+        "resistance": 0.7
+      },
+      "stores": [
+        "HURL2",
+        "CRUL1",
+        "ARCL2",
+        "MICL1",
+        "MICL2",
+        "TAMM",
+        "DDGH",
+        "DDA18",
+        "SINB"
+      ]
+    },
+    "HelixII": {
+      "size": 2,
+      "code": "HelixII",
+      "name": "Helix II",
+      "price": 108000,
+      "slots": 3,
+      "stats": {
+        "optimumRange": 30,
+        "maxPower": 4080,
+        "maxRange": 90,
+        "minPower": 1020,
+        "minPowerPct": 0.25,
+        "extrPower": 2590,
+        "instability": 1,
+        "inertMaterials": 0.7,
+        "optimalChargeRate": 1,
+        "optimalChargeWindow": 0.6,
+        "resistance": 0.7
+      },
+      "stores": [
+        "HURL1",
+        "CRUL1",
+        "MICL1",
+        "MICL2",
+        "MICL5",
+        "TAMM",
+        "DDA18",
+        "SINB"
+      ]
+    },
+    "ArborMH1": {
+      "size": 1,
+      "code": "ArborMH1",
+      "name": "Arbor MH1",
+      "price": 1450,
+      "slots": 1,
+      "stats": {
+        "optimumRange": 60,
+        "maxPower": 1890,
+        "maxRange": 180,
+        "minPower": 189,
+        "minPowerPct": 0.1,
+        "extrPower": 1850,
+        "instability": 0.65,
+        "inertMaterials": 0.7,
+        "optimalChargeRate": 1,
+        "optimalChargeWindow": 1.4,
+        "resistance": 1.25
+      },
+      "stores": [
+        "SINB"
+      ]
+    },
+    "ArborMH2": {
+      "size": 2,
+      "code": "ArborMH2",
+      "name": "Arbor MH2",
+      "price": 1450,
+      "slots": 2,
+      "stats": {
+        "optimumRange": 90,
+        "maxPower": 2400,
+        "maxRange": 270,
+        "minPower": 480,
+        "minPowerPct": 0.2,
+        "extrPower": 2590,
+        "instability": 0.65,
+        "inertMaterials": 0.6,
+        "optimalChargeRate": 1,
+        "optimalChargeWindow": 1.4,
+        "resistance": 1.25
+      },
+      "stores": [
+        "DDA18",
+        "SINB"
+      ]
+    }
+  },
+  "modules": {
+    "Brandt": {
+      "code": "Brandt",
+      "name": "Brandt",
+      "price": 2250,
+      "stores": [
+        "CRUL1",
+        "ARCL1",
+        "TAMM",
+        "SINB"
+      ],
+      "active": true,
+      "category": "A",
+      "duration": 60,
+      "uses": 5,
+      "stats": {
+        "extrPowerMod": 1,
+        "powerMod": 1.35,
+        "instability": 1,
+        "resistance": 1.15,
+        "optimalChargeWindow": 1,
+        "optimalChargeRate": 1,
+        "overchargeRate": 1,
+        "shatterDamage": 0.7,
+        "clusterMod": 1,
+        "inertMaterials": 1
+      }
+    },
+    "Forel": {
+      "code": "Forel",
+      "name": "Forel",
+      "price": 1950,
+      "stores": [
+        "HURL1",
+        "HURL2",
+        "CRUL1",
+        "ARCL1",
+        "ARCL2",
+        "ARCL4",
+        "MICL1",
+        "MICL2",
+        "MICL5",
+        "SINB"
+      ],
+      "active": true,
+      "category": "A",
+      "duration": 60,
+      "uses": 6,
+      "stats": {
+        "extrPowerMod": 1.5,
+        "powerMod": 1,
+        "instability": 1,
+        "resistance": 1.15,
+        "optimalChargeWindow": 1,
+        "optimalChargeRate": 1,
+        "overchargeRate": 0.4,
+        "shatterDamage": 1,
+        "clusterMod": 1,
+        "inertMaterials": 1
+      }
+    },
+    "Lifeline": {
+      "code": "Lifeline",
+      "name": "Lifeline",
+      "price": 800,
+      "stores": [
+        "HURL1",
+        "HURL2",
+        "CRUL1",
+        "ARCL1",
+        "ARCL2",
+        "ARCL4",
+        "MICL1",
+        "MICL2",
+        "MICL5",
+        "TAMM",
+        "SINB"
+      ],
+      "active": true,
+      "category": "A",
+      "duration": 15,
+      "uses": 3,
+      "stats": {
+        "extrPowerMod": 1,
+        "powerMod": 1,
+        "instability": 0.8,
+        "resistance": 0.85,
+        "optimalChargeWindow": 1,
+        "optimalChargeRate": 1,
+        "overchargeRate": 1.6,
+        "shatterDamage": 1,
+        "clusterMod": 1,
+        "inertMaterials": 1
+      }
+    },
+    "Optimum": {
+      "code": "Optimum",
+      "name": "Optimum",
+      "price": 3000,
+      "stores": [
+        "HURL2",
+        "ARCL1",
+        "ARCL4",
+        "MICL1",
+        "MICL5",
+        "SINB"
+      ],
+      "active": true,
+      "category": "A",
+      "duration": 60,
+      "uses": 5,
+      "stats": {
+        "extrPowerMod": 1,
+        "powerMod": 0.85,
+        "instability": 0.9,
+        "resistance": 1,
+        "optimalChargeWindow": 1,
+        "optimalChargeRate": 1,
+        "overchargeRate": 0.2,
+        "shatterDamage": 1,
+        "clusterMod": 1,
+        "inertMaterials": 1
+      }
+    },
+    "Rime": {
+      "code": "Rime",
+      "name": "Rime",
+      "price": 1100,
+      "stores": [
+        "HURL1",
+        "HURL2",
+        "CRUL1",
+        "ARCL1",
+        "ARCL2",
+        "ARCL4",
+        "MICL1",
+        "MICL2",
+        "MICL5",
+        "SINB"
+      ],
+      "active": true,
+      "category": "A",
+      "duration": 20,
+      "uses": 10,
+      "stats": {
+        "extrPowerMod": 1,
+        "powerMod": 0.85,
+        "instability": 1,
+        "resistance": 0.75,
+        "optimalChargeWindow": 1,
+        "optimalChargeRate": 1,
+        "overchargeRate": 1,
+        "shatterDamage": 0.9,
+        "clusterMod": 1,
+        "inertMaterials": 1
+      }
+    },
+    "Stampede": {
+      "code": "Stampede",
+      "name": "Stampede",
+      "price": 1400,
+      "stores": [
+        "HURL1",
+        "HURL2",
+        "CRUL1",
+        "ARCL1",
+        "ARCL2",
+        "ARCL4",
+        "MICL1",
+        "MICL2",
+        "MICL5",
+        "SINB"
+      ],
+      "active": true,
+      "category": "A",
+      "duration": 30,
+      "uses": 6,
+      "stats": {
+        "extrPowerMod": 0.85,
+        "powerMod": 1.35,
+        "instability": 0.9,
+        "resistance": 1,
+        "optimalChargeWindow": 1,
+        "optimalChargeRate": 1,
+        "overchargeRate": 1,
+        "shatterDamage": 0.9,
+        "clusterMod": 1,
+        "inertMaterials": 1
+      }
+    },
+    "Surge": {
+      "code": "Surge",
+      "name": "Surge",
+      "price": 1400,
+      "stores": [
+        "HURL1",
+        "ARCL2",
+        "MICL2",
+        "TAMM",
+        "SINB"
+      ],
+      "active": true,
+      "category": "A",
+      "duration": 15,
+      "uses": 7,
+      "stats": {
+        "extrPowerMod": 1,
+        "powerMod": 1.5,
+        "instability": 1.1,
+        "resistance": 0.85,
+        "optimalChargeWindow": 1,
+        "optimalChargeRate": 1,
+        "overchargeRate": 1,
+        "shatterDamage": 1,
+        "clusterMod": 1,
+        "inertMaterials": 1
+      }
+    },
+    "Torpid": {
+      "code": "Torpid",
+      "name": "Torpid",
+      "price": 1950,
+      "stores": [
+        "HURL1",
+        "HURL2",
+        "CRUL1",
+        "ARCL1",
+        "ARCL2",
+        "ARCL4",
+        "MICL1",
+        "MICL2",
+        "MICL5",
+        "SINB"
+      ],
+      "active": true,
+      "category": "A",
+      "duration": 60,
+      "uses": 5,
+      "stats": {
+        "extrPowerMod": 1,
+        "powerMod": 1,
+        "instability": 1,
+        "resistance": 1,
+        "optimalChargeWindow": 1,
+        "optimalChargeRate": 1.6,
+        "overchargeRate": 0.4,
+        "shatterDamage": 1.4,
+        "clusterMod": 1,
+        "inertMaterials": 1
+      }
+    },
+    "FLTR": {
+      "code": "FLTR",
+      "name": "FLTR",
+      "price": 6000,
+      "stores": [
+        "CRUL1",
+        "ARCL1",
+        "ARCL2",
+        "ARCL4",
+        "MICL1",
+        "MICL2",
+        "MICL5"
+      ],
+      "active": false,
+      "category": "P",
+      "stats": {
+        "extrPowerMod": 0.85,
+        "powerMod": 1,
+        "instability": 1,
+        "resistance": 1,
+        "optimalChargeWindow": 1,
+        "optimalChargeRate": 1,
+        "overchargeRate": 1,
+        "shatterDamage": 1,
+        "clusterMod": 1,
+        "inertMaterials": 0.8
+      }
+    },
+    "FLTRL": {
+      "code": "FLTRL",
+      "name": "FLTR-L",
+      "price": 18000,
+      "stores": [
+        "HURL2",
+        "CRUL1",
+        "ARCL2",
+        "MICL5",
+        "SINB"
+      ],
+      "active": false,
+      "category": "P",
+      "stats": {
+        "extrPowerMod": 0.9,
+        "powerMod": 1,
+        "instability": 1,
+        "resistance": 1,
+        "optimalChargeWindow": 1,
+        "optimalChargeRate": 1,
+        "overchargeRate": 1,
+        "shatterDamage": 1,
+        "clusterMod": 1,
+        "inertMaterials": 0.77
+      }
+    },
+    "FLTRXL": {
+      "code": "FLTRXL",
+      "name": "FLTR-XL",
+      "price": 60000,
+      "stores": [
+        "HURL1",
+        "ARCL1",
+        "ARCL2",
+        "ARCL4",
+        "MICL1",
+        "MICL2",
+        "SINB"
+      ],
+      "active": false,
+      "category": "P",
+      "stats": {
+        "extrPowerMod": 0.95,
+        "powerMod": 1,
+        "instability": 1,
+        "resistance": 1,
+        "optimalChargeWindow": 1,
+        "optimalChargeRate": 1,
+        "overchargeRate": 1,
+        "shatterDamage": 1,
+        "clusterMod": 1,
+        "inertMaterials": 0.76
+      }
+    },
+    "Focus": {
+      "code": "Focus",
+      "name": "Focus",
+      "price": 4000,
+      "stores": [
+        "HURL1",
+        "HURL2",
+        "CRUL1",
+        "ARCL1",
+        "ARCL2",
+        "ARCL4",
+        "MICL1",
+        "DDGH",
+        "DDA18"
+      ],
+      "active": false,
+      "category": "P",
+      "stats": {
+        "extrPowerMod": 1,
+        "powerMod": 0.85,
+        "instability": 1,
+        "resistance": 1,
+        "optimalChargeWindow": 1.3,
+        "optimalChargeRate": 1,
+        "overchargeRate": 1,
+        "shatterDamage": 1,
+        "clusterMod": 1,
+        "inertMaterials": 1
+      }
+    },
+    "FocusII": {
+      "code": "FocusII",
+      "name": "Focus II",
+      "price": 12000,
+      "stores": [
+        "HURL1",
+        "HURL2",
+        "CRUL1",
+        "ARCL1",
+        "ARCL2",
+        "ARCL4",
+        "MICL2",
+        "MICL5",
+        "SINB"
+      ],
+      "active": false,
+      "category": "P",
+      "stats": {
+        "extrPowerMod": 1,
+        "powerMod": 0.9,
+        "instability": 1,
+        "resistance": 1,
+        "optimalChargeWindow": 1.37,
+        "optimalChargeRate": 1,
+        "overchargeRate": 1,
+        "shatterDamage": 1,
+        "clusterMod": 1,
+        "inertMaterials": 1
+      }
+    },
+    "FocusIII": {
+      "code": "FocusIII",
+      "name": "Focus III",
+      "price": 40000,
+      "stores": [
+        "HURL1",
+        "HURL2",
+        "CRUL1",
+        "ARCL4",
+        "MICL1",
+        "MICL2",
+        "MICL5",
+        "SINB"
+      ],
+      "active": false,
+      "category": "P",
+      "stats": {
+        "extrPowerMod": 1,
+        "powerMod": 0.95,
+        "instability": 1,
+        "resistance": 1,
+        "optimalChargeWindow": 1.4,
+        "optimalChargeRate": 1,
+        "overchargeRate": 1,
+        "shatterDamage": 1,
+        "clusterMod": 1,
+        "inertMaterials": 1
+      }
+    },
+    "Rieger": {
+      "code": "Rieger",
+      "name": "Rieger",
+      "price": 6000,
+      "stores": [
+        "HURL1",
+        "HURL2",
+        "ARCL2",
+        "ARCL4",
+        "MICL2",
+        "SINB"
+      ],
+      "active": false,
+      "category": "P",
+      "stats": {
+        "extrPowerMod": 1,
+        "powerMod": 1.15,
+        "instability": 1,
+        "resistance": 1,
+        "optimalChargeWindow": 0.9,
+        "optimalChargeRate": 1,
+        "overchargeRate": 1,
+        "shatterDamage": 1,
+        "clusterMod": 1,
+        "inertMaterials": 1
+      }
+    },
+    "RiegerC2": {
+      "code": "RiegerC2",
+      "name": "Rieger C2",
+      "price": 18000,
+      "stores": [
+        "HURL1",
+        "ARCL1",
+        "ARCL4",
+        "MICL1",
+        "MICL2",
+        "SINB"
+      ],
+      "active": false,
+      "category": "P",
+      "stats": {
+        "extrPowerMod": 1,
+        "powerMod": 1.2,
+        "instability": 1,
+        "resistance": 1,
+        "optimalChargeWindow": 0.97,
+        "optimalChargeRate": 1,
+        "overchargeRate": 1,
+        "shatterDamage": 1,
+        "clusterMod": 1,
+        "inertMaterials": 1
+      }
+    },
+    "RiegerC3": {
+      "code": "RiegerC3",
+      "name": "Rieger C3",
+      "price": 60000,
+      "stores": [
+        "HURL2",
+        "CRUL1",
+        "ARCL2",
+        "MICL2",
+        "SINB"
+      ],
+      "active": false,
+      "category": "P",
+      "stats": {
+        "extrPowerMod": 1,
+        "powerMod": 1.25,
+        "instability": 1,
+        "resistance": 1,
+        "optimalChargeWindow": 0.99,
+        "optimalChargeRate": 1,
+        "overchargeRate": 1,
+        "shatterDamage": 1,
+        "clusterMod": 1,
+        "inertMaterials": 1
+      }
+    },
+    "Torrent": {
+      "code": "Torrent",
+      "name": "Torrent",
+      "price": 4000,
+      "stores": [
+        "HURL1",
+        "HURL2",
+        "ARCL1",
+        "ARCL4",
+        "MICL1",
+        "MICL2",
+        "DDA18"
+      ],
+      "active": false,
+      "category": "P",
+      "stats": {
+        "extrPowerMod": 1,
+        "powerMod": 1,
+        "instability": 1,
+        "resistance": 1,
+        "optimalChargeWindow": 0.9,
+        "optimalChargeRate": 1.3,
+        "overchargeRate": 1,
+        "shatterDamage": 1,
+        "clusterMod": 1,
+        "inertMaterials": 1
+      }
+    },
+    "TorrentII": {
+      "code": "TorrentII",
+      "name": "Torrent II",
+      "price": 12000,
+      "stores": [
+        "HURL1",
+        "CRUL1",
+        "ARCL1",
+        "ARCL2",
+        "MICL1",
+        "MICL2",
+        "MICL5",
+        "SINB"
+      ],
+      "active": false,
+      "category": "P",
+      "stats": {
+        "extrPowerMod": 1,
+        "powerMod": 1,
+        "instability": 1,
+        "resistance": 1,
+        "optimalChargeWindow": 0.97,
+        "optimalChargeRate": 1.35,
+        "overchargeRate": 1,
+        "shatterDamage": 1,
+        "clusterMod": 1,
+        "inertMaterials": 1
+      }
+    },
+    "TorrentIII": {
+      "code": "TorrentIII",
+      "name": "Torrent III",
+      "price": 40000,
+      "stores": [
+        "HURL1",
+        "HURL2",
+        "CRUL1",
+        "ARCL1",
+        "ARCL2",
+        "ARCL4",
+        "MICL1",
+        "MICL5",
+        "SINB"
+      ],
+      "active": false,
+      "category": "P",
+      "stats": {
+        "extrPowerMod": 1,
+        "powerMod": 1,
+        "instability": 1,
+        "resistance": 1,
+        "optimalChargeWindow": 0.99,
+        "optimalChargeRate": 1.4,
+        "overchargeRate": 1,
+        "shatterDamage": 1,
+        "clusterMod": 1,
+        "inertMaterials": 1
+      }
+    },
+    "Vaux": {
+      "code": "Vaux",
+      "name": "Vaux",
+      "price": 2000,
+      "stores": [
+        "HURL2",
+        "CRUL1",
+        "ARCL1",
+        "ARCL2",
+        "ARCL4",
+        "MICL1",
+        "MICL2",
+        "DDGH",
+        "DDA18",
+        "SINB"
+      ],
+      "active": false,
+      "category": "P",
+      "stats": {
+        "extrPowerMod": 1.15,
+        "powerMod": 1,
+        "instability": 1,
+        "resistance": 1,
+        "optimalChargeWindow": 1,
+        "optimalChargeRate": 0.8,
+        "overchargeRate": 1,
+        "shatterDamage": 1,
+        "clusterMod": 1,
+        "inertMaterials": 1
+      }
+    },
+    "VauxC2": {
+      "code": "VauxC2",
+      "name": "Vaux C2",
+      "price": 6000,
+      "stores": [
+        "HURL1",
+        "CRUL1",
+        "ARCL1",
+        "ARCL2",
+        "ARCL4",
+        "MICL1",
+        "MICL5",
+        "DDGH",
+        "DDA18"
+      ],
+      "active": false,
+      "category": "P",
+      "stats": {
+        "extrPowerMod": 1.2,
+        "powerMod": 1,
+        "instability": 1,
+        "resistance": 1,
+        "optimalChargeWindow": 1,
+        "optimalChargeRate": 0.85,
+        "overchargeRate": 1,
+        "shatterDamage": 1,
+        "clusterMod": 1,
+        "inertMaterials": 1
+      }
+    },
+    "VauxC3": {
+      "code": "VauxC3",
+      "name": "Vaux C3",
+      "price": 20000,
+      "stores": [
+        "HURL1",
+        "HURL2",
+        "ARCL1",
+        "MICL1",
+        "MICL2",
+        "MICL5",
+        "DDA18"
+      ],
+      "active": false,
+      "category": "P",
+      "stats": {
+        "extrPowerMod": 1.25,
+        "powerMod": 1,
+        "instability": 1,
+        "resistance": 1,
+        "optimalChargeWindow": 1,
+        "optimalChargeRate": 0.95,
+        "overchargeRate": 1,
+        "shatterDamage": 1,
+        "clusterMod": 1,
+        "inertMaterials": 1
+      }
+    },
+    "XTR": {
+      "code": "XTR",
+      "name": "XTR",
+      "price": 2000,
+      "stores": [
+        "HURL1",
+        "HURL2",
+        "CRUL1",
+        "ARCL2",
+        "MICL1",
+        "MICL5",
+        "DDGH",
+        "DDA18",
+        "SINB"
+      ],
+      "active": false,
+      "category": "P",
+      "stats": {
+        "extrPowerMod": 0.85,
+        "powerMod": 1,
+        "instability": 1,
+        "resistance": 1,
+        "optimalChargeWindow": 1.15,
+        "optimalChargeRate": 1,
+        "overchargeRate": 1,
+        "shatterDamage": 1,
+        "clusterMod": 1,
+        "inertMaterials": 0.95
+      }
+    },
+    "XTRL": {
+      "code": "XTRL",
+      "name": "XTR-L",
+      "price": 6000,
+      "stores": [
+        "HURL1",
+        "HURL2",
+        "CRUL1",
+        "ARCL1",
+        "ARCL2",
+        "ARCL4",
+        "MICL5",
+        "DDGH",
+        "DDA18",
+        "SINB"
+      ],
+      "active": false,
+      "category": "P",
+      "stats": {
+        "extrPowerMod": 0.9,
+        "powerMod": 1,
+        "instability": 1,
+        "resistance": 1,
+        "optimalChargeWindow": 1.22,
+        "optimalChargeRate": 1,
+        "overchargeRate": 1,
+        "shatterDamage": 1,
+        "clusterMod": 1,
+        "inertMaterials": 0.94
+      }
+    },
+    "XTRXL": {
+      "code": "XTRXL",
+      "name": "XTR-XL",
+      "price": 20000,
+      "stores": [
+        "HURL1",
+        "HURL2",
+        "CRUL1",
+        "ARCL1",
+        "ARCL4",
+        "MICL1",
+        "MICL5",
+        "DDGH",
+        "DDA18",
+        "SINB"
+      ],
+      "active": false,
+      "category": "P",
+      "stats": {
+        "extrPowerMod": 0.95,
+        "powerMod": 1,
+        "instability": 1,
+        "resistance": 1,
+        "optimalChargeWindow": 1.25,
+        "optimalChargeRate": 1,
+        "overchargeRate": 1,
+        "shatterDamage": 1,
+        "clusterMod": 1,
+        "inertMaterials": 0.94
+      }
+    }
+  },
+  "gadgets": {
+    "Optimax": {
+      "code": "Optimax",
+      "name": "Optimax",
+      "price": 27000,
+      "stores": [
+        "HURL2",
+        "CRUL1",
+        "ARCL2",
+        "ARCL4",
+        "SINB"
+      ],
+      "category": "G",
+      "stats": {
+        "extrPowerMod": 1,
+        "powerMod": 1,
+        "instability": 1,
+        "resistance": 0.7,
+        "optimalChargeWindow": 0.7,
+        "optimalChargeRate": 1,
+        "overchargeRate": 1,
+        "shatterDamage": 1,
+        "clusterMod": 1.6,
+        "inertMaterials": 1
+      }
+    },
+    "Okunis": {
+      "code": "Okunis",
+      "name": "Okunis",
+      "price": 23250,
+      "stores": [
+        "HURL1",
+        "ARCL1",
+        "ARCL2",
+        "MICL1",
+        "MICL2",
+        "SINB"
+      ],
+      "category": "G",
+      "stats": {
+        "extrPowerMod": 1,
+        "powerMod": 1,
+        "instability": 1,
+        "resistance": 1,
+        "optimalChargeWindow": 1.5,
+        "optimalChargeRate": 2,
+        "overchargeRate": 1,
+        "shatterDamage": 1,
+        "clusterMod": 0.8,
+        "inertMaterials": 1
+      }
+    },
+    "Sabir": {
+      "code": "Sabir",
+      "name": "Sabir",
+      "price": 13815,
+      "stores": [
+        "HURL1",
+        "HURL2",
+        "CRUL1",
+        "ARCL1",
+        "ARCL2",
+        "ARCL4",
+        "MICL1",
+        "MICL2",
+        "MICL5",
+        "TAMM",
+        "DDGH",
+        "SINB"
+      ],
+      "category": "G",
+      "stats": {
+        "extrPowerMod": 1,
+        "powerMod": 1,
+        "instability": 1.15,
+        "resistance": 0.5,
+        "optimalChargeWindow": 1.5,
+        "optimalChargeRate": 1,
+        "overchargeRate": 1,
+        "shatterDamage": 1,
+        "clusterMod": 1,
+        "inertMaterials": 1
+      }
+    },
+    "Stalwart": {
+      "code": "Stalwart",
+      "name": "Stalwart",
+      "price": 20190,
+      "stores": [
+        "HURL1",
+        "ARCL1",
+        "ARCL4",
+        "MICL1",
+        "MICL5",
+        "SINB"
+      ],
+      "category": "G",
+      "stats": {
+        "extrPowerMod": 1,
+        "powerMod": 1,
+        "instability": 0.65,
+        "resistance": 1,
+        "optimalChargeWindow": 0.7,
+        "optimalChargeRate": 1.5,
+        "overchargeRate": 1,
+        "shatterDamage": 1,
+        "clusterMod": 1.3,
+        "inertMaterials": 1
+      }
+    },
+    "Boremax": {
+      "code": "Boremax",
+      "name": "Boremax",
+      "price": 12750,
+      "stores": [
+        "HURL1",
+        "HURL2",
+        "CRUL1",
+        "ARCL1",
+        "ARCL2",
+        "ARCL4",
+        "MICL1",
+        "MICL2",
+        "MICL5",
+        "TAMM",
+        "DDGH"
+      ],
+      "category": "G",
+      "stats": {
+        "extrPowerMod": 1,
+        "powerMod": 1,
+        "instability": 0.3,
+        "resistance": 1.1,
+        "optimalChargeWindow": 1,
+        "optimalChargeRate": 1,
+        "overchargeRate": 1,
+        "shatterDamage": 1,
+        "clusterMod": 1.3,
+        "inertMaterials": 1
+      }
+    },
+    "Waveshift": {
+      "code": "Waveshift",
+      "name": "Waveshift",
+      "price": 19125,
+      "stores": [
+        "HURL2",
+        "CRUL1",
+        "MICL2",
+        "MICL5",
+        "TAMM",
+        "DDGH"
+      ],
+      "category": "G",
+      "stats": {
+        "extrPowerMod": 1,
+        "powerMod": 1,
+        "instability": 0.65,
+        "resistance": 1,
+        "optimalChargeWindow": 2,
+        "optimalChargeRate": 0.7,
+        "overchargeRate": 1,
+        "shatterDamage": 1,
+        "clusterMod": 1,
+        "inertMaterials": 1
+      }
+    }
+  }
+}

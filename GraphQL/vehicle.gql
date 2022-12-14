@@ -1,0 +1,15 @@
+type Vehicle {
+  maker: String!
+  name: String!
+  UEXID: ID!
+  cargo: Int
+  miningHold: Int
+  role: VehicleRoleEnum!
+}
+
+enum VehicleRoleEnum {
+  MINING
+  FREIGHT
+  FIGHTER
+  OTHER
+}

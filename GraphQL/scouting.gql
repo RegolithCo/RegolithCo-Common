@@ -1,0 +1,268 @@
+enum ScoutingFindTypeEnum {
+  VEHICLE
+  SHIP
+  SALVAGE
+}
+
+# This will be used to identify the type of rock. 
+# It is a value from either AsteroidTypeEnum or DepositTypeEnum
+scalar RockType
+
+enum AsteroidTypeEnum {
+  CTYPE
+  ETYPE
+  MTYPE
+  PTYPE
+  QTYPE
+  STYPE
+  ITYPE # PYRO
+}
+
+enum DepositTypeEnum {
+  ATACAMITE
+  FELSIC
+  GNEISS
+  GRANITE
+  IGNEOUS
+  OBSIDIAN
+  QUARTZITE
+  SHALE
+}
+
+enum RockStateEnum {
+  READY # FlagCircle
+  DEPLETED #CheckCircle
+  IGNORE #Ignore this
+}
+
+enum WreckStateEnum {
+  READY # FlagCircle
+  DEPLETED #CheckCircle
+  IGNORE #Ignore this
+}
+
+"""
+The state of a cluster found by a scout
+"""
+enum ScoutingFindStateEnum {
+  DISCOVERED # The scout has found the cluster
+  READY_FOR_WORKERS # The scout is waiting. the workers are travelling
+  WORKING # The scout has moved on, the workers are working
+  DEPLETED # The workers are done, the cluster is depleted
+  ABANDONNED # The scout or the workers rejected this rock
+}
+
+interface ScoutingFindInterface {
+  sessionId: ID! # GUID
+  scoutingFindId: ID! # GUID
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  clusterType: ScoutingFindTypeEnum!
+  version: String! # Semantic star citizen version
+  # Before doing a detailed scan this is just a quick count of objects. Useful if the scout
+  # is too lazy to do a detailed scan
+  clusterCount: Int
+  # Once it's abandonned the ownership transfers to session Owner
+  ownerId: ID!
+  owner: User
+  note: String
+  state: ScoutingFindStateEnum!
+  attendanceIds: [ID!]! # USER IDS for users are on-site
+  attendance: [SessionUser!] # USER for users whoa re on-site
+  # We store the gravity well code from UEX
+  gravityWell: String
+  # Whether or not to include this in the global survey stats
+  includeInSurvey: Boolean
+  # If there is an incentive for the survey then we store it here
+  surveyBonus: Float 
+  # Calculated. This is the score of the cluster
+  score: Float
+  # Calculated this is the score of the cluster without the bonus
+  rawScore: Float 
+}
+
+type ShipClusterFind implements ScoutingFindInterface {
+  sessionId: ID! # GUID
+  scoutingFindId: ID! # GUID
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  clusterType: ScoutingFindTypeEnum!
+  version: String! # Semantic star citizen version
+  clusterCount: Int
+  # Once it's abandoned the ownership transfers to session Owner
+  ownerId: ID!
+  note: String
+  owner: User
+  state: ScoutingFindStateEnum!
+  attendanceIds: [ID!]! # USER IDS for users are on-site
+  attendance: [SessionUser!] # USER for users whoa re on-site
+
+  # For any rocks in the cluster
+  shipRocks: [ShipRock!]!
+  # We store the gravity well code from UEX
+  gravityWell: String
+  # Whether or not to include this in the global survey stats
+  includeInSurvey: Boolean
+  # If there is an incentive for the survey then we store it here
+  surveyBonus: Float 
+  # Calculated. This is the score of the cluster
+  score: Float
+  # Calculated this is the score of the cluster without the bonus
+  rawScore: Float 
+}
+
+
+type ShipRock {
+  state: RockStateEnum!
+  mass: Float!
+  inst: Float
+  res: Float
+  rockType: RockType
+  ores: [ShipRockOre!]!
+}
+input ShipRockInput {
+  state: RockStateEnum!
+  mass: Float!
+  inst: Float
+  res: Float
+  rockType: RockType
+  ores: [ShipRockOreInput!]!
+}
+type ShipRockCapture {
+  mass: Float!
+  inst: Float
+  res: Float
+  rockType: RockType
+  ores: [ShipRockOre!]!
+}
+
+type ShipRockOre {
+  ore: ShipOreEnum!
+  percent: Float!
+}
+input ShipRockOreInput {
+  ore: ShipOreEnum!
+  percent: Float!
+}
+
+type VehicleClusterFind implements ScoutingFindInterface {
+  sessionId: ID! # GUID
+  scoutingFindId: ID! # GUID
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  clusterType: ScoutingFindTypeEnum!
+  version: String! # Semantic star citizen version
+  clusterCount: Int
+  # Once it's abandonned the ownership transfers to session Owner
+  ownerId: ID!
+  note: String
+  owner: User
+  state: ScoutingFindStateEnum!
+  attendanceIds: [ID!]! # USER IDS for users are on-site
+  attendance: [SessionUser!] # USER for users whoa re on-site
+
+  # For any rocks in the cluster
+  vehicleRocks: [VehicleRock!]!
+  # We store the gravity well code from UEX
+  gravityWell: String
+  # Whether or not to include this in the global survey stats
+  includeInSurvey: Boolean
+  # If there is an incentive for the survey then we store it here
+  surveyBonus: Float 
+  # Calculated. This is the score of the cluster
+  score: Float
+  # Calculated this is the score of the cluster without the bonus
+  rawScore: Float 
+}
+
+type VehicleRock {
+  mass: Float!
+  inst: Float
+  res: Float
+  ores: [VehicleRockOre!]!
+}
+input VehicleRockInput {
+  mass: Float!
+  inst: Float
+  res: Float  
+  ores: [VehicleRockOreInput!]!
+}
+type VehicleRockOre {
+  ore: VehicleOreEnum!
+  percent: Float!
+}
+input VehicleRockOreInput {
+  ore: VehicleOreEnum!
+  percent: Float!
+}
+
+type SalvageFind implements ScoutingFindInterface {
+  sessionId: ID! # GUID
+  scoutingFindId: ID! # GUID
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  clusterType: ScoutingFindTypeEnum!
+  version: String! # Semantic star citizen version
+  clusterCount: Int
+  # Once it's abandonned the ownership transfers to session Owner
+  ownerId: ID!
+  note: String
+  owner: User
+  state: ScoutingFindStateEnum!
+  attendanceIds: [ID!]! # USER IDS for users are on-site
+  attendance: [SessionUser!] # USER for users whoa re on-site
+
+  # For any rocks in the cluster
+  wrecks: [SalvageWreck!]!
+  # We store the gravity well code from UEX
+  gravityWell: String
+  # Whether or not to include this in the global survey stats
+  includeInSurvey: Boolean
+  # If there is an incentive for the survey then we store it here
+  surveyBonus: Float 
+  # Calculated. This is the score of the cluster
+  score: Float
+  # Calculated this is the score of the cluster without the bonus
+  rawScore: Float 
+}
+
+type SalvageWreck {
+  state: WreckStateEnum!
+  isShip: Boolean! # If it's a ship or a panel
+  shipCode: String
+  sellableAUEC: Int # an estimate of cash from selling cargo or components
+  # You can put in estimates for how much you can scrape from this wreck
+  salvageOres: [SalvageWreckOre!]!
+}
+input SalvageWreckInput {
+  state: WreckStateEnum!
+  isShip: Boolean! # If it's a ship or a panel
+  shipCode: String
+  sellableAUEC: Int # an estimate of cash from selling cargo or components
+  # You can put in estimates for how much you can scrape from this wreck
+  salvageOres: [SalvageWreckOreInput!]!
+}
+type SalvageWreckOre {
+  ore: SalvageOreEnum!
+  scu: Int!
+}
+input SalvageWreckOreInput {
+  ore: SalvageOreEnum!
+  scu: Int!
+}
+
+union ScoutingFind = ShipClusterFind | VehicleClusterFind | SalvageFind
+
+input ScoutingFindInput {
+  state: ScoutingFindStateEnum!
+  clusterCount: Int
+  note: String
+  # We store the gravity well code from UEX
+  gravityWell: String
+  # Whether or not to include this in the global survey stats
+  includeInSurvey: Boolean
+}
+
+
+
+

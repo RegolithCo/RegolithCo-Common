@@ -1,0 +1,30 @@
+type LookupData {
+  CIG: CIGLookups
+  UEX: UEXLookups
+  Loadout: JSONObject
+}
+
+type CIGLookups {
+  densitiesLookups: JSONObject
+  methodsBonusLookup: JSONObject
+  oreProcessingLookup: JSONObject
+  refineryBonusLookup: JSONObject
+}
+
+type UEXLookups {
+  bodies: JSONObject
+  maxPrices: JSONObject
+  ships: JSONObject
+  tradeports: JSONObject
+}
+
+enum AuthTypeEnum {
+  GOOGLE
+  DISCORD
+  API_KEY
+}
+
+enum LookupTypeEnum {
+  CIG
+  UEX
+}
