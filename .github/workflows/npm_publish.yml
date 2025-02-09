@@ -14,35 +14,45 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
           node-version: '18'
           registry-url: 'https://registry.npmjs.org'
 
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Use correct Yarn version
+        run: corepack prepare yarn@3.6.1 --activate
+
+      - name: Verify Yarn version
+        run: yarn --version
+
       - name: Install dependencies
-        run: yarn install
+        run: yarn install --immutable
 
       - name: Build the project
         run: yarn build
 
       - name: Install jq
-        run: sudo apt-get install -y jq
+        run: sudo apt-get update && sudo apt-get install -y jq
 
       - name: Get current version
         id: current_version
-        run: echo "::set-output name=version::$(jq -r .version < package.json)"
+        run: echo "CURRENT_VERSION=$(jq -r .version < package.json)" >> $GITHUB_ENV
 
       - name: Get latest published version
         id: latest_version
-        run: echo "::set-output name=version::$(npm show @regolithco/common version)"
+        run: echo "LATEST_VERSION=$(npm show @regolithco/common version || echo '0.0.0')" >> $GITHUB_ENV
 
       - name: Compare versions and publish if changed
         run: |
-          if [ "${{ steps.current_version.outputs.version }}" != "${{ steps.latest_version.outputs.version }}" ]; then
-            yarn publish --non-interactive --access public
+          if [ "${{ env.CURRENT_VERSION }}" != "${{ env.LATEST_VERSION }}" ]; then
+            echo "Publishing new version: ${{ env.CURRENT_VERSION }}"
+            yarn npm publish --non-interactive --access public
           else
             echo "Version has not changed. Skipping publish."
           fi
