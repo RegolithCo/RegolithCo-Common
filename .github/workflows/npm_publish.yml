@@ -1,0 +1,50 @@
+name: Publish to npm
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build the project
+        run: yarn build
+
+      - name: Install jq
+        run: sudo apt-get install -y jq
+
+      - name: Get current version
+        id: current_version
+        run: echo "::set-output name=version::$(jq -r .version < package.json)"
+
+      - name: Get latest published version
+        id: latest_version
+        run: echo "::set-output name=version::$(npm show @regolithco/common version)"
+
+      - name: Compare versions and publish if changed
+        run: |
+          if [ "${{ steps.current_version.outputs.version }}" != "${{ steps.latest_version.outputs.version }}" ]; then
+            yarn publish --non-interactive --access public
+          else
+            echo "Version has not changed. Skipping publish."
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
