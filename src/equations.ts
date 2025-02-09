@@ -23,7 +23,6 @@ import {
   ShipRock,
   SalvageOreEnum,
   VehicleOreEnum,
-  SystemEnum,
 } from './gen/schema.types'
 import log from 'loglevel'
 import {
@@ -73,7 +72,7 @@ export async function shipRockCalc(ds: DataStore, rock: ShipRock): Promise<RockS
     return density * percent * FUDGE_FACTOR
   })
   const maxVolume = mass / propDensities.reduce((a, b) => a + b, 0)
-  const volumes = ores.map(({ ore, percent }) => maxVolume * percent)
+  const volumes = ores.map(({ percent }) => maxVolume * percent)
 
   const byOrePromises = ores.map(async ({ ore }, idx) => {
     if (ore === ShipOreEnum.Inertmaterial) return null
@@ -322,7 +321,7 @@ export function crewSharePayouts(
       }
     }, afterPercents)
   }
-  const allPaid = crewShares.reduce((acc, { payeeScName, state: paid }, idx) => acc && paid, true)
+  const allPaid = crewShares.reduce((acc, { state: paid }) => acc && paid, true)
 
   return {
     allPaid,
@@ -889,7 +888,7 @@ export async function calculateOtherOrder(ds: DataStore, order: OtherOrder): Pro
     order.includeTransferFee
   )
   const payoutSummary = crewShares.reduce(
-    (acc, { payeeScName, payeeUserId }, idx) => {
+    (acc, { payeeScName }, idx) => {
       if (!acc[payeeScName]) acc[payeeScName] = [0, 0, 0]
       acc[payeeScName][0] += payouts[idx][0]
       acc[payeeScName][1] += payouts[idx][1]
@@ -1178,7 +1177,7 @@ export async function findPrice(
       const storeCodeArr = storeCode ? storeCode.split(',').map((s) => s.trim()) : null
 
       const foundStores: UEXTradeport[] = storeCodeArr
-        .map((scode) => tradeportLookups.find(({ code, system }) => code === scode.trim()))
+        .map((scode) => tradeportLookups.find(({ code }) => code === scode.trim()))
         .filter((x) => x)
       if (!foundStores) return 0
       // find the maximum price

@@ -10,7 +10,6 @@ import {
   ScoutingFindStateEnum,
   SessionUserStateEnum,
   ShareTypeEnum,
-  MiningStoreEnum,
   SystemEnum,
   AsteroidTypeEnum,
   DepositTypeEnum,

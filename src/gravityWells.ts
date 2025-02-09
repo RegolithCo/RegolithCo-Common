@@ -1,5 +1,5 @@
 import { SystemEnum } from './gen/schema.types'
-import { GravityWell, GravityWellTypeEnum, Lookups } from './types'
+import { GravityWell, GravityWellTypeEnum } from './types'
 
 type GravWellTsv = {
   code: string
@@ -39,7 +39,7 @@ export const getGravityWells = (
 
   const systems = bodies.filter(({ wellType }) => wellType === GravityWellTypeEnum.SYSTEM)
   //  Need to output all values in the format of { label: 'SYSTEMNAME - PLANETNAME - SATNAME', id: 'PY' }
-  const planetOptions = systems.reduce((acc, system, key) => {
+  const planetOptions = systems.reduce((acc, system) => {
     acc.push({
       label: system.name,
       wellType: GravityWellTypeEnum.SYSTEM,
@@ -56,7 +56,7 @@ export const getGravityWells = (
     })
     bodies
       .filter(({ wellType, parent }) => wellType === GravityWellTypeEnum.BELT && parent === system.code)
-      .forEach((belt, idx) => {
+      .forEach((belt) => {
         acc.push({
           label: belt.name,
           wellType: GravityWellTypeEnum.BELT,
@@ -76,7 +76,7 @@ export const getGravityWells = (
     // Now we descend into planets
     bodies
       .filter(({ wellType, parent }) => wellType === GravityWellTypeEnum.PLANET && parent === system.code)
-      .forEach((planet, idx) => {
+      .forEach((planet) => {
         acc.push({
           label: planet.name,
           wellType: GravityWellTypeEnum.PLANET,
@@ -93,7 +93,7 @@ export const getGravityWells = (
         })
         bodies
           .filter(({ wellType, parent }) => wellType === GravityWellTypeEnum.BELT && parent === planet.code)
-          .forEach((belt, idx) => {
+          .forEach((belt) => {
             acc.push({
               label: belt.name,
               wellType: GravityWellTypeEnum.BELT,
@@ -111,7 +111,7 @@ export const getGravityWells = (
           })
         bodies
           .filter(({ wellType, parent }) => wellType === GravityWellTypeEnum.LAGRANGE && parent === planet.code)
-          .forEach((lagrange, idx) => {
+          .forEach((lagrange) => {
             acc.push({
               label: lagrange.name,
               wellType: GravityWellTypeEnum.LAGRANGE,
@@ -129,7 +129,7 @@ export const getGravityWells = (
           })
         bodies
           .filter(({ wellType, parent }) => wellType === GravityWellTypeEnum.SATELLITE && parent === planet.code)
-          .forEach((sat, idx) => {
+          .forEach((sat) => {
             acc.push({
               label: sat.name,
               wellType: GravityWellTypeEnum.SATELLITE,
@@ -146,7 +146,7 @@ export const getGravityWells = (
             })
             bodies
               .filter(({ wellType, parent }) => wellType === GravityWellTypeEnum.BELT && parent === sat.code)
-              .forEach((belt, idx) => {
+              .forEach((belt) => {
                 acc.push({
                   label: belt.name,
                   wellType: GravityWellTypeEnum.BELT,
@@ -168,7 +168,7 @@ export const getGravityWells = (
     // Finally we put the CLUSTERS that are system level
     bodies
       .filter(({ wellType, parent }) => wellType === GravityWellTypeEnum.CLUSTER && parent === system.code)
-      .forEach((cluster, idx) => {
+      .forEach((cluster) => {
         acc.push({
           label: cluster.name,
           wellType: GravityWellTypeEnum.CLUSTER,

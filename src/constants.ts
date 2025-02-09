@@ -110,7 +110,7 @@ export const getEpochStartDate = (epoch: ScVersionEpochEnum): Date => scVersionD
 export const getEpochVersions = (epoch: ScVersionEpochEnum): ScVersionEnum[] => EpochMap[epoch]
 export const getEpochEndDate = (epoch: ScVersionEpochEnum): Date => {
   // find the start dates of every epoch and put them in sorted order
-  const startDates = Object.entries(EpochMap).map(([epoch, versions]) => scVersionDates[versions[0]])
+  const startDates = Object.entries(EpochMap).map(([, versions]) => scVersionDates[versions[0]])
   startDates.sort((a, b) => a.getTime() - b.getTime())
 
   // find the index of the current epoch

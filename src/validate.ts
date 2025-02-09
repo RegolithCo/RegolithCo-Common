@@ -7,6 +7,7 @@ import {
 } from './gen/schema.types'
 import { InvalidSCNames } from './names'
 import { DataStore } from './types'
+import log from 'loglevel'
 
 export const validateSCName = (username: string): boolean => {
   if (InvalidSCNames.includes(username.toLowerCase())) {
@@ -17,6 +18,7 @@ export const validateSCName = (username: string): boolean => {
     const regex = /^[a-zA-Z0-9_-]{3,64}$/
     return regex.test(username)
   } catch (e) {
+    log.error(e)
     return false
   }
 }

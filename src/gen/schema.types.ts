@@ -213,8 +213,8 @@ export type LocationEnum = typeof LocationEnum[keyof typeof LocationEnum];
 export type LookupData = {
   __typename: 'LookupData';
   CIG?: Maybe<CigLookups>;
-  Loadout?: Maybe<Scalars['JSONObject']['output']>;
   UEX?: Maybe<UexLookups>;
+  loadout?: Maybe<Scalars['JSONObject']['output']>;
 };
 
 export const LookupTypeEnum = {

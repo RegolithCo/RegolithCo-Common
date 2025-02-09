@@ -1,7 +1,7 @@
 type LookupData {
   CIG: CIGLookups
   UEX: UEXLookups
-  Loadout: JSONObject
+  loadout: JSONObject
 }
 
 type CIGLookups {

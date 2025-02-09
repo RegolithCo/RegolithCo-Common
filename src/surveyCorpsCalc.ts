@@ -152,10 +152,6 @@ const calculateShipFind = async (gravWells: GravityWell[], sf: SurveyFindScoreIn
           newObj.errors.push('Space rocks detected on a planet. This is not possible.')
         }
       }
-
-      sf.shipRocks.forEach((r) => {
-        // if (r.rockType === )
-      })
     }
 
     newObj.score += complete ? 5 : 2

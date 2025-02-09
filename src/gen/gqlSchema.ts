@@ -193,8 +193,8 @@ enum LocationEnum {
 
 type LookupData {
   CIG: CIGLookups
-  Loadout: JSONObject
   UEX: UEXLookups
+  loadout: JSONObject
 }
 
 enum LookupTypeEnum {
