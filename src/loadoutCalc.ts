@@ -22,7 +22,7 @@ export function addReduceLasers(lasers: LaserLoadoutStats[], stat: keyof AllStat
   return lasers.reduce((acc, l) => acc + (l[stat] || 0), 0)
 }
 
-const getMinPrice = (obj: MiningModule | MiningLaser | MiningGadget) => {
+export const getMinLoadoutPrice = (obj: MiningModule | MiningLaser | MiningGadget) => {
   if (!obj) return 0
   const allPrices = (Object.values(obj.prices) as number[]) || [0]
   const minPrice = Math.min(...allPrices)
@@ -59,14 +59,17 @@ export async function calcLoadoutStats(ds: DataStore, miningLoadout: MiningLoado
 
   const inventoryPrice =
     miningLoadout.inventoryModules.reduce(
-      (acc, m) => getMinPrice(loadoutLookup.modules[m as MiningModuleEnum]) + acc,
+      (acc, m) => getMinLoadoutPrice(loadoutLookup.modules[m as MiningModuleEnum]) + acc,
       0
     ) +
     miningLoadout.inventoryGadgets.reduce(
-      (acc, g) => getMinPrice(loadoutLookup.gadgets[g as MiningGadgetEnum]) + acc,
+      (acc, g) => getMinLoadoutPrice(loadoutLookup.gadgets[g as MiningGadgetEnum]) + acc,
       0
     ) +
-    miningLoadout.inventoryLasers.reduce((acc, l) => getMinPrice(loadoutLookup.lasers[l as MiningLaserEnum]) + acc, 0)
+    miningLoadout.inventoryLasers.reduce(
+      (acc, l) => getMinLoadoutPrice(loadoutLookup.lasers[l as MiningLaserEnum]) + acc,
+      0
+    )
 
   const maxPower = addReduceLasers(laserStats, 'maxPower')
   const minPower = addReduceLasers(laserStats, 'minPower')
@@ -115,7 +118,7 @@ export async function calcLaserStats(ds: DataStore, activeLaser: ActiveMiningLas
   const modules = (activeLaser.modules || []).map((m) => loadoutLookup.modules[m as MiningModuleEnum])
 
   const modulePrice = modules.reduce((acc, m) => {
-    const price = getMinPrice(m)
+    const price = getMinLoadoutPrice(m)
     return m && price ? acc + price : acc
   }, 0)
   const isStockLaser = laser.code === DEFAULT_MOLE_LASER || laser.code === DEFAULT_PROSPECTOR_LASER
@@ -154,7 +157,7 @@ export async function calcLaserStats(ds: DataStore, activeLaser: ActiveMiningLas
 
   const minPowerPct = 0 // Not really relevant for groups of lasers
   // Just a simple add up
-  const laserMinPrice = getMinPrice(laser)
+  const laserMinPrice = getMinLoadoutPrice(laser)
   const price = (laserMinPrice || 0) + modulePrice
   const priceNoStock = (isStockLaser ? 0 : laserMinPrice || 0) + modulePrice
 

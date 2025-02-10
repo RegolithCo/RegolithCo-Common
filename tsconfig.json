@@ -21,6 +21,7 @@
     "target": "ES6"
   },
   "exclude": [
+    "**/__mocks__/**",
     "**/dist/**",
     "node_modules",
     "**/*.test.?s",

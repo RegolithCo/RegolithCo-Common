@@ -57,7 +57,7 @@ import {
 import { v4 as uuid } from 'uuid'
 import { faker } from '@faker-js/faker'
 import { isUndefined, random } from 'lodash'
-import { DataStore, UserSuggest, VerifiedUserLookup } from '../types'
+import { AllStats, DataStore, UserSuggest, VerifiedUserLookup } from '../types'
 import { createFriendlyWorkOrderId, createScoutingFindId } from '../util'
 import { calculatedOrderState, calculateWorkOrder } from '../equations'
 import dayjs from 'dayjs'
@@ -73,7 +73,7 @@ const randomEnum = (enumeration) => {
 }
 
 export function fakeSCName(): string {
-  return faker.word.adjective() + '_' + faker.name.firstName().toLocaleLowerCase()
+  return faker.word.adjective() + '_' + faker.person.firstName().toLocaleLowerCase()
 }
 
 export function fakeSCNameList(num?: number): PendingUser[] {
@@ -673,11 +673,61 @@ export async function fakeActiveLaser(
   }
 }
 
+export function mockEmptyActiveLaser(ds: DataStore): Promise<ActiveMiningLaserLoadout> {
+  return fakeActiveLaser(ds, {
+    modules: [],
+    laserActive: false,
+    laser: MiningLaserEnum.ArborMh1,
+    modulesActive: [],
+  })
+}
+
+export function mockEmptyMiningLoadout(): MiningLoadout {
+  const createdAt = faker.date.past().getTime()
+  const updatedAt = faker.date.between({ from: createdAt, to: new Date() }).getTime()
+  return {
+    loadoutId: uuid(),
+    createdAt,
+    updatedAt,
+    owner: fakeUser(),
+    name: '',
+    ship: LoadoutShipEnum.Mole,
+    activeLasers: [],
+    inventoryGadgets: [],
+    inventoryLasers: [],
+    inventoryModules: [],
+    __typename: 'MiningLoadout',
+  }
+}
+
+// export const emptyStatsReturn: AllStats = {
+//   maxRange: 0,
+//   optimumRange: 0,
+//   maxPower: 0,
+//   minPower: 0,
+//   extrPower: 0,
+//   // Just a simple add up
+//   resistance: 0,
+//   instability: 0,
+//   shatterDamage: 0,
+//   optimalChargeRate: 0,
+//   optimalChargeWindow: 0,
+//   inertMaterials: 0,
+//   clusterMod: 0,
+//   extrPowerMod: 0,
+//   minPowerPct: 0,
+//   overchargeRate: 0,
+//   powerMod: 0,
+//   // Just a simple add up
+//   price: 0,
+//   priceNoStock: 0,
+// }
+
 export function fakeLoadout(loadout?: Partial<MiningLoadout>): MiningLoadout {
   const newLoadout = loadout || {}
   const createdAt = faker.date.past().getTime()
   const updatedAt = faker.date.between({ from: createdAt, to: new Date() }).getTime()
-  return {
+  const retVal = {
     loadoutId: uuid(),
     createdAt,
     updatedAt,
@@ -691,7 +741,9 @@ export function fakeLoadout(loadout?: Partial<MiningLoadout>): MiningLoadout {
     inventoryModules: Array.from({ length: random(1, 2) }, () => randomEnum(MiningModuleEnum)),
     ...newLoadout,
     __typename: 'MiningLoadout',
-  }
+  } as MiningLoadout
+
+  return retVal
 }
 
 export function fakeUserProfile(userProfile?: Partial<UserProfile | User>): UserProfile {

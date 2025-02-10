@@ -8,7 +8,7 @@
   "settings": {
     "npm.packageManager": "yarn",
     "eslint.nodePath": ".yarn/sdks",
-    "window.title": "regolithco${separator}${activeEditorShort}${separator}${rootName}",
+    "window.title": "${activeEditorShort}${separator}${rootName}",
     "typescript.tsdk": "🏠 Home/.yarn/sdks/typescript/lib",
     "typescript.enablePromptUseWorkspaceTsdk": true,
     "workbench.colorCustomizations": {
@@ -42,12 +42,16 @@
       // "**/dist/**": true,
       "**/*.egg-info": true
     },
+    "jest.jestCommandLine": "npx jest",
   },
   "extensions": {
     "recommendations": [
-      "arcanis.vscode-zipfs",
       "dbaeumer.vscode-eslint",
-      "esbenp.prettier-vscode"
+      "esbenp.prettier-vscode",
+      "graphql.vscode-graphql",
+      "graphql.vscode-graphql-syntax",
+      "eriklynd.json-tools",
+      "orta.vscode-jest"
     ]
   }
 }

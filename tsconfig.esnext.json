@@ -2,7 +2,15 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "module": "esnext",
-    "outDir": "./dist_esnext"  },
+    "outDir": "./dist_esnext"
+  },
+  "exclude": [
+    "**/__mocks__/**",
+    "**/dist/**",
+    "node_modules",
+    "**/*.test.?s",
+    "**/*.spec.?s",
+  ],  
   "include": [
     "./src"
   ],

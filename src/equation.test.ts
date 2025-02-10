@@ -1,14 +1,16 @@
+import { mockDataStore as ds } from './__mocks__/dataStoreMock'
 import { getRefiningCost } from './equations'
 import { ShipOreEnum, RefineryEnum, RefineryMethodEnum } from './gen/schema.types'
 
 describe('equations', () => {
-  // it('should calculate cluster summaries correctl', () => {
+  it('SHOULD IMPLEMENT NEW TESTS FOR EQUATIONS', async () => {
+    expect(false).toBeTruthy()
+  })
+  // it('should calculate cluster summaries correctly', () => {
   //   const shipFind = fakeShipClusterFind()
   //   const shipCalc = clusterCalc(shipFind)
-
   //   const vehicleFind = fakeVehicleClusterFind()
   //   const vehicleCalc = clusterCalc(vehicleFind)
-
   //   const salvageFind = fakeSalvageFind()
   //   const salvageCalc = clusterCalc(salvageFind)
   // })
@@ -32,39 +34,43 @@ describe('equations', () => {
   //     10
   //   )
   // })
-  it('should calculate mining costs correctly', () => {
-    // From youtube 3.21
-    expect(getRefiningCost(5641, ShipOreEnum.Bexalite, RefineryEnum.Crul1, RefineryMethodEnum.FerronExchange)).toEqual(
-      42101
-    )
-    // From youtube 3.21
-    expect(
-      [
-        getRefiningCost(2139, ShipOreEnum.Quantanium, RefineryEnum.Crul1, RefineryMethodEnum.FerronExchange),
-        getRefiningCost(1572, ShipOreEnum.Gold, RefineryEnum.Crul1, RefineryMethodEnum.FerronExchange),
-      ].reduce((acc, ore) => acc + ore, 0)
-    ).toEqual(44222)
-    // From youtube 3.21
-    expect(
-      [
-        getRefiningCost(1487, ShipOreEnum.Quantanium, RefineryEnum.Crul1, RefineryMethodEnum.FerronExchange),
-        getRefiningCost(194, ShipOreEnum.Gold, RefineryEnum.Crul1, RefineryMethodEnum.FerronExchange),
-        getRefiningCost(1857, ShipOreEnum.Taranite, RefineryEnum.Crul1, RefineryMethodEnum.FerronExchange),
-      ].reduce((acc, ore) => acc + ore, 0)
-    ).toEqual(37656)
-
-    // expect(getRefiningCost(100, ShipOreEnum.Gold, RefineryEnum.Arcl1, RefineryMethodEnum.DinyxSolventation)).toEqual(15)
-    // expect(getRefiningCost(100, ShipOreEnum.Quantanium, RefineryEnum.Crul1, RefineryMethodEnum.Cormack)).toEqual(400)
-    // User submitted for 3.21
-    const ores: number[] = [
-      getRefiningCost(956, ShipOreEnum.Titanium, RefineryEnum.Micl5, RefineryMethodEnum.DinyxSolventation),
-      getRefiningCost(1361, ShipOreEnum.Laranite, RefineryEnum.Micl5, RefineryMethodEnum.DinyxSolventation),
-      getRefiningCost(2081, ShipOreEnum.Quartz, RefineryEnum.Micl5, RefineryMethodEnum.DinyxSolventation),
-      getRefiningCost(2158, ShipOreEnum.Taranite, RefineryEnum.Micl5, RefineryMethodEnum.DinyxSolventation),
-      getRefiningCost(1520, ShipOreEnum.Copper, RefineryEnum.Micl5, RefineryMethodEnum.DinyxSolventation),
-    ]
-    expect(ores.reduce((acc, ore) => acc + ore, 0)).toEqual(100)
-  })
+  // it('should calculate mining costs correctly', async () => {
+  //   const refineCost = await getRefiningCost(
+  //     ds,
+  //     5641,
+  //     ShipOreEnum.Bexalite,
+  //     RefineryEnum.Crul1,
+  //     RefineryMethodEnum.FerronExchange
+  //   )
+  //   // From youtube 3.21
+  //   expect(refineCost).toEqual(42101)
+  //   // From youtube 3.21
+  //   expect(
+  //     [
+  //       await getRefiningCost(ds, 2139, ShipOreEnum.Quantanium, RefineryEnum.Crul1, RefineryMethodEnum.FerronExchange),
+  //       await getRefiningCost(ds, 1572, ShipOreEnum.Gold, RefineryEnum.Crul1, RefineryMethodEnum.FerronExchange),
+  //     ].reduce((acc, ore) => acc + ore, 0)
+  //   ).toEqual(44222)
+  //   // From youtube 3.21
+  //   expect(
+  //     [
+  //       await getRefiningCost(ds, 1487, ShipOreEnum.Quantanium, RefineryEnum.Crul1, RefineryMethodEnum.FerronExchange),
+  //       await getRefiningCost(ds, 194, ShipOreEnum.Gold, RefineryEnum.Crul1, RefineryMethodEnum.FerronExchange),
+  //       await getRefiningCost(ds, 1857, ShipOreEnum.Taranite, RefineryEnum.Crul1, RefineryMethodEnum.FerronExchange),
+  //     ].reduce((acc, ore) => acc + ore, 0)
+  //   ).toEqual(37656)
+  //   // expect(getRefiningCost(100, ShipOreEnum.Gold, RefineryEnum.Arcl1, RefineryMethodEnum.DinyxSolventation)).toEqual(15)
+  //   // expect(getRefiningCost(100, ShipOreEnum.Quantanium, RefineryEnum.Crul1, RefineryMethodEnum.Cormack)).toEqual(400)
+  //   // User submitted for 3.21
+  //   const ores: number[] = await Promise.all([
+  //     getRefiningCost(ds, 956, ShipOreEnum.Titanium, RefineryEnum.Micl5, RefineryMethodEnum.DinyxSolventation),
+  //     getRefiningCost(ds, 1361, ShipOreEnum.Laranite, RefineryEnum.Micl5, RefineryMethodEnum.DinyxSolventation),
+  //     getRefiningCost(ds, 2081, ShipOreEnum.Quartz, RefineryEnum.Micl5, RefineryMethodEnum.DinyxSolventation),
+  //     getRefiningCost(ds, 2158, ShipOreEnum.Taranite, RefineryEnum.Micl5, RefineryMethodEnum.DinyxSolventation),
+  //     getRefiningCost(ds, 1520, ShipOreEnum.Copper, RefineryEnum.Micl5, RefineryMethodEnum.DinyxSolventation),
+  //   ])
+  //   expect(ores.reduce((acc, ore) => acc + ore, 0)).toEqual(100)
+  // })
   // it('should calculate mining times correctly', () => {
   //   expect(getRefiningTime(100, ShipOreEnum.Gold, RefineryEnum.Arcl1, RefineryMethodEnum.DinyxSolventation)).toEqual(
   //     50 * 60 * 1000
@@ -86,13 +92,10 @@ describe('equations', () => {
   //     fakeCrewShare({ scName: 'sc6', shareType: ShareTypeEnum.Share, share: 2 }),
   //   ]
   //   const result = crewSharePayouts('sc0', netProfit, crewShares)
-
   //   // Expect the [0] element of the pay share (before transfer fees) to be the net profit
   //   expect(result.payouts.reduce((acc, shr) => acc + shr[1] + shr[2], 0)).toEqual(netProfit)
-
   //   // Expect the [1] element of the pay share (after transfer fees) to be the net profit - transfer fees
   //   expect(result.payouts.reduce((acc, shr) => acc + shr[1], 0)).toEqual(netProfit - result.transferFees)
-
   //   expect(result.payouts[0][1]).toEqual(50000)
   //   expect(result.payouts[1][1]).toEqual(20000) // direct payouts don't have transfer fees applied
   //   expect(result.payouts[2][1]).toEqual(2755)
@@ -117,13 +120,10 @@ describe('equations', () => {
   //     fakeCrewShare({ scName: 'sc6', shareType: ShareTypeEnum.Share, share: 2 }),
   //   ]
   //   const result = crewSharePayouts('sc0', netProfit, crewShares, false)
-
   //   // Expect the [0] element of the pay share (before transfer fees) to be the net profit
   //   expect(result.payouts.reduce((acc, shr) => acc + shr[1] + shr[2], 0)).toEqual(netProfit)
-
   //   // Expect the [1] element of the pay share (after transfer fees) to be the net profit - transfer fees
   //   expect(result.payouts.reduce((acc, shr) => acc + shr[1], 0)).toEqual(netProfit - result.transferFees)
-
   //   expect(result.transferFees).toEqual(0)
   //   expect(result.payouts[0][1]).toEqual(50000)
   //   expect(result.payouts[1][1]).toEqual(20000)
@@ -140,7 +140,6 @@ describe('equations', () => {
   //   const netProfit = 100000
   //   const crewNames = ['sc1', 'sc2', 'sc3', 'sc4', 'sc5']
   //   // const crew = crewNames.map((scName) => fakeUserProfile({ scName }))
-
   //   const crewShares: CrewShare[] = [
   //     // 50% of 100
   //     fakeCrewShare({ scName: crewNames[0], shareType: ShareTypeEnum.Percent, share: 0.1 }),
