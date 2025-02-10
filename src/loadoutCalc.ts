@@ -29,6 +29,12 @@ export const getMinLoadoutPrice = (obj: MiningModule | MiningLaser | MiningGadge
   return minPrice
 }
 
+/**
+ * This does all the calculations for how to display a mining loadout
+ * @param ds
+ * @param miningLoadout
+ * @returns
+ */
 export async function calcLoadoutStats(ds: DataStore, miningLoadout: MiningLoadout): Promise<AllStats> {
   const loadoutLookup = await ds.getLookup('loadout')
 
@@ -74,9 +80,10 @@ export async function calcLoadoutStats(ds: DataStore, miningLoadout: MiningLoado
   const maxPower = addReduceLasers(laserStats, 'maxPower')
   const minPower = addReduceLasers(laserStats, 'minPower')
   const extrPower = addReduceLasers(laserStats, 'extrPower')
-  const extrPowerMod = totalModdedExtrPower / (totalUnModdedExtrPower || 1)
+
+  const extrPowerMod = totalModdedExtrPower / (totalUnModdedExtrPower || 1) + 1
   const minPowerPct = 0 // Not really relevant for groups of lasers
-  const powerMod = totalModdedPower / (totalUnModdedPower || 1)
+  const powerMod = totalModdedPower / (totalUnModdedPower || 1) + 1
 
   const retVal = {
     maxPower,

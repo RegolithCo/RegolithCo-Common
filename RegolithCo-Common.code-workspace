@@ -8,7 +8,7 @@
   "settings": {
     "npm.packageManager": "yarn",
     "eslint.nodePath": ".yarn/sdks",
-    "window.title": "${activeEditorShort}${separator}${rootName}",
+    "window.title": "${rootName}${separator}${activeEditorShort}",
     "typescript.tsdk": "🏠 Home/.yarn/sdks/typescript/lib",
     "typescript.enablePromptUseWorkspaceTsdk": true,
     "workbench.colorCustomizations": {

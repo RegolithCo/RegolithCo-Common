@@ -161,22 +161,19 @@ describe('Mining Loadout Functions', () => {
     })
   })
   it('should return correct laser stats when laser and modules are active', async () => {
-    const loadout = fakeLoadout({
-      activeLasers: [
-        {
-          laser: MiningLaserEnum.HelixIi,
-          // modules: [MiningModuleEnum.Lifeline, MiningModuleEnum.Fltrxl],
-          // modulesActive: [true, true],
-          modules: [],
-          modulesActive: [],
-          laserActive: true,
-          __typename: 'ActiveMiningLaserLoadout',
-        },
-      ],
-    })
-    const laserStats = await calcLaserStats(mockDataStore, loadout?.activeLasers[0] as ActiveMiningLaserLoadout)
+    const laser = {
+      laser: MiningLaserEnum.HelixIi,
+      // modules: [MiningModuleEnum.Lifeline, MiningModuleEnum.Fltrxl],
+      // modulesActive: [true, true],
+      modules: [],
+      modulesActive: [],
+      laserActive: true,
+      __typename: 'ActiveMiningLaserLoadout',
+    }
+    const laserStats = await calcLaserStats(mockDataStore, laser as ActiveMiningLaserLoadout)
     expect(laserStats).toEqual({
-      ...LASERS[loadout?.activeLasers[0]?.laser as MiningLaserEnum].stats,
+      ...baseStats,
+      ...LASERS[laser.laser as MiningLaserEnum].stats,
     })
   })
 
@@ -191,18 +188,8 @@ describe('Mining Loadout Functions', () => {
     }
     const laserStats = await calcLaserStats(mockDataStore, inactiveLaser)
     expect(laserStats).toEqual({
-      ...LASERS[loadout?.activeLasers[0]?.laser as MiningLaserEnum].stats,
-      maxPower: 0,
-      minPower: 0,
-      extrPower: 0,
-      resistance: 0,
-      instability: 0,
-      shatterDamage: 0,
-      optimalChargeRate: 0,
-      optimalChargeWindow: 0,
-      inertMaterials: 0,
-      clusterMod: 0,
-      overchargeRate: 0,
+      ...baseStats,
+      ...LASERS[inactiveLaser.laser as MiningLaserEnum].stats,
     })
   })
 })

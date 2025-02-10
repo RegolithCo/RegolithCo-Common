@@ -6808,9 +6808,9 @@
               "optimumRange": 45,
               "maxRange": 135,
               "extrPower": 2590,
-              "inertMaterials": -0.4,
-              "optimalChargeRate": 0.4,
-              "instability": -0.1
+              "inertMaterials": 0.6,
+              "optimalChargeRate": 1.4,
+              "instability": 0.9
             }
           },
           "ArborMH1": {
@@ -6834,10 +6834,10 @@
               "optimumRange": 60,
               "maxRange": 180,
               "extrPower": 1850,
-              "inertMaterials": -0.3,
-              "optimalChargeRate": 0,
-              "resistance": 0.25,
-              "instability": -0.35
+              "inertMaterials": 0.7,
+              "optimalChargeRate": 1,
+              "resistance": 1.25,
+              "instability": 0.65
             }
           },
           "HofstedeS1": {
@@ -6862,10 +6862,10 @@
               "optimumRange": 45,
               "maxRange": 135,
               "extrPower": 1295,
-              "inertMaterials": -0.3,
-              "optimalChargeRate": 0.2,
-              "resistance": -0.3,
-              "instability": 0.1
+              "inertMaterials": 0.7,
+              "optimalChargeRate": 1.2,
+              "resistance": 0.7,
+              "instability": 1.1
             }
           },
           "KleinS1": {
@@ -6901,10 +6901,10 @@
               "optimumRange": 45,
               "maxRange": 135,
               "extrPower": 2220,
-              "inertMaterials": -0.3,
-              "optimalChargeRate": 0,
-              "resistance": -0.45,
-              "instability": 0.35
+              "inertMaterials": 0.7,
+              "optimalChargeRate": 1,
+              "resistance": 0.55,
+              "instability": 1.35
             }
           },
           "KleinS2": {
@@ -6939,10 +6939,10 @@
               "optimumRange": 60,
               "maxRange": 180,
               "extrPower": 2775,
-              "inertMaterials": -0.4,
-              "optimalChargeRate": 0,
-              "resistance": -0.45,
-              "instability": 0.35
+              "inertMaterials": 0.6,
+              "optimalChargeRate": 1,
+              "resistance": 0.55,
+              "instability": 1.35
             }
           },
           "ImpactI": {
@@ -6967,10 +6967,10 @@
               "optimumRange": 45,
               "maxRange": 135,
               "extrPower": 2775,
-              "inertMaterials": -0.3,
-              "optimalChargeRate": -0.4,
-              "resistance": 0.1,
-              "instability": -0.1
+              "inertMaterials": 0.7,
+              "optimalChargeRate": 0.6,
+              "resistance": 1.1,
+              "instability": 0.9
             }
           },
           "ImpactII": {
@@ -7000,10 +7000,10 @@
               "optimumRange": 60,
               "maxRange": 180,
               "extrPower": 3145,
-              "inertMaterials": -0.4,
-              "optimalChargeRate": -0.4,
-              "resistance": 0.1,
-              "instability": -0.1
+              "inertMaterials": 0.6,
+              "optimalChargeRate": 0.6,
+              "resistance": 1.1,
+              "instability": 0.9
             }
           },
           "HelixI": {
@@ -7035,10 +7035,10 @@
               "optimumRange": 15,
               "maxRange": 45,
               "extrPower": 1850,
-              "inertMaterials": -0.3,
-              "optimalChargeRate": 0,
-              "resistance": -0.3,
-              "instability": 0
+              "inertMaterials": 0.7,
+              "optimalChargeRate": 1,
+              "resistance": 0.7,
+              "instability": 1
             }
           },
           "HelixII": {
@@ -7066,10 +7066,10 @@
               "optimumRange": 30,
               "maxRange": 90,
               "extrPower": 2590,
-              "inertMaterials": -0.4,
-              "optimalChargeRate": 0,
-              "resistance": -0.3,
-              "instability": 0
+              "inertMaterials": 0.6,
+              "optimalChargeRate": 1,
+              "resistance": 0.7,
+              "instability": 1
             }
           },
           "LancetMH1": {
@@ -7102,10 +7102,10 @@
               "optimumRange": 30,
               "maxRange": 90,
               "extrPower": 1850,
-              "inertMaterials": -0.3,
-              "optimalChargeRate": 0.4,
-              "resistance": 0,
-              "instability": -0.1
+              "inertMaterials": 0.7,
+              "optimalChargeRate": 1.4,
+              "resistance": 1,
+              "instability": 0.9
             }
           },
           "ArborMH2": {
@@ -7128,9 +7128,9 @@
               "optimumRange": 90,
               "maxRange": 270,
               "extrPower": 2590,
-              "inertMaterials": -0.4,
-              "resistance": 0.25,
-              "instability": -0.35
+              "inertMaterials": 0.6,
+              "resistance": 1.25,
+              "instability": 0.65
             }
           },
           "HofstedeS2": {
@@ -7161,10 +7161,10 @@
               "optimumRange": 60,
               "maxRange": 180,
               "extrPower": 1295,
-              "inertMaterials": -0.4,
-              "optimalChargeRate": 0.2,
-              "resistance": -0.3,
-              "instability": 0.1
+              "inertMaterials": 0.6,
+              "optimalChargeRate": 1.2,
+              "resistance": 0.7,
+              "instability": 1.1
             }
           }
         },
@@ -7193,16 +7193,16 @@
               "STGT": 4000
             },
             "stats": {
-              "powerMod": 0.85,
-              "extrPowerMod": 0,
-              "inertMaterials": 0,
-              "optimalChargeWindow": 0.3,
-              "shatterDamage": 0,
-              "overchargeRate": 0,
-              "resistance": 0,
-              "instability": 0,
-              "uses": 0,
-              "duration": 0
+              "powerMod": 1.85,
+              "extrPowerMod": 1,
+              "inertMaterials": 1,
+              "optimalChargeWindow": 1.3,
+              "shatterDamage": 1,
+              "overchargeRate": 1,
+              "resistance": 1,
+              "instability": 1,
+              "uses": 1,
+              "duration": 1
             }
           },
           "Torrent": {
@@ -7222,7 +7222,7 @@
               "CHK": 4000
             },
             "stats": {
-              "optimalChargeWindow": -0.1
+              "optimalChargeWindow": 0.9
             }
           },
           "Vaux": {
@@ -7250,16 +7250,16 @@
               "STGT": 2000
             },
             "stats": {
-              "powerMod": 0,
-              "extrPowerMod": 1.15,
-              "inertMaterials": 0,
-              "optimalChargeWindow": 0,
-              "shatterDamage": 0,
-              "overchargeRate": 0,
-              "resistance": 0,
-              "instability": 0,
-              "uses": 0,
-              "duration": 0
+              "powerMod": 1,
+              "extrPowerMod": 2.15,
+              "inertMaterials": 1,
+              "optimalChargeWindow": 1,
+              "shatterDamage": 1,
+              "overchargeRate": 1,
+              "resistance": 1,
+              "instability": 1,
+              "uses": 1,
+              "duration": 1
             }
           },
           "VauxC2": {
@@ -7284,16 +7284,16 @@
               "CHK": 6000
             },
             "stats": {
-              "powerMod": 0,
-              "extrPowerMod": 1.2,
-              "inertMaterials": 0,
-              "optimalChargeWindow": 0,
-              "shatterDamage": 0,
-              "overchargeRate": 0,
-              "resistance": 0,
-              "instability": 0,
-              "uses": 0,
-              "duration": 0
+              "powerMod": 1,
+              "extrPowerMod": 2.2,
+              "inertMaterials": 1,
+              "optimalChargeWindow": 1,
+              "shatterDamage": 1,
+              "overchargeRate": 1,
+              "resistance": 1,
+              "instability": 1,
+              "uses": 1,
+              "duration": 1
             }
           },
           "VauxC3": {
@@ -7312,7 +7312,7 @@
               "HURL2": 20000
             },
             "stats": {
-              "extrPowerMod": 1.25
+              "extrPowerMod": 2.25
             }
           },
           "XTR": {
@@ -7336,16 +7336,16 @@
               "MGGT": 2000
             },
             "stats": {
-              "powerMod": 0,
-              "extrPowerMod": 0.85,
-              "inertMaterials": -0.05,
-              "optimalChargeWindow": 0.15,
-              "shatterDamage": 0,
-              "overchargeRate": 0,
-              "resistance": 0,
-              "instability": 0,
-              "uses": 0,
-              "duration": 0
+              "powerMod": 1,
+              "extrPowerMod": 1.85,
+              "inertMaterials": 0.95,
+              "optimalChargeWindow": 1.15,
+              "shatterDamage": 1,
+              "overchargeRate": 1,
+              "resistance": 1,
+              "instability": 1,
+              "uses": 1,
+              "duration": 1
             }
           },
           "XTRL": {
@@ -7370,16 +7370,16 @@
               "RUN": 6000
             },
             "stats": {
-              "powerMod": 0,
-              "extrPowerMod": 0.9,
-              "inertMaterials": -0.057,
-              "optimalChargeWindow": 0.22,
-              "shatterDamage": 0,
-              "overchargeRate": 0,
-              "resistance": 0,
-              "instability": 0,
-              "uses": 0,
-              "duration": 0
+              "powerMod": 1,
+              "extrPowerMod": 1.9,
+              "inertMaterials": 0.943,
+              "optimalChargeWindow": 1.22,
+              "shatterDamage": 1,
+              "overchargeRate": 1,
+              "resistance": 1,
+              "instability": 1,
+              "uses": 1,
+              "duration": 1
             }
           },
           "XTRXL": {
@@ -7401,16 +7401,16 @@
               "RUN": 20000
             },
             "stats": {
-              "powerMod": 0,
-              "extrPowerMod": 0.95,
-              "inertMaterials": -0.06,
-              "optimalChargeWindow": 0.25,
-              "shatterDamage": 0,
-              "overchargeRate": 0,
-              "resistance": 0,
-              "instability": 0,
-              "uses": 0,
-              "duration": 0
+              "powerMod": 1,
+              "extrPowerMod": 1.95,
+              "inertMaterials": 0.94,
+              "optimalChargeWindow": 1.25,
+              "shatterDamage": 1,
+              "overchargeRate": 1,
+              "resistance": 1,
+              "instability": 1,
+              "uses": 1,
+              "duration": 1
             }
           },
           "Brandt": {
@@ -7432,16 +7432,16 @@
               "STGT": 2250
             },
             "stats": {
-              "powerMod": 1.35,
-              "extrPowerMod": 0,
-              "inertMaterials": 0,
-              "optimalChargeWindow": 0,
-              "shatterDamage": -0.3,
-              "overchargeRate": 0,
-              "resistance": 0.15,
-              "instability": 0,
-              "uses": 0.05,
-              "duration": 0.6
+              "powerMod": 2.35,
+              "extrPowerMod": 1,
+              "inertMaterials": 1,
+              "optimalChargeWindow": 1,
+              "shatterDamage": 0.7,
+              "overchargeRate": 1,
+              "resistance": 1.15,
+              "instability": 1,
+              "uses": 1.05,
+              "duration": 1.6
             }
           },
           "Forel": {
@@ -7468,11 +7468,11 @@
               "MGGT": 1950
             },
             "stats": {
-              "extrPowerMod": 1.5,
-              "overchargeRate": -0.6,
-              "resistance": 0.15,
-              "uses": 0.06,
-              "duration": 0.6
+              "extrPowerMod": 2.5,
+              "overchargeRate": 0.4,
+              "resistance": 1.15,
+              "uses": 1.06,
+              "duration": 1.6
             }
           },
           "Lifeline": {
@@ -7502,16 +7502,16 @@
               "STGT": 800
             },
             "stats": {
-              "powerMod": 0,
-              "extrPowerMod": 0,
-              "inertMaterials": 0,
-              "optimalChargeWindow": 0,
-              "shatterDamage": 0,
-              "overchargeRate": 0.6,
-              "resistance": -0.15,
-              "instability": -0.2,
-              "uses": 0.03,
-              "duration": 0.15
+              "powerMod": 1,
+              "extrPowerMod": 1,
+              "inertMaterials": 1,
+              "optimalChargeWindow": 1,
+              "shatterDamage": 1,
+              "overchargeRate": 1.6,
+              "resistance": 0.85,
+              "instability": 0.8,
+              "uses": 1.03,
+              "duration": 1.15
             }
           },
           "Optimum": {
@@ -7533,11 +7533,11 @@
               "CHK": 3000
             },
             "stats": {
-              "powerMod": 0.85,
-              "overchargeRate": -0.8,
-              "instability": 0.1,
-              "uses": 0.05,
-              "duration": 0.6
+              "powerMod": 1.85,
+              "overchargeRate": 0.19999999999999996,
+              "instability": 1.1,
+              "uses": 1.05,
+              "duration": 1.6
             }
           },
           "Torpid": {
@@ -7566,16 +7566,16 @@
               "STGT": 1950
             },
             "stats": {
-              "powerMod": 0,
-              "extrPowerMod": 0,
-              "inertMaterials": 0,
-              "optimalChargeWindow": 0,
-              "shatterDamage": 0.4,
-              "overchargeRate": -0.6,
-              "resistance": 0,
-              "instability": 0,
-              "uses": 0.05,
-              "duration": 0.6
+              "powerMod": 1,
+              "extrPowerMod": 1,
+              "inertMaterials": 1,
+              "optimalChargeWindow": 1,
+              "shatterDamage": 1.4,
+              "overchargeRate": 0.4,
+              "resistance": 1,
+              "instability": 1,
+              "uses": 1.05,
+              "duration": 1.6
             }
           },
           "Stampede": {
@@ -7604,16 +7604,16 @@
               "RUN": 1400
             },
             "stats": {
-              "powerMod": 1.35,
-              "extrPowerMod": 0.85,
-              "inertMaterials": 0,
-              "optimalChargeWindow": 0,
-              "shatterDamage": -0.1,
-              "overchargeRate": -0.6,
-              "resistance": 0.15,
-              "instability": -0.1,
-              "uses": 0.06,
-              "duration": 0.3
+              "powerMod": 2.35,
+              "extrPowerMod": 1.85,
+              "inertMaterials": 1,
+              "optimalChargeWindow": 1,
+              "shatterDamage": 0.9,
+              "overchargeRate": 0.4,
+              "resistance": 1.15,
+              "instability": 0.9,
+              "uses": 1.06,
+              "duration": 1.3
             }
           },
           "Surge": {
@@ -7653,16 +7653,16 @@
               "STGT": 18000
             },
             "stats": {
-              "powerMod": 0,
-              "extrPowerMod": 0.9,
-              "inertMaterials": -0.23,
-              "optimalChargeWindow": 0,
-              "shatterDamage": 0,
-              "overchargeRate": 0,
-              "resistance": 0,
-              "instability": 0,
-              "uses": 0,
-              "duration": 0
+              "powerMod": 1,
+              "extrPowerMod": 1.9,
+              "inertMaterials": 0.77,
+              "optimalChargeWindow": 1,
+              "shatterDamage": 1,
+              "overchargeRate": 1,
+              "resistance": 1,
+              "instability": 1,
+              "uses": 1,
+              "duration": 1
             }
           },
           "FLTRXL": {
@@ -7685,8 +7685,8 @@
               "RUN": 60000
             },
             "stats": {
-              "extrPowerMod": 0.95,
-              "inertMaterials": -0.24
+              "extrPowerMod": 1.95,
+              "inertMaterials": 0.76
             }
           },
           "FocusII": {
@@ -7709,16 +7709,16 @@
               "MGGT": 12000
             },
             "stats": {
-              "powerMod": 0.9,
-              "extrPowerMod": 0,
-              "inertMaterials": 0,
-              "optimalChargeWindow": 0.37,
-              "shatterDamage": 0,
-              "overchargeRate": 0,
-              "resistance": 0,
-              "instability": 0,
-              "uses": 0,
-              "duration": 0
+              "powerMod": 1.9,
+              "extrPowerMod": 1,
+              "inertMaterials": 1,
+              "optimalChargeWindow": 1.37,
+              "shatterDamage": 1,
+              "overchargeRate": 1,
+              "resistance": 1,
+              "instability": 1,
+              "uses": 1,
+              "duration": 1
             }
           },
           "FocusIII": {
@@ -7739,16 +7739,16 @@
               "TAMM": 0
             },
             "stats": {
-              "powerMod": 0.95,
-              "extrPowerMod": 0,
-              "inertMaterials": 0,
-              "optimalChargeWindow": 0.4,
-              "shatterDamage": 0,
-              "overchargeRate": 0,
-              "resistance": 0,
-              "instability": 0,
-              "uses": 0,
-              "duration": 0
+              "powerMod": 1.95,
+              "extrPowerMod": 1,
+              "inertMaterials": 1,
+              "optimalChargeWindow": 1.4,
+              "shatterDamage": 1,
+              "overchargeRate": 1,
+              "resistance": 1,
+              "instability": 1,
+              "uses": 1,
+              "duration": 1
             }
           },
           "Rieger": {
@@ -7788,8 +7788,8 @@
               "STGT": 18000
             },
             "stats": {
-              "powerMod": 1.2,
-              "optimalChargeWindow": -0.03
+              "powerMod": 2.2,
+              "optimalChargeWindow": 0.97
             }
           },
           "RiegerC3": {
@@ -7811,16 +7811,16 @@
               "STGT": 60000
             },
             "stats": {
-              "powerMod": 1.25,
-              "extrPowerMod": 0,
-              "inertMaterials": 0,
-              "optimalChargeWindow": -0.01,
-              "shatterDamage": 0,
-              "overchargeRate": 0,
-              "resistance": 0,
-              "instability": 0,
-              "uses": 0,
-              "duration": 0
+              "powerMod": 2.25,
+              "extrPowerMod": 1,
+              "inertMaterials": 1,
+              "optimalChargeWindow": 0.99,
+              "shatterDamage": 1,
+              "overchargeRate": 1,
+              "resistance": 1,
+              "instability": 1,
+              "uses": 1,
+              "duration": 1
             }
           },
           "TorrentII": {
@@ -7843,16 +7843,16 @@
               "MGGT": 12000
             },
             "stats": {
-              "powerMod": 0,
-              "extrPowerMod": 0,
-              "inertMaterials": 0,
-              "optimalChargeWindow": -0.03,
-              "shatterDamage": 0,
-              "overchargeRate": 0,
-              "resistance": 0,
-              "instability": 0,
-              "uses": 0,
-              "duration": 0
+              "powerMod": 1,
+              "extrPowerMod": 1,
+              "inertMaterials": 1,
+              "optimalChargeWindow": 0.97,
+              "shatterDamage": 1,
+              "overchargeRate": 1,
+              "resistance": 1,
+              "instability": 1,
+              "uses": 1,
+              "duration": 1
             }
           },
           "TorrentIII": {
@@ -7876,16 +7876,16 @@
               "CHK": 40000
             },
             "stats": {
-              "powerMod": 0,
-              "extrPowerMod": 0,
-              "inertMaterials": 0,
-              "optimalChargeWindow": -0.01,
-              "shatterDamage": 0,
-              "overchargeRate": 0,
-              "resistance": 0,
-              "instability": 0,
-              "uses": 0,
-              "duration": 0
+              "powerMod": 1,
+              "extrPowerMod": 1,
+              "inertMaterials": 1,
+              "optimalChargeWindow": 0.99,
+              "shatterDamage": 1,
+              "overchargeRate": 1,
+              "resistance": 1,
+              "instability": 1,
+              "uses": 1,
+              "duration": 1
             }
           },
           "FLTR": {
@@ -7909,16 +7909,16 @@
               "CHK": 6000
             },
             "stats": {
-              "powerMod": 0,
-              "extrPowerMod": 0.85,
-              "inertMaterials": -0.2,
-              "optimalChargeWindow": 0,
-              "shatterDamage": 0,
-              "overchargeRate": 0,
-              "resistance": 0,
-              "instability": 0,
-              "uses": 0,
-              "duration": 0
+              "powerMod": 1,
+              "extrPowerMod": 1.85,
+              "inertMaterials": 0.8,
+              "optimalChargeWindow": 1,
+              "shatterDamage": 1,
+              "overchargeRate": 1,
+              "resistance": 1,
+              "instability": 1,
+              "uses": 1,
+              "duration": 1
             }
           }
         },
@@ -7943,9 +7943,9 @@
               "PYBR": 19125
             },
             "stats": {
-              "optimalChargeWindow": 1,
-              "optimalChargeRate": -0.3,
-              "instability": -0.35
+              "optimalChargeWindow": 2,
+              "optimalChargeRate": 0.7,
+              "instability": 0.65
             }
           },
           "Sabir": {
@@ -7978,11 +7978,11 @@
               "STGT": 13815
             },
             "stats": {
-              "optimalChargeWindow": 0.5,
-              "optimalChargeRate": 0,
-              "resistance": -0.5,
-              "instability": 0,
-              "clusterMod": 0
+              "optimalChargeWindow": 1.5,
+              "optimalChargeRate": 1,
+              "resistance": 0.5,
+              "instability": 1,
+              "clusterMod": 1
             }
           },
           "Boremax": {
@@ -8011,11 +8011,11 @@
               "STGT": 12750
             },
             "stats": {
-              "optimalChargeWindow": 0,
-              "optimalChargeRate": 0,
-              "resistance": 0.1,
-              "instability": -0.7,
-              "clusterMod": 0.3
+              "optimalChargeWindow": 1,
+              "optimalChargeRate": 1,
+              "resistance": 1.1,
+              "instability": 0.30000000000000004,
+              "clusterMod": 1.3
             }
           },
           "Optimax": {
@@ -8036,11 +8036,11 @@
               "CHK": 27625
             },
             "stats": {
-              "optimalChargeWindow": -0.3,
-              "optimalChargeRate": 0,
-              "resistance": -0.3,
-              "instability": 0,
-              "clusterMod": 0.6
+              "optimalChargeWindow": 0.7,
+              "optimalChargeRate": 1,
+              "resistance": 0.7,
+              "instability": 1,
+              "clusterMod": 1.6
             }
           },
           "Okunis": {
@@ -8062,9 +8062,9 @@
               "STGT": 23250
             },
             "stats": {
-              "optimalChargeWindow": 0.5,
-              "optimalChargeRate": 1,
-              "clusterMod": -0.2
+              "optimalChargeWindow": 1.5,
+              "optimalChargeRate": 2,
+              "clusterMod": 0.8
             }
           },
           "Stalwart": {
@@ -8084,10 +8084,10 @@
               "STGT": 20190
             },
             "stats": {
-              "optimalChargeWindow": -0.3,
-              "optimalChargeRate": 0.5,
-              "instability": -0.35,
-              "clusterMod": 0.3
+              "optimalChargeWindow": 0.7,
+              "optimalChargeRate": 1.5,
+              "instability": 0.65,
+              "clusterMod": 1.3
             }
           }
         },
