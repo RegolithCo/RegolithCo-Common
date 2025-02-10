@@ -1,3 +1,8 @@
+/**
+ * This file is primarily for translating our GraphQL enumerations into human-readable strings.
+ * Eventually it would be nice to localize these strings with i18n or something but.... that's a lot of work.
+ */
+
 import {
   RefineryEnum,
   ShipOreEnum,
@@ -177,6 +182,43 @@ const ShipOreNames: Record<ShipOreEnum, string> = {
 }
 export const getShipOreName = (ore: ShipOreEnum) => (ShipOreNames[ore] ? ShipOreNames[ore] : ore)
 
+/**
+ * Note: these abbreviations are a little sloppy. We probably should use the periodic table abbreviations
+ * like Au for Gold, but then I worry that people won't be able to find the ore they are looking for.
+ *
+ * So I stick with phonetic abbreviations that are easy to remember.
+ */
+const ShipOreAbbrev: Record<ShipOreEnum, [string, string]> = {
+  [ShipOreEnum.Agricium]: ['Agr', 'Agri'],
+  [ShipOreEnum.Aluminum]: ['Alu', 'Alum'],
+  [ShipOreEnum.Beryl]: ['Ber', 'Berl'],
+  [ShipOreEnum.Bexalite]: ['Bex', 'Bex'],
+  [ShipOreEnum.Borase]: ['Bor', 'Bors'],
+  [ShipOreEnum.Copper]: ['Cop', 'Copp'],
+  [ShipOreEnum.Corundum]: ['Cor', 'Coru'],
+  [ShipOreEnum.Diamond]: ['Dia', 'Diam'],
+  [ShipOreEnum.Gold]: ['Gol', 'Gold'],
+  [ShipOreEnum.Iron]: ['Iro', 'Iron'],
+  [ShipOreEnum.Hephaestanite]: ['Hep', 'Heph'],
+  [ShipOreEnum.Inertmaterial]: ['Int', 'Iner'],
+  [ShipOreEnum.Laranite]: ['Lar', 'Lara'],
+  [ShipOreEnum.Quantanium]: ['Qnt', 'Quan'],
+  [ShipOreEnum.Quartz]: ['Qtz', 'Quar'],
+  [ShipOreEnum.Taranite]: ['Tar', 'Tara'],
+  [ShipOreEnum.Titanium]: ['Tit', 'Tita'],
+  [ShipOreEnum.Tungsten]: ['Tng', 'Tung'],
+  // Pyro Ores
+  [ShipOreEnum.Silicon]: ['Sil', 'Sili'],
+  [ShipOreEnum.Tin]: ['Tin', 'Tin'],
+  [ShipOreEnum.Stileron]: ['Sti', 'Stil'],
+  [ShipOreEnum.Ice]: ['Ice', 'Ice'],
+  [ShipOreEnum.Riccite]: ['Ric', 'Ricc'],
+}
+export const getShipOreAbbrev = (ore: ShipOreEnum, abLen: 3 | 4) => {
+  if (abLen === 3) return ShipOreAbbrev[ore] ? ShipOreAbbrev[ore][0] : ore
+  if (abLen === 4) return ShipOreAbbrev[ore] ? ShipOreAbbrev[ore][1] : ore
+}
+
 const VehicleOreNames: Record<VehicleOreEnum, string> = {
   [VehicleOreEnum.Hadanite]: 'Hadanite',
   [VehicleOreEnum.Aphorite]: 'Aphorite',
@@ -185,11 +227,33 @@ const VehicleOreNames: Record<VehicleOreEnum, string> = {
 }
 export const getVehicleOreName = (ore: VehicleOreEnum) => (VehicleOreNames[ore] ? VehicleOreNames[ore] : ore)
 
+const VehicleOreAbbrev: Record<VehicleOreEnum, [string, string]> = {
+  [VehicleOreEnum.Hadanite]: ['Had', 'Hada'],
+  [VehicleOreEnum.Aphorite]: ['Aph', 'Apho'],
+  [VehicleOreEnum.Dolivine]: ['Dol', 'Dolv'],
+  [VehicleOreEnum.Janalite]: ['Jan', 'Jana'],
+}
+
+export const getVehicleOreAbbrev = (ore: VehicleOreEnum, abLen: 3 | 4) => {
+  if (abLen === 3) return VehicleOreAbbrev[ore] ? VehicleOreAbbrev[ore][0] : ore
+  if (abLen === 4) return VehicleOreAbbrev[ore] ? VehicleOreAbbrev[ore][1] : ore
+}
+
 const SalveageOreNames: Record<SalvageOreEnum, string> = {
   [SalvageOreEnum.Rmc]: 'Recy. Material Composite',
   [SalvageOreEnum.Cmat]: 'Const. Materials',
 }
 export const getSalvageOreName = (ore: SalvageOreEnum) => (SalveageOreNames[ore] ? SalveageOreNames[ore] : ore)
+
+const SalvageOreAbbrev: Record<SalvageOreEnum, [string, string]> = {
+  [SalvageOreEnum.Rmc]: ['Rmc', 'Rmc'],
+  [SalvageOreEnum.Cmat]: ['Cmt', 'Cmat'],
+}
+
+export const getSalvageOreAbbrev = (ore: SalvageOreEnum, abLen: 3 | 4) => {
+  if (abLen === 3) return SalvageOreAbbrev[ore] ? SalvageOreAbbrev[ore][0] : ore
+  if (abLen === 4) return SalvageOreAbbrev[ore] ? SalvageOreAbbrev[ore][1] : ore
+}
 
 const OreNames = {
   ...ShipOreNames,
@@ -197,6 +261,16 @@ const OreNames = {
   ...SalveageOreNames,
 }
 export const getOreName = (ore: AnyOreEnum) => (OreNames[ore] ? OreNames[ore] : ore)
+
+const OreAbbrevs = {
+  ...ShipOreAbbrev,
+  ...VehicleOreAbbrev,
+  ...SalvageOreAbbrev,
+}
+export const getOreAbbrev = (ore: AnyOreEnum, abLen: 3 | 4) => {
+  if (OreAbbrevs[ore]) return OreAbbrevs[ore][abLen === 3 ? 0 : 1]
+  return ore
+}
 
 export const failReasons: [string, string][] = [
   //
