@@ -16,15 +16,13 @@ if [ -z "$1" ]; then
 fi
 
 # Bump the version in package.json
-npm version $1 -m "Bump version to %s"
+yarn version $1
 
-# Get the new version from package.json
-NEW_VERSION=$(jq -r .version < package.json)
+# Add all the package.json files in the repo
+git add package.json
 
-# Tag the commit with the new version
-git tag "@regolithco/common@$NEW_VERSION"
+version=$(node -p "require('./package.json').version")
+git commit -m "Bump version to $version"
 
-# Push the commit and the tag to the remote repository
-git push origin main --tags
-
-echo "Version bumped to $NEW_VERSION and tagged as @regolithco/common@$NEW_VERSION"
+# Tag the commit with @packagename@version for each package
+git tag @regolithco/common@$version
