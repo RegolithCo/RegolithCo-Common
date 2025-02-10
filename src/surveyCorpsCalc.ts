@@ -1,3 +1,6 @@
+/**
+ * Here's where the score calculation logic lives (well, the publicly visible parts of it)
+ */
 import { ScVersionEpochEnum } from './constants'
 import {
   ScoutingFind,
@@ -33,6 +36,12 @@ export type SurveyFindScoreInput = Pick<
   wrecks?: SalvageWreck[]
 }
 
+/**
+ * Gneric function to calculate the score for a survey find
+ * @param sf
+ * @param gravWells
+ * @returns
+ */
 export const calculateSurveyFind = async (
   sf: SurveyFindScoreInput,
   gravWells: GravityWell[]
@@ -46,6 +55,7 @@ export const calculateSurveyFind = async (
     warnings: [],
   }
 
+  // If there's no gravity well, this data is not very useful to us
   if (!sf.gravityWell) {
     scoreObjDefault.errors.push('No gravity well detected. You need to tell us where this cluster is.')
   }
@@ -65,19 +75,24 @@ export const calculateSurveyFind = async (
     default:
       throw new Error('Invalid find type')
   }
-  // If there are errors, the score is 0
+
+  // If there are any errors, the score is 0
   if (finalScore.errors.length > 0) finalScore.score = 0
 
   // Finally we calculate any overall bonuses for the survey
   const surveyBonus = sf.surveyBonus || 1
   finalScore.rawScore = finalScore.score
-  finalScore.score *= surveyBonus
-  finalScore.possible *= surveyBonus
+
+  // Apply the survey bonus multiplier if there are no warnings or errors
+  if (finalScore.errors.length === 0 && finalScore.warnings.length === 0) {
+    finalScore.score *= surveyBonus
+    finalScore.possible *= surveyBonus
+  }
   return finalScore
 }
 
 /**
- *
+ * Calculate the score for a ship rock
  * @param ds
  * @param sf
  * @param scoreObj
@@ -113,6 +128,7 @@ const calculateShipFind = async (gravWells: GravityWell[], sf: SurveyFindScoreIn
     // Resistance and instability can be zero but they can't be missing
     if (typeof rock.res !== 'number' || isNaN(rock.res)) missingFields.push('resistance')
     if (typeof rock.res !== 'number' || isNaN(rock.res)) missingFields.push('instability')
+
     // The rest of these fields are required
     if (!rock.mass) missingFields.push('mass')
     if (!rock.rockType) missingFields.push('rock class')
@@ -134,6 +150,13 @@ const calculateShipFind = async (gravWells: GravityWell[], sf: SurveyFindScoreIn
     const oreTypes = rock.ores.map((o) => o.ore)
     // Dedupe the oreTypes
     const uniqueOreTypes = Array.from(new Set(oreTypes))
+    // The rock is unlikely to contain 0% of anything. This is likely the user being sloppy
+    rock.ores.forEach((o) => {
+      if (o.percent === 0) {
+        newObj.warnings.push(`Ore ${o.ore} in rock ${rock.rockType} has 0% yield. This is likely an error.`)
+      }
+    })
+
     // the rock cannot have more than one ore from OreTierEnum.STier
     const sTierCount = uniqueOreTypes.filter((o) => ShipOreTiers[OreTierEnum.STier].includes(o)).length
     if (sTierCount > 1) {
