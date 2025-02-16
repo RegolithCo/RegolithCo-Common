@@ -459,7 +459,8 @@ export async function getRefiningCost(
     ds.getLookup('refineryBonusLookup'),
     ds.getLookup('methodsBonusLookup'),
   ])
-  const refBonus = refineryBonusLookup[refinery] ? refineryBonusLookup[refinery][ore][2] : 1
+  const refBonus =
+    refineryBonusLookup[refinery] && refineryBonusLookup[refinery][ore] ? refineryBonusLookup[refinery][ore][2] : 1
   const oreCost = oreProcessingLookup[ore][2]
   const methodBonus = methodsBonusLookup[method][2]
   return amt * refBonus * oreCost * methodBonus

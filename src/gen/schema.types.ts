@@ -178,6 +178,7 @@ export const DepositTypeEnum = {
 export type DepositTypeEnum = typeof DepositTypeEnum[keyof typeof DepositTypeEnum];
 export type DiscordGuild = {
   __typename: 'DiscordGuild';
+  hasPermission?: Maybe<Scalars['Boolean']['output']>;
   iconUrl?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
@@ -1456,6 +1457,7 @@ export type UserProfile = UserInterface & {
   avatarUrl?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['Timestamp']['output'];
   deliveryShipCode?: Maybe<Scalars['String']['output']>;
+  discordGuilds: Array<DiscordGuild>;
   friends: Array<Scalars['String']['output']>;
   isSurveyor?: Maybe<Scalars['Boolean']['output']>;
   isSurveyorBanned?: Maybe<Scalars['Boolean']['output']>;
@@ -1475,6 +1477,11 @@ export type UserProfile = UserInterface & {
   userSettings?: Maybe<Scalars['JSONObject']['output']>;
   verifyCode?: Maybe<Scalars['String']['output']>;
   workOrders?: Maybe<PaginatedWorkOrders>;
+};
+
+
+export type UserProfileDiscordGuildsArgs = {
+  refresh?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 

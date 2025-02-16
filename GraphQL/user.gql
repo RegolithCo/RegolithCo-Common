@@ -23,6 +23,13 @@ enum UserPlanEnum {
   ADMIN
 }
 
+type DiscordGuild {
+  id: ID!
+  name: String!
+  iconUrl: String
+  hasPermission: Boolean
+}
+
 type UserProfile implements UserInterface{
   userId: ID!
   scName: String!
@@ -36,6 +43,8 @@ type UserProfile implements UserInterface{
   apiKey: String
   friends: [String!]!  # Friends are just a convenience list of scNames
   userSettings: JSONObject
+  
+  discordGuilds(refresh: Boolean): [DiscordGuild!]!
 
   # Set up commonly used defaults the user can lock in for when they create
   # a new session. They are given the opportunity to override these each time

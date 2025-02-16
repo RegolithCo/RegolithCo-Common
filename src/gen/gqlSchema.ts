@@ -160,6 +160,7 @@ enum DepositTypeEnum {
 }
 
 type DiscordGuild {
+  hasPermission: Boolean
   iconUrl: String
   id: ID!
   name: String!
@@ -1032,6 +1033,7 @@ type UserProfile implements UserInterface {
   avatarUrl: String
   createdAt: Timestamp!
   deliveryShipCode: String
+  discordGuilds(refresh: Boolean): [DiscordGuild!]!
   friends: [String!]!
   isSurveyor: Boolean
   isSurveyorBanned: Boolean

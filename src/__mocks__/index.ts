@@ -755,6 +755,7 @@ export function fakeUserProfile(userProfile?: Partial<UserProfile | User>): User
       userId: uuid(),
       createdAt,
       updatedAt,
+      discordGuilds: [],
       apiKey: faker.string.alphanumeric(20),
       plan: randomEnum(UserStateEnum),
       lastActive: updatedAt,
