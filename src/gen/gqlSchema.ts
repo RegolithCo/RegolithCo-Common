@@ -159,14 +159,19 @@ enum DepositTypeEnum {
   SHALE
 }
 
-type DiscordGuild {
-  hasPermission: Boolean
+type DiscordGuild implements DiscordGuildInterface {
   iconUrl: String
   id: ID!
   name: String!
 }
 
 input DiscordGuildInput {
+  iconUrl: String
+  id: ID!
+  name: String!
+}
+
+interface DiscordGuildInterface {
   iconUrl: String
   id: ID!
   name: String!
@@ -353,6 +358,13 @@ type Mutation {
   upsertSessionUser(sessionId: ID!, workSessionUser: SessionUserInput): SessionUser @logged_in
   userAPIKey(revoke: Boolean, userId: ID): UserProfile @logged_in
   verifyUserProfile(code: String): UserProfile @logged_in
+}
+
+type MyDiscordGuild implements DiscordGuildInterface {
+  hasPermission: Boolean
+  iconUrl: String
+  id: ID!
+  name: String!
 }
 
 type OtherOrder implements WorkOrderInterface {
@@ -1033,7 +1045,7 @@ type UserProfile implements UserInterface {
   avatarUrl: String
   createdAt: Timestamp!
   deliveryShipCode: String
-  discordGuilds(refresh: Boolean): [DiscordGuild!]!
+  discordGuilds(refresh: Boolean): [MyDiscordGuild!]!
   friends: [String!]!
   isSurveyor: Boolean
   isSurveyorBanned: Boolean
@@ -1046,6 +1058,7 @@ type UserProfile implements UserInterface {
   sessionSettings: SessionSettings!
   sessionShipCode: String
   state: UserStateEnum!
+  surveyorGuild: DiscordGuild
   surveyorName: String
   surveyorScore: Int
   updatedAt: Timestamp!
@@ -1060,6 +1073,7 @@ input UserProfileInput {
   isSurveyor: Boolean
   scName: String
   sessionShipCode: String
+  surveyorGuildId: ID
   surveyorName: String
   userSettings: JSONObject
 }

@@ -23,12 +23,6 @@ enum UserPlanEnum {
   ADMIN
 }
 
-type DiscordGuild {
-  id: ID!
-  name: String!
-  iconUrl: String
-  hasPermission: Boolean
-}
 
 type UserProfile implements UserInterface{
   userId: ID!
@@ -44,7 +38,7 @@ type UserProfile implements UserInterface{
   friends: [String!]!  # Friends are just a convenience list of scNames
   userSettings: JSONObject
   
-  discordGuilds(refresh: Boolean): [DiscordGuild!]!
+  discordGuilds(refresh: Boolean): [MyDiscordGuild!]!
 
   # Set up commonly used defaults the user can lock in for when they create
   # a new session. They are given the opportunity to override these each time
@@ -70,6 +64,8 @@ type UserProfile implements UserInterface{
   
   # surveyorName is the name to use on the leaderboards (if any)
   surveyorName: String
+  # Optionally the guild you want to associate your points with
+  surveyorGuild: DiscordGuild
   # Opt-in to the global survey
   isSurveyor: Boolean
   # Set by admin.
@@ -89,6 +85,7 @@ input UserProfileInput {
   deliveryShipCode: String
 
   surveyorName: String
+  surveyorGuildId: ID
   isSurveyor: Boolean
 }
 

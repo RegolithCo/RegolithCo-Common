@@ -58,10 +58,6 @@ export type RegolithAllTimeStats = {
   summary: RegolithStatsSummary
 }
 
-export type MyDiscordGuild = DiscordGuildInput & {
-  hasPermission: boolean
-}
-
 export type AuthorizerContextReturn = {
   avatar?: string
   authId: string // DiscordID, GoogleId or API Key

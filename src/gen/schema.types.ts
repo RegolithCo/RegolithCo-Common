@@ -176,9 +176,8 @@ export const DepositTypeEnum = {
 } as const;
 
 export type DepositTypeEnum = typeof DepositTypeEnum[keyof typeof DepositTypeEnum];
-export type DiscordGuild = {
+export type DiscordGuild = DiscordGuildInterface & {
   __typename: 'DiscordGuild';
-  hasPermission?: Maybe<Scalars['Boolean']['output']>;
   iconUrl?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
@@ -188,6 +187,12 @@ export type DiscordGuildInput = {
   iconUrl?: InputMaybe<Scalars['String']['input']>;
   id: Scalars['ID']['input'];
   name: Scalars['String']['input'];
+};
+
+export type DiscordGuildInterface = {
+  iconUrl?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
 };
 
 export const EventNameEnum = {
@@ -654,6 +659,14 @@ export type MutationUserApiKeyArgs = {
 
 export type MutationVerifyUserProfileArgs = {
   code?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type MyDiscordGuild = DiscordGuildInterface & {
+  __typename: 'MyDiscordGuild';
+  hasPermission?: Maybe<Scalars['Boolean']['output']>;
+  iconUrl?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
 };
 
 export type OtherOrder = WorkOrderInterface & {
@@ -1457,7 +1470,7 @@ export type UserProfile = UserInterface & {
   avatarUrl?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['Timestamp']['output'];
   deliveryShipCode?: Maybe<Scalars['String']['output']>;
-  discordGuilds: Array<DiscordGuild>;
+  discordGuilds: Array<MyDiscordGuild>;
   friends: Array<Scalars['String']['output']>;
   isSurveyor?: Maybe<Scalars['Boolean']['output']>;
   isSurveyorBanned?: Maybe<Scalars['Boolean']['output']>;
@@ -1470,6 +1483,7 @@ export type UserProfile = UserInterface & {
   sessionSettings: SessionSettings;
   sessionShipCode?: Maybe<Scalars['String']['output']>;
   state: UserStateEnum;
+  surveyorGuild?: Maybe<DiscordGuild>;
   surveyorName?: Maybe<Scalars['String']['output']>;
   surveyorScore?: Maybe<Scalars['Int']['output']>;
   updatedAt: Scalars['Timestamp']['output'];
@@ -1505,6 +1519,7 @@ export type UserProfileInput = {
   isSurveyor?: InputMaybe<Scalars['Boolean']['input']>;
   scName?: InputMaybe<Scalars['String']['input']>;
   sessionShipCode?: InputMaybe<Scalars['String']['input']>;
+  surveyorGuildId?: InputMaybe<Scalars['ID']['input']>;
   surveyorName?: InputMaybe<Scalars['String']['input']>;
   userSettings?: InputMaybe<Scalars['JSONObject']['input']>;
 };

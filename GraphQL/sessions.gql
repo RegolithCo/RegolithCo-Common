@@ -162,12 +162,26 @@ type SessionSummaryWorkOrder {
     paidShares: Int
 }
 
-type DiscordGuild {
+interface DiscordGuildInterface {
+  id: ID!
+  name: String!
+  iconUrl: String
+}
+
+type DiscordGuild implements DiscordGuildInterface {
   id: ID!
   name: String!
   iconUrl: String
   # hasPermission: Boolean # We add this on the client side
 }
+
+type MyDiscordGuild implements DiscordGuildInterface {
+  id: ID!
+  name: String!
+  iconUrl: String
+  hasPermission: Boolean
+}
+
 input DiscordGuildInput {
   id: ID!
   name: String!
