@@ -52,7 +52,7 @@ jobs:
         run: |
           if [ "${{ env.CURRENT_VERSION }}" != "${{ env.LATEST_VERSION }}" ]; then
             echo "Publishing new version: ${{ env.CURRENT_VERSION }}"
-            yarn npm publish --non-interactive --access public
+            npm publish --access public
           else
             echo "Version has not changed. Skipping publish."
           fi
