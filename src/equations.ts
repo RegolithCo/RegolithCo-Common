@@ -476,7 +476,8 @@ export async function getRefiningCostMod(
     ds.getLookup('refineryBonusLookup'),
     ds.getLookup('methodsBonusLookup'),
   ])
-  const refBonus = refineryBonusLookup[refinery] ? refineryBonusLookup[refinery][ore][2] : 1
+  const refBonus =
+    refineryBonusLookup[refinery] && refineryBonusLookup[refinery][ore] ? refineryBonusLookup[refinery][ore][2] : 1
   const methodBonus = methodsBonusLookup[method][2]
   return refBonus * methodBonus
 }
@@ -502,7 +503,8 @@ export async function getRefiningTime(
     ds.getLookup('methodsBonusLookup'),
   ])
   if (!oreProcessingLookup[ore] || !methodsBonusLookup[method]) return NaN
-  const refBonus = refineryBonusLookup[refinery] ? refineryBonusLookup[refinery][ore][1] : 1
+  const refBonus =
+    refineryBonusLookup[refinery] && refineryBonusLookup[refinery][ore] ? refineryBonusLookup[refinery][ore][1] : 1
   const oreTime = oreProcessingLookup[ore][1]
   const methodBonus = methodsBonusLookup[method][1]
 
@@ -521,7 +523,8 @@ export async function getRefiningTimeMod(
     ds.getLookup('methodsBonusLookup'),
   ])
 
-  const refBonus = refineryBonusLookup[refinery] ? refineryBonusLookup[refinery][ore][1] : 1
+  const refBonus =
+    refineryBonusLookup[refinery] && refineryBonusLookup[refinery][ore] ? refineryBonusLookup[refinery][ore][1] : 1
   const methodBonus = methodsBonusLookup[method][1]
 
   return refBonus * methodBonus
