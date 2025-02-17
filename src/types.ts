@@ -8,12 +8,10 @@ import {
   User,
   WorkOrderStateEnum,
   MiningLaserEnum,
-  MiningStoreEnum,
   MiningModuleEnum,
   MiningGadgetEnum,
   Vehicle,
   ActivityEnum,
-  DiscordGuildInput,
   AuthTypeEnum,
   SessionRoleEnum,
   ShipRoleEnum,
@@ -299,7 +297,7 @@ export type MiningItemBase = {
   code: MiningLaserEnum | MiningGadgetEnum | MiningModuleEnum
   name: string
   // UEX Tradeport ID --> Price
-  prices: Record<MiningStoreEnum, number>
+  prices: Record<string, number>
 }
 
 export type MiningModule = MiningItemBase & {
@@ -325,7 +323,6 @@ export type MiningStore = {
   UEXID: string
   name: string
   nickname: string
-  code: MiningStoreEnum
   system: SystemEnum
   planet: string
   moon: string
@@ -338,7 +335,8 @@ export type LoadoutLookup = {
   lasers: Record<MiningLaserEnum, MiningLaser>
   modules: Record<MiningModuleEnum, MiningModule>
   gadgets: Record<MiningGadgetEnum, MiningGadget>
-  stores: Record<MiningStoreEnum, MiningStore>
+  // UEX Tradeport ID --> Store
+  stores: Record<string, MiningStore>
 }
 
 export type LoadoutActive = {

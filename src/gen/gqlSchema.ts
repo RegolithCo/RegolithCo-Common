@@ -285,32 +285,6 @@ enum MiningModuleEnum {
   XTRXL
 }
 
-enum MiningStoreEnum {
-  ARCL1
-  ARCL2
-  ARCL4
-  CHK
-  CRUL1
-  DDA18
-  DDGH
-  HURL1
-  HURL2
-  MGGT
-  MICL1
-  MICL2
-  MICL5
-  ORB
-  PYBR
-  PYGT
-  PYOC
-  PYYP
-  RUN
-  SINB
-  STGT
-  TAMM
-  TEGT
-}
-
 type Mutation {
   addFriends(friends: [String]!): UserProfile @logged_in
   addScoutingFind(scoutingFind: ScoutingFindInput!, sessionId: ID!, shipRocks: [ShipRockInput!], vehicleRocks: [VehicleRockInput!], wrecks: [SalvageWreckInput!]): ScoutingFind @logged_in

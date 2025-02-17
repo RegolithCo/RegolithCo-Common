@@ -3,34 +3,6 @@ enum LoadoutShipEnum {
   MOLE
 }
 
-# NOTE: THese are not the same as the UEX Codes. That's a bit unforunate but it's the way it is.
-enum MiningStoreEnum {
-  HURL1
-  HURL2
-  CRUL1
-  ARCL1
-  ARCL2
-  ARCL4
-  MICL1
-  MICL2
-  MICL5
-  TAMM # Tammany and Sons Lorville
-  DDGH # Dumper's Depot GrimHEX
-  DDA18 # Dumper's Depot Area18
-  SINB # Shubin Interstellar New Babbage
-
-  ORB # Orbituary
-  PYGT # Pyro Gateway
-  STGT # Stanton Gateway
-  TEGT # Terra Gateway
-  MGGT # Magnus Gateway
-  PYBR # Pyro Bueno Ravine
-  PYOC # Pyro Ostler's claim
-  PYYP # Pyro Yang's place
-  CHK # Checkmate (Pyro)
-  RUN # Ruin Station (Pyro)
-}
-
 enum MiningLaserEnum {
   LancetMH1
   LancetMH2

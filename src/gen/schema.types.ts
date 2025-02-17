@@ -310,33 +310,6 @@ export const MiningModuleEnum = {
 } as const;
 
 export type MiningModuleEnum = typeof MiningModuleEnum[keyof typeof MiningModuleEnum];
-export const MiningStoreEnum = {
-  Arcl1: 'ARCL1',
-  Arcl2: 'ARCL2',
-  Arcl4: 'ARCL4',
-  Chk: 'CHK',
-  Crul1: 'CRUL1',
-  Dda18: 'DDA18',
-  Ddgh: 'DDGH',
-  Hurl1: 'HURL1',
-  Hurl2: 'HURL2',
-  Mggt: 'MGGT',
-  Micl1: 'MICL1',
-  Micl2: 'MICL2',
-  Micl5: 'MICL5',
-  Orb: 'ORB',
-  Pybr: 'PYBR',
-  Pygt: 'PYGT',
-  Pyoc: 'PYOC',
-  Pyyp: 'PYYP',
-  Run: 'RUN',
-  Sinb: 'SINB',
-  Stgt: 'STGT',
-  Tamm: 'TAMM',
-  Tegt: 'TEGT'
-} as const;
-
-export type MiningStoreEnum = typeof MiningStoreEnum[keyof typeof MiningStoreEnum];
 export type Mutation = {
   __typename: 'Mutation';
   addFriends?: Maybe<UserProfile>;
