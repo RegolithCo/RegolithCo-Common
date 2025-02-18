@@ -183,7 +183,7 @@ const calculateShipFind = async (gravWells: GravityWell[], sf: SurveyFindScoreIn
 
   // If the scan is complete add a 2x bonus
   newObj.possible *= 2
-  if (sf.clusterCount === completeCount) {
+  if (sf.clusterCount <= completeCount) {
     newObj.score *= 2
   }
   if (sf.clusterCount !== sf.shipRocks.length) {
