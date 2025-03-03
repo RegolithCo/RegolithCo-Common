@@ -42,7 +42,7 @@ export async function calcLoadoutStats(ds: DataStore, miningLoadout: MiningLoado
 
   const laserStats: AllStats[] = await Promise.all(laserStatsPromises)
   const activeGadget =
-    miningLoadout.activeGadgetIndex &&
+    miningLoadout.activeGadgetIndex != undefined &&
     miningLoadout.activeGadgetIndex > -1 &&
     miningLoadout.inventoryGadgets.length > miningLoadout.activeGadgetIndex
       ? cloneDeep(loadoutLookup.gadgets[miningLoadout.inventoryGadgets[miningLoadout.activeGadgetIndex]])
