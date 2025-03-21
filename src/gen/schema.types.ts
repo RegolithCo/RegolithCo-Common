@@ -203,8 +203,10 @@ export const EventNameEnum = {
 
 export type EventNameEnum = typeof EventNameEnum[keyof typeof EventNameEnum];
 export const LoadoutShipEnum = {
+  Golem: 'GOLEM',
   Mole: 'MOLE',
-  Prospector: 'PROSPECTOR'
+  Prospector: 'PROSPECTOR',
+  Roc: 'ROC'
 } as const;
 
 export type LoadoutShipEnum = typeof LoadoutShipEnum[keyof typeof LoadoutShipEnum];
@@ -242,16 +244,22 @@ export type MiningGadgetEnum = typeof MiningGadgetEnum[keyof typeof MiningGadget
 export const MiningLaserEnum = {
   ArborMh1: 'ArborMH1',
   ArborMh2: 'ArborMH2',
+  ArborMhv: 'ArborMHV',
+  Helix0: 'Helix0',
   HelixI: 'HelixI',
   HelixIi: 'HelixII',
+  HofstedeS0: 'HofstedeS0',
   HofstedeS1: 'HofstedeS1',
   HofstedeS2: 'HofstedeS2',
   ImpactI: 'ImpactI',
   ImpactIi: 'ImpactII',
+  KleinS0: 'KleinS0',
   KleinS1: 'KleinS1',
   KleinS2: 'KleinS2',
   LancetMh1: 'LancetMH1',
-  LancetMh2: 'LancetMH2'
+  LancetMh2: 'LancetMH2',
+  Lawson: 'Lawson',
+  Pitman: 'Pitman'
 } as const;
 
 export type MiningLaserEnum = typeof MiningLaserEnum[keyof typeof MiningLaserEnum];
@@ -1579,9 +1587,15 @@ export type VehicleMiningRowInput = {
 
 export const VehicleOreEnum = {
   Aphorite: 'APHORITE',
+  Beradom: 'BERADOM',
+  Carinite: 'CARINITE',
   Dolivine: 'DOLIVINE',
+  Feynmaline: 'FEYNMALINE',
+  Glacosite: 'GLACOSITE',
   Hadanite: 'HADANITE',
-  Janalite: 'JANALITE'
+  Jaclium: 'JACLIUM',
+  Janalite: 'JANALITE',
+  Saldynium: 'SALDYNIUM'
 } as const;
 
 export type VehicleOreEnum = typeof VehicleOreEnum[keyof typeof VehicleOreEnum];

@@ -1,21 +1,29 @@
 enum LoadoutShipEnum {
   PROSPECTOR
   MOLE
+  GOLEM
+  ROC
 }
 
 enum MiningLaserEnum {
   LancetMH1
   LancetMH2
+  HofstedeS0 # NEW FOR ROC
   HofstedeS1
   HofstedeS2
+  KleinS0 # NEW FOR ROC
   KleinS1
   KleinS2
   ImpactI
   ImpactII
+  Helix0 # NEW FOR ROC
   HelixI
   HelixII
   ArborMH1
   ArborMH2
+  ArborMHV # NEW FOR ROC
+  Pitman # NEW FOR ROC
+  Lawson # NEW FOR ROC
 }
 
 enum MiningModuleEnum {

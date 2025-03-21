@@ -31,7 +31,24 @@ export const sanitizeLoadout = async <T extends MiningLoadout | MiningLoadoutInp
   loadout: T
 ): Promise<T> => {
   const loadoutLookup = await ds.getLookup('loadout')
-  const lasers = loadout.ship === LoadoutShipEnum.Mole ? 3 : 1
+  // This is still true as of 4.1
+  let lasers = 1
+  switch (loadout.ship) {
+    case LoadoutShipEnum.Mole:
+      lasers = 3
+      break
+    case LoadoutShipEnum.Prospector:
+      lasers = 1
+      break
+    case LoadoutShipEnum.Golem:
+      lasers = 1
+      break
+    case LoadoutShipEnum.Roc:
+      lasers = 1
+      break
+    default:
+      break
+  }
   const newLoadout: T = {
     ...loadout,
     // Check that there is a gadget to be on in the first place
@@ -75,7 +92,7 @@ export const validateMiningLoadout = async (
   const loadoutLookup = await ds.getLookup('loadout')
   try {
     const { activeLasers, inventoryGadgets, inventoryModules, inventoryLasers, name, ship } = loadout
-    if (ship !== LoadoutShipEnum.Prospector && ship !== LoadoutShipEnum.Mole) {
+    if (Object.values(LoadoutShipEnum).indexOf(ship) === -1) {
       throw new Error('Invalid ship')
     }
     if (!name || name.trim().length < 3) {

@@ -11,6 +11,8 @@ import { roundFloat } from './util'
 
 export const DEFAULT_MOLE_LASER = MiningLaserEnum.ArborMh2
 export const DEFAULT_PROSPECTOR_LASER = MiningLaserEnum.ArborMh1
+export const DEFAULT_GOLEM_LASER = MiningLaserEnum.ArborMhv // TODO: this is a guess
+export const DEFAULT_ROC_LASER = MiningLaserEnum.ArborMhv // TODO: this is a guess
 
 export function multiplyReduceLasers(lasers: LaserLoadoutStats[], stat: keyof AllStats): number {
   return lasers.reduce((acc, l) => acc * (l[stat] || 1), 1)
@@ -147,6 +149,7 @@ export async function calcLaserStats(ds: DataStore, activeLaser: ActiveMiningLas
     const price = getMinLoadoutPrice(m)
     return m && price ? acc + price : acc
   }, 0)
+  // TODO: This is going to need to change
   const isStockLaser = laser.code === DEFAULT_MOLE_LASER || laser.code === DEFAULT_PROSPECTOR_LASER
 
   const activatedModules = modules.filter(

@@ -186,8 +186,10 @@ enum EventNameEnum {
 scalar JSONObject
 
 enum LoadoutShipEnum {
+  GOLEM
   MOLE
   PROSPECTOR
+  ROC
 }
 
 enum LocationEnum {
@@ -220,16 +222,22 @@ enum MiningGadgetEnum {
 enum MiningLaserEnum {
   ArborMH1
   ArborMH2
+  ArborMHV
+  Helix0
   HelixI
   HelixII
+  HofstedeS0
   HofstedeS1
   HofstedeS2
   ImpactI
   ImpactII
+  KleinS0
   KleinS1
   KleinS2
   LancetMH1
   LancetMH2
+  Lawson
+  Pitman
 }
 
 type MiningLoadout {
@@ -1129,9 +1137,15 @@ input VehicleMiningRowInput {
 
 enum VehicleOreEnum {
   APHORITE
+  BERADOM
+  CARINITE
   DOLIVINE
+  FEYNMALINE
+  GLACOSITE
   HADANITE
+  JACLIUM
   JANALITE
+  SALDYNIUM
 }
 
 type VehicleRock {

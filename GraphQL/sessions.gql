@@ -258,6 +258,14 @@ enum VehicleOreEnum {
   JANALITE
   APHORITE
   DOLIVINE
+  # New 4.1 ores:
+  BERADOM
+  GLACOSITE
+  FEYNMALINE
+  JACLIUM # NEW MINEABLE
+  SALDYNIUM
+  CARINITE
+
 }
 
 enum SalvageOreEnum {

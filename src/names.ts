@@ -65,7 +65,7 @@ export const getRockTypeName = (rockType: AsteroidTypeEnum | DepositTypeEnum) =>
 
 const ActivityNames: Record<ActivityEnum, string> = {
   [ActivityEnum.ShipMining]: 'Ship Mining',
-  [ActivityEnum.VehicleMining]: 'ROC Mining',
+  [ActivityEnum.VehicleMining]: 'Vehicle / FPS Mining',
   [ActivityEnum.Salvage]: 'Salvaging',
   [ActivityEnum.Other]: 'Share aUEC',
 }
@@ -224,6 +224,12 @@ const VehicleOreNames: Record<VehicleOreEnum, string> = {
   [VehicleOreEnum.Aphorite]: 'Aphorite',
   [VehicleOreEnum.Dolivine]: 'Dolivine',
   [VehicleOreEnum.Janalite]: 'Janalite',
+  [VehicleOreEnum.Beradom]: 'Beradom',
+  [VehicleOreEnum.Glacosite]: 'Glacosite',
+  [VehicleOreEnum.Feynmaline]: 'Feynmaline',
+  [VehicleOreEnum.Jaclium]: 'Jaclium',
+  [VehicleOreEnum.Saldynium]: 'Saldynium',
+  [VehicleOreEnum.Carinite]: 'Carinite',
 }
 export const getVehicleOreName = (ore: VehicleOreEnum) => (VehicleOreNames[ore] ? VehicleOreNames[ore] : ore)
 
@@ -232,6 +238,12 @@ const VehicleOreAbbrev: Record<VehicleOreEnum, [string, string]> = {
   [VehicleOreEnum.Aphorite]: ['Aph', 'Apho'],
   [VehicleOreEnum.Dolivine]: ['Dol', 'Dolv'],
   [VehicleOreEnum.Janalite]: ['Jan', 'Jana'],
+  [VehicleOreEnum.Beradom]: ['Ber', 'Bera'],
+  [VehicleOreEnum.Glacosite]: ['Gla', 'Glac'],
+  [VehicleOreEnum.Feynmaline]: ['Fey', 'Feyn'],
+  [VehicleOreEnum.Jaclium]: ['Jac', 'Jacl'],
+  [VehicleOreEnum.Saldynium]: ['Sld', 'Sald'],
+  [VehicleOreEnum.Carinite]: ['Car', 'Cari'],
 }
 
 export const getVehicleOreAbbrev = (ore: VehicleOreEnum, abLen: 3 | 4) => {
