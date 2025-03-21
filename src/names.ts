@@ -140,6 +140,46 @@ const RefineryNames: Record<RefineryEnum, string> = {
 export const getRefineryName = (refinery: RefineryEnum) =>
   RefineryNames[refinery] ? RefineryNames[refinery] : refinery
 
+const RefineryAbbrevs: Record<RefineryEnum, string> = {
+  [RefineryEnum.Arcl1]: 'Arc-L1',
+  [RefineryEnum.Arcl2]: 'Arc-L2',
+  [RefineryEnum.Arcl4]: 'Arc-L4',
+  [RefineryEnum.Crul1]: 'Cru-L1',
+  [RefineryEnum.Hurl1]: 'Hur-L1',
+  [RefineryEnum.Hurl2]: 'Hur-L2',
+  [RefineryEnum.Micl1]: 'Mic-L1',
+  [RefineryEnum.Micl2]: 'Mic-L2',
+  [RefineryEnum.Micl5]: 'Mic-L5',
+  [RefineryEnum.Magng]: 'ST-MAG',
+  [RefineryEnum.Pyrog]: 'ST-PYR',
+  [RefineryEnum.Terrg]: 'ST-TER',
+  [RefineryEnum.PyroRuin]: 'RUIN',
+  [RefineryEnum.PyroOrbituary]: 'ORBIT',
+  [RefineryEnum.PyroCheckmate]: 'CHKMT',
+  [RefineryEnum.PyroStantg]: 'PYR-ST',
+}
+export const getRefineryAbbrev = (refinery: RefineryEnum) =>
+  RefineryAbbrevs[refinery] ? RefineryAbbrevs[refinery] : refinery
+
+export const RefinerySystemMap: Record<RefineryEnum, SystemEnum> = {
+  [RefineryEnum.Arcl1]: SystemEnum.Stanton,
+  [RefineryEnum.Arcl2]: SystemEnum.Stanton,
+  [RefineryEnum.Arcl4]: SystemEnum.Stanton,
+  [RefineryEnum.Crul1]: SystemEnum.Stanton,
+  [RefineryEnum.Hurl1]: SystemEnum.Stanton,
+  [RefineryEnum.Hurl2]: SystemEnum.Stanton,
+  [RefineryEnum.Micl1]: SystemEnum.Stanton,
+  [RefineryEnum.Micl2]: SystemEnum.Stanton,
+  [RefineryEnum.Micl5]: SystemEnum.Stanton,
+  [RefineryEnum.Magng]: SystemEnum.Stanton,
+  [RefineryEnum.Pyrog]: SystemEnum.Pyro,
+  [RefineryEnum.Terrg]: SystemEnum.Stanton,
+  [RefineryEnum.PyroRuin]: SystemEnum.Pyro,
+  [RefineryEnum.PyroOrbituary]: SystemEnum.Pyro,
+  [RefineryEnum.PyroCheckmate]: SystemEnum.Pyro,
+  [RefineryEnum.PyroStantg]: SystemEnum.Pyro,
+}
+
 const RefineryMethodNames: Record<RefineryMethodEnum, string> = {
   [RefineryMethodEnum.Cormack]: 'Cormack Method',
   [RefineryMethodEnum.Electrostarolysis]: 'Electrostarolysis',
