@@ -53,7 +53,28 @@ export function obfuscateUserId(guid: string): string {
   return `USER-${obfuscateId(guid)}`
 }
 
-export const roundFloat = (num: number, precision = 0): number => parseFloat(num.toFixed(precision))
+export const roundFloat = (num: unknown, precision = 0): number | null => {
+  // Ensure the input is a valid number
+  if (typeof num !== 'number' || isNaN(num)) {
+    console.error(`Invalid input to roundFloat: ${num}`)
+    return null // Return null for invalid inputs
+  }
+
+  // Ensure precision is a non-negative integer
+  if (!Number.isInteger(precision) || precision < 0) {
+    console.error(`Invalid precision value: ${precision}`)
+    return null // Return null for invalid precision
+  }
+
+  // Handle extremely large or small numbers
+  if (!isFinite(num)) {
+    console.error(`Input number is not finite: ${num}`)
+    return null // Return null for non-finite numbers
+  }
+
+  // Perform rounding
+  return parseFloat(num.toFixed(precision))
+}
 
 /**
  * Javascript round function

@@ -25,7 +25,7 @@ export const ScVersionEnum = {
 export type ScVersionEnum = ObjectValues<typeof ScVersionEnum>
 
 // This is the current deployed version
-export const scVersion: ScVersionEnum = ScVersionEnum.SC4_0_PREVIEW
+export const scVersion: ScVersionEnum = ScVersionEnum.SC4_1
 
 /**
  * A list of all the SC Versions ever supported by Regolith and their start dates. We use this to determine the epoch of a version.

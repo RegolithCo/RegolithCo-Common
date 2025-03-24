@@ -1174,7 +1174,7 @@ export async function findPrice(
 
   try {
     if (!storeCode) {
-      if (!priceLookups[priceType][ore]) return 0
+      if (!priceLookups || !priceLookups[priceType] || !priceLookups[priceType][ore]) return 0
       price = priceLookups[priceType][ore].max[0]
     } else {
       // Store prices can be a string or an array of strings separated by commas

@@ -302,8 +302,6 @@ export type MiningItemBase = {
 
 export type MiningModule = MiningItemBase & {
   active: boolean
-  duration?: number
-  uses?: number
   category: string
   stats: ModuleLoadoutStats
 }
