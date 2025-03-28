@@ -31,7 +31,7 @@ export const scVersion: ScVersionEnum = ScVersionEnum.SC4_1
  * A list of all the SC Versions ever supported by Regolith and their start dates. We use this to determine the epoch of a version.
  */
 export const scVersionDates: Record<ScVersionEnum, Date> = {
-  [ScVersionEnum.SC4_1]: new Date('2025-03-31'), // TBD
+  [ScVersionEnum.SC4_1]: new Date('2025-03-28'), // TBD
   [ScVersionEnum.SC4_0_1]: new Date('2025-01-29'),
   [ScVersionEnum.SC4_0_PREVIEW]: new Date('2024-12-19'),
   // NOTE: THESE ARE PROBABLY WRONG
