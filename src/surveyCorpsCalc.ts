@@ -103,7 +103,8 @@ const calculateShipFind = async (gravWells: GravityWell[], sf: SurveyFindScoreIn
   newObj.possible += (sf.clusterCount || 1) * 5
   // There's a 5 point bonus for every rock scanned and you get 2 for an incomplete scan
   let completeCount = 0
-  const gravWellObj: GravityWell | undefined = sf.gravityWell && gravWells.find((gw) => gw.id === sf.gravityWell)
+  const gravWellObj: GravityWell | undefined =
+    (sf.gravityWell && gravWells.find((gw) => gw.id === sf.gravityWell)) || undefined
   if (sf.gravityWell && !gravWellObj) {
     newObj.errors.push(`Gravity well specified but invalid: ${sf.gravityWell}`)
   }
@@ -112,7 +113,8 @@ const calculateShipFind = async (gravWells: GravityWell[], sf: SurveyFindScoreIn
   }
 
   // Now do some rock class checking
-  const rockTypes = sf.shipRocks.map((r) => r.rockType)
+  const shipRocks = sf.shipRocks || []
+  const rockTypes = shipRocks.map((r) => r.rockType)
   const uniqueRockTypes = Array.from(new Set(rockTypes))
   // Dedupe the rockTypes
   if (uniqueRockTypes.length > 1) {
@@ -122,9 +124,10 @@ const calculateShipFind = async (gravWells: GravityWell[], sf: SurveyFindScoreIn
   }
 
   // Now let's go through each rock and check it
-  for (const rock of sf.shipRocks) {
-    const complete = rock.inst >= 0 && rock.mass && rock.res >= 0 && rock.rockType && rock.ores && rock.ores.length > 1
-    const missingFields = []
+  for (const rock of shipRocks) {
+    const complete =
+      (rock.inst || 0) >= 0 && rock.mass && (rock.res || 0) >= 0 && rock.rockType && rock.ores && rock.ores.length > 1
+    const missingFields: string[] = []
     // Resistance and instability can be zero but they can't be missing
     if (typeof rock.res !== 'number' || isNaN(rock.res)) missingFields.push('resistance')
     if (typeof rock.res !== 'number' || isNaN(rock.res)) missingFields.push('instability')
@@ -183,10 +186,10 @@ const calculateShipFind = async (gravWells: GravityWell[], sf: SurveyFindScoreIn
 
   // If the scan is complete add a 2x bonus
   newObj.possible *= 2
-  if (sf.clusterCount <= completeCount) {
+  if ((sf.clusterCount || 0) <= completeCount) {
     newObj.score *= 2
   }
-  if (sf.clusterCount !== sf.shipRocks.length) {
+  if (sf.clusterCount !== shipRocks.length) {
     newObj.warnings.push('Not all rocks have been scanned')
   }
 
@@ -202,13 +205,19 @@ const calculateShipFind = async (gravWells: GravityWell[], sf: SurveyFindScoreIn
  */
 const calculateVehicleFind = async (gravWells: GravityWell[], sf: SurveyFindScoreInput, scoreObj: SurveyFindScore) => {
   const newObj: SurveyFindScore = { ...scoreObj }
-  const gravWellObj: GravityWell | undefined = sf.gravityWell && gravWells.find((gw) => gw.id === sf.gravityWell)
+  const gravWellObj: GravityWell | undefined =
+    (sf.gravityWell && gravWells.find((gw) => gw.id === sf.gravityWell)) || undefined
   // These are such easy scans we don't really need any kind of bonus
   if (sf.gravityWell && !gravWellObj) {
     newObj.errors.push(`Gravity well specified but invalid: ${sf.gravityWell}`)
   }
   if (gravWellObj && !gravWellObj.hasGems) {
     newObj.errors.push(`Gravity well: "${gravWellObj.label}" does not have ROC-mineable gems`)
+  }
+
+  if (newObj.errors.length === 0 && newObj.warnings.length === 0) {
+    newObj.possible += 20
+    newObj.score += 20
   }
 
   return newObj
@@ -226,10 +235,11 @@ const calculateSalvageFind = async (sf: SurveyFindScoreInput, scoreObj: SurveyFi
 
   // There's a 5 point bonus for every wreck scanned and you get 2 for an incomplete scan
   let completeCount = 0
-  for (const wreck of sf.wrecks) {
+  const wrecks = sf.wrecks || []
+  for (const wreck of wrecks) {
     const complete = (wreck.isShip && wreck.shipCode) || !wreck.isShip
 
-    const missingFields = []
+    const missingFields: string[] = []
     if (!wreck.sellableAUEC) missingFields.push('aUEC')
     if (!wreck.salvageOres || wreck.salvageOres.length < 1) missingFields.push('ores')
     if (missingFields.length > 0)
