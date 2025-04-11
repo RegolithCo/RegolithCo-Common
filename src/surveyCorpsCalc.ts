@@ -24,6 +24,7 @@ export type SurveyFindScore = {
   rawScore: number // this one's pre-bonus (but only the global bonus, it includes the bonuses for completion)
   possible: number
   errors: string[]
+  areaBonus: number
   warnings: string[]
 }
 // Because this takes ScoutingFind and ScoutingFindRow we need a common type to smooth out the use
@@ -51,6 +52,7 @@ export const calculateSurveyFind = async (
     score: 10,
     rawScore: 0,
     possible: 10,
+    areaBonus: 0,
     errors: [],
     warnings: [],
   }
@@ -81,12 +83,13 @@ export const calculateSurveyFind = async (
 
   // Finally we calculate any overall bonuses for the survey
   const surveyBonus = sf.surveyBonus || 1
+  finalScore.areaBonus = surveyBonus
   finalScore.rawScore = finalScore.score
 
   // Apply the survey bonus multiplier if there are no warnings or errors
   if (finalScore.errors.length === 0 && finalScore.warnings.length === 0) {
-    finalScore.score *= surveyBonus
-    finalScore.possible *= surveyBonus
+    Math.round((finalScore.score *= surveyBonus))
+    Math.round((finalScore.possible *= surveyBonus))
   }
   return finalScore
 }
