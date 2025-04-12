@@ -504,8 +504,8 @@ type SalvageFind implements ScoutingFindInterface {
   note: String
   owner: User
   ownerId: ID!
-  rawScore: Float
-  score: Float
+  rawScore: Int
+  score: Int
   scoutingFindId: ID!
   sessionId: ID!
   state: ScoutingFindStateEnum!
@@ -606,8 +606,8 @@ interface ScoutingFindInterface {
   note: String
   owner: User
   ownerId: ID!
-  rawScore: Float
-  score: Float
+  rawScore: Int
+  score: Int
   scoutingFindId: ID!
   sessionId: ID!
   state: ScoutingFindStateEnum!
@@ -830,8 +830,8 @@ type ShipClusterFind implements ScoutingFindInterface {
   note: String
   owner: User
   ownerId: ID!
-  rawScore: Float
-  score: Float
+  rawScore: Int
+  score: Int
   scoutingFindId: ID!
   sessionId: ID!
   shipRocks: [ShipRock!]!
@@ -1085,8 +1085,8 @@ type VehicleClusterFind implements ScoutingFindInterface {
   note: String
   owner: User
   ownerId: ID!
-  rawScore: Float
-  score: Float
+  rawScore: Int
+  score: Int
   scoutingFindId: ID!
   sessionId: ID!
   state: ScoutingFindStateEnum!

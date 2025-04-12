@@ -879,8 +879,8 @@ export type SalvageFind = ScoutingFindInterface & {
   note?: Maybe<Scalars['String']['output']>;
   owner?: Maybe<User>;
   ownerId: Scalars['ID']['output'];
-  rawScore?: Maybe<Scalars['Float']['output']>;
-  score?: Maybe<Scalars['Float']['output']>;
+  rawScore?: Maybe<Scalars['Int']['output']>;
+  score?: Maybe<Scalars['Int']['output']>;
   scoutingFindId: Scalars['ID']['output'];
   sessionId: Scalars['ID']['output'];
   state: ScoutingFindStateEnum;
@@ -986,8 +986,8 @@ export type ScoutingFindInterface = {
   note?: Maybe<Scalars['String']['output']>;
   owner?: Maybe<User>;
   ownerId: Scalars['ID']['output'];
-  rawScore?: Maybe<Scalars['Float']['output']>;
-  score?: Maybe<Scalars['Float']['output']>;
+  rawScore?: Maybe<Scalars['Int']['output']>;
+  score?: Maybe<Scalars['Int']['output']>;
   scoutingFindId: Scalars['ID']['output'];
   sessionId: Scalars['ID']['output'];
   state: ScoutingFindStateEnum;
@@ -1241,8 +1241,8 @@ export type ShipClusterFind = ScoutingFindInterface & {
   note?: Maybe<Scalars['String']['output']>;
   owner?: Maybe<User>;
   ownerId: Scalars['ID']['output'];
-  rawScore?: Maybe<Scalars['Float']['output']>;
-  score?: Maybe<Scalars['Float']['output']>;
+  rawScore?: Maybe<Scalars['Int']['output']>;
+  score?: Maybe<Scalars['Int']['output']>;
   scoutingFindId: Scalars['ID']['output'];
   sessionId: Scalars['ID']['output'];
   shipRocks: Array<ShipRock>;
@@ -1533,8 +1533,8 @@ export type VehicleClusterFind = ScoutingFindInterface & {
   note?: Maybe<Scalars['String']['output']>;
   owner?: Maybe<User>;
   ownerId: Scalars['ID']['output'];
-  rawScore?: Maybe<Scalars['Float']['output']>;
-  score?: Maybe<Scalars['Float']['output']>;
+  rawScore?: Maybe<Scalars['Int']['output']>;
+  score?: Maybe<Scalars['Int']['output']>;
   scoutingFindId: Scalars['ID']['output'];
   sessionId: Scalars['ID']['output'];
   state: ScoutingFindStateEnum;

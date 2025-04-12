@@ -88,9 +88,14 @@ export const calculateSurveyFind = async (
 
   // Apply the survey bonus multiplier if there are no warnings or errors
   if (finalScore.errors.length === 0 && finalScore.warnings.length === 0) {
-    Math.round((finalScore.score *= surveyBonus))
-    Math.round((finalScore.possible *= surveyBonus))
+    finalScore.score *= surveyBonus
+    finalScore.possible *= surveyBonus
   }
+
+  // We need to store the scores as integers
+  finalScore.score = Math.round(finalScore.score)
+  finalScore.possible = Math.round(finalScore.possible)
+
   return finalScore
 }
 

@@ -76,9 +76,9 @@ interface ScoutingFindInterface {
   # If there is an incentive for the survey then we store it here
   surveyBonus: Float 
   # Calculated. This is the score of the cluster
-  score: Float
+  score: Int
   # Calculated this is the score of the cluster without the bonus
-  rawScore: Float 
+  rawScore: Int 
 }
 
 type ShipClusterFind implements ScoutingFindInterface {
@@ -106,9 +106,9 @@ type ShipClusterFind implements ScoutingFindInterface {
   # If there is an incentive for the survey then we store it here
   surveyBonus: Float 
   # Calculated. This is the score of the cluster
-  score: Float
+  score: Int
   # Calculated this is the score of the cluster without the bonus
-  rawScore: Float 
+  rawScore: Int 
 }
 
 
@@ -170,9 +170,9 @@ type VehicleClusterFind implements ScoutingFindInterface {
   # If there is an incentive for the survey then we store it here
   surveyBonus: Float 
   # Calculated. This is the score of the cluster
-  score: Float
+  score: Int
   # Calculated this is the score of the cluster without the bonus
-  rawScore: Float 
+  rawScore: Int 
 }
 
 type VehicleRock {
@@ -221,9 +221,9 @@ type SalvageFind implements ScoutingFindInterface {
   # If there is an incentive for the survey then we store it here
   surveyBonus: Float 
   # Calculated. This is the score of the cluster
-  score: Float
+  score: Int
   # Calculated this is the score of the cluster without the bonus
-  rawScore: Float 
+  rawScore: Int 
 }
 
 type SalvageWreck {
