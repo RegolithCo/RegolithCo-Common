@@ -632,9 +632,16 @@ export async function calculateShipOrder(ds: DataStore, order: ShipMiningOrder):
       lossValue = !order.isRefined || order.shareRefinedValue ? order.shareAmount : unrefinedValue
     else lossValue = order.isRefined ? (order.shareRefinedValue ? refinedValue : unrefinedValue) : unrefinedValue
   }
-
-  // We subtract the refining cost from the share amount
+  // https://chatgpt.com/share/6814e8a2-f3b4-8007-8e1d-64b96d650ea3
   finalShareAmt -= expensesValue
+  const ownerReimbursements =
+    order.expenses?.reduce(
+      (acc, exp) => {
+        acc[exp.ownerScName] = (acc[exp.ownerScName] || 0) + exp.amount
+        return acc
+      },
+      {} as Record<string, number>
+    ) || {}
 
   const { payouts, transferFees, remainder, allPaid, owed, paid } = crewSharePayouts(
     order.sellerscName || order.owner.scName,
@@ -642,6 +649,16 @@ export async function calculateShipOrder(ds: DataStore, order: ShipMiningOrder):
     crewShares,
     order.includeTransferFee
   )
+
+  for (const [scName, amount] of Object.entries(ownerReimbursements)) {
+    const idx = crewShares.findIndex((cs) => cs.payeeScName === scName)
+    if (idx > -1) {
+      payouts[idx][0] += amount // pre-fee total
+      payouts[idx][1] += amount // post-fee net
+    } else {
+      // Optional: handle reimbursements for non-crew members if needed
+    }
+  }
 
   // If we're sharing the unrefined value then add the difference to the job owner
   const myIdx = crewShares.findIndex((share) => share.payeeScName === order.owner.scName)

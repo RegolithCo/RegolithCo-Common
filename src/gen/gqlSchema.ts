@@ -1209,11 +1209,13 @@ input WorkOrderDefaultsInput {
 type WorkOrderExpense {
   amount: Int!
   name: String!
+  ownerScName: String!
 }
 
 input WorkOrderExpenseInput {
   amount: Int!
   name: String!
+  ownerScName: String!
 }
 
 input WorkOrderInput {

@@ -1665,11 +1665,13 @@ export type WorkOrderExpense = {
   __typename: 'WorkOrderExpense';
   amount: Scalars['Int']['output'];
   name: Scalars['String']['output'];
+  ownerScName: Scalars['String']['output'];
 };
 
 export type WorkOrderExpenseInput = {
   amount: Scalars['Int']['input'];
   name: Scalars['String']['input'];
+  ownerScName: Scalars['String']['input'];
 };
 
 export type WorkOrderInput = {
