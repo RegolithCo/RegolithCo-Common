@@ -632,7 +632,7 @@ export async function calculateShipOrder(ds: DataStore, order: ShipMiningOrder):
       lossValue = !order.isRefined || order.shareRefinedValue ? order.shareAmount : unrefinedValue
     else lossValue = order.isRefined ? (order.shareRefinedValue ? refinedValue : unrefinedValue) : unrefinedValue
   }
-  // https://chatgpt.com/share/6814e8a2-f3b4-8007-8e1d-64b96d650ea3
+  // Here we are subtracting the expenses from the share amount
   finalShareAmt -= expensesValue
   const ownerReimbursements =
     order.expenses?.reduce(
@@ -732,7 +732,7 @@ export async function calculateVehicleOrder(ds: DataStore, order: VehicleMiningO
     (acc, { ore, amt }) => {
       // NOTE: That we store mSCU for vehicles so there are some tricky factor of 10 conversions
       acc[ore] = { collected: amt / 10, refined: 0, isRefined: false }
-      yieldSCU += amt / 100
+      yieldSCU += amt / 1000
       return acc
     },
     {} as WorkOrderSummary['oreSummary']
