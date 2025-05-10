@@ -1,6 +1,6 @@
 {
   "name": "@regolithco/common",
-  "version": "1.3.6",
+  "version": "1.3.7",
   "main": "dist/index.js",
   "module": "dist_esnext/index.js",
   "publishConfig": {
