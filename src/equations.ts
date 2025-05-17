@@ -39,6 +39,7 @@ import {
   UEXTradeport,
   jsRound,
   DataStore,
+  RockVolumeSummary,
 } from './index'
 
 /**
@@ -52,6 +53,51 @@ export function oresDict2Array<T extends RefineryRow | VehicleMiningRow | Salvag
 
   // TODO: Sort in the order that the refinery does
   return retVal as T[]
+}
+
+/**
+ * We use this in the surveycalc to figure out only the volumes quickly
+ * @param ds
+ * @param rock
+ * @returns
+ */
+export function shipRockVolumeCalc(densityLookup: Record<ShipOreEnum, number>, rock: ShipRock): RockVolumeSummary {
+  const { ores, mass } = rock
+  let rockVolume = 0
+
+  // We need to go through this twice
+  const propDensities = ores.map(({ ore, percent }) => {
+    const density = densityLookup[ore]
+    return density * percent * FUDGE_FACTOR
+  })
+  const maxVolume = mass / propDensities.reduce((a, b) => a + b, 0)
+  const volumes = ores.map(({ percent }) => maxVolume * percent)
+
+  const byOreArray = ores.map(({ ore }, idx) => {
+    if (ore === ShipOreEnum.Inertmaterial) return null
+    const oreVolume_SCU = volumes[idx]
+    rockVolume += oreVolume_SCU
+    return {
+      ore,
+      volume: oreVolume_SCU,
+    }
+  })
+
+  const byOre = byOreArray.reduce(
+    (acc, oreDetails) => {
+      if (oreDetails === null) return acc
+      return {
+        ...acc,
+        [oreDetails.ore]: oreDetails.volume,
+      }
+    },
+    {} as RockVolumeSummary['byOre']
+  )
+
+  return {
+    rock: rockVolume,
+    byOre,
+  }
 }
 
 /**

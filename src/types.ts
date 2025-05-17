@@ -178,6 +178,11 @@ export type RockSummary = {
   byOre: Partial<Record<AnyOreEnum, FindSummary>>
 }
 
+export type RockVolumeSummary = {
+  rock: number
+  byOre: Partial<Record<AnyOreEnum, number>>
+}
+
 export type FindClusterSummary = FindSummary & {
   oreSort?: AnyOreEnum[]
   byOre?: Partial<Record<AnyOreEnum, FindSummary>>

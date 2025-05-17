@@ -92,6 +92,24 @@ export const getGravityWells = (
           hasRocks: planet.hasRocks,
         })
         bodies
+          .filter(({ wellType, parent }) => wellType === GravityWellTypeEnum.CLUSTER && parent === planet.code)
+          .forEach((cluster) => {
+            acc.push({
+              label: cluster.name,
+              wellType: GravityWellTypeEnum.CLUSTER,
+              id: cluster.code,
+              system: cluster.system as SystemEnum,
+              depth: 2,
+              parent: cluster.parent,
+              parents: [system.code, planet.code],
+              parentType: GravityWellTypeEnum.PLANET,
+              isSpace: cluster.isSpace,
+              isSurface: cluster.isSurface,
+              hasGems: cluster.hasGems,
+              hasRocks: cluster.hasRocks,
+            })
+          })
+        bodies
           .filter(({ wellType, parent }) => wellType === GravityWellTypeEnum.BELT && parent === planet.code)
           .forEach((belt) => {
             acc.push({
@@ -126,6 +144,24 @@ export const getGravityWells = (
               hasGems: lagrange.hasGems,
               hasRocks: lagrange.hasRocks,
             })
+            bodies
+              .filter(({ wellType, parent }) => wellType === GravityWellTypeEnum.CLUSTER && parent === lagrange.code)
+              .forEach((cluster) => {
+                acc.push({
+                  label: cluster.name,
+                  wellType: GravityWellTypeEnum.CLUSTER,
+                  id: cluster.code,
+                  system: cluster.system as SystemEnum,
+                  depth: 3,
+                  parent: cluster.parent,
+                  parents: [system.code, planet.code, lagrange.code],
+                  parentType: GravityWellTypeEnum.PLANET,
+                  isSpace: cluster.isSpace,
+                  isSurface: cluster.isSurface,
+                  hasGems: cluster.hasGems,
+                  hasRocks: cluster.hasRocks,
+                })
+              })
           })
         bodies
           .filter(({ wellType, parent }) => wellType === GravityWellTypeEnum.SATELLITE && parent === planet.code)
@@ -155,11 +191,29 @@ export const getGravityWells = (
                   parent: belt.parent,
                   system: belt.system as SystemEnum,
                   parents: [system.code, planet.code, sat.code],
-                  parentType: GravityWellTypeEnum.PLANET,
+                  parentType: GravityWellTypeEnum.SATELLITE,
                   isSpace: belt.isSpace,
                   isSurface: belt.isSurface,
                   hasGems: belt.hasGems,
                   hasRocks: belt.hasRocks,
+                })
+              })
+            bodies
+              .filter(({ wellType, parent }) => wellType === GravityWellTypeEnum.CLUSTER && parent === sat.code)
+              .forEach((cluster) => {
+                acc.push({
+                  label: cluster.name,
+                  wellType: GravityWellTypeEnum.CLUSTER,
+                  id: cluster.code,
+                  system: cluster.system as SystemEnum,
+                  depth: 3,
+                  parent: cluster.parent,
+                  parents: [system.code, planet.code, sat.code],
+                  parentType: GravityWellTypeEnum.SATELLITE,
+                  isSpace: cluster.isSpace,
+                  isSurface: cluster.isSurface,
+                  hasGems: cluster.hasGems,
+                  hasRocks: cluster.hasRocks,
                 })
               })
           })
@@ -183,6 +237,24 @@ export const getGravityWells = (
           hasGems: cluster.hasGems,
           hasRocks: cluster.hasRocks,
         })
+        bodies
+          .filter(({ wellType, parent }) => wellType === GravityWellTypeEnum.CLUSTER && parent === cluster.code)
+          .forEach((clusterInner) => {
+            acc.push({
+              label: clusterInner.name,
+              wellType: GravityWellTypeEnum.CLUSTER,
+              id: clusterInner.code,
+              system: clusterInner.system as SystemEnum,
+              depth: 2,
+              parent: clusterInner.parent,
+              parents: [system.code, cluster.code],
+              parentType: GravityWellTypeEnum.CLUSTER,
+              isSpace: clusterInner.isSpace,
+              isSurface: clusterInner.isSurface,
+              hasGems: clusterInner.hasGems,
+              hasRocks: clusterInner.hasRocks,
+            })
+          })
       })
 
     return acc
