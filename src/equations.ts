@@ -23,6 +23,7 @@ import {
   ShipRock,
   SalvageOreEnum,
   VehicleOreEnum,
+  WorkOrderExpense,
 } from './gen/schema.types'
 import log from 'loglevel'
 import {
@@ -284,9 +285,19 @@ export function crewSharePayouts(
   sellerName: string,
   netProfit: number,
   crewShares: CrewShare[],
+  expenses: WorkOrderExpense[],
   includeTransferFees = true
 ): CrewSharePayout {
   const idxMap: [number, CrewShare][] = crewShares.map((cs, idx) => [idx, cs])
+
+  const ownerReimbursements =
+    expenses?.reduce(
+      (acc, exp) => {
+        acc[exp.ownerScName] = (acc[exp.ownerScName] || 0) + exp.amount
+        return acc
+      },
+      {} as Record<string, number>
+    ) || {}
 
   const payClasses: Record<ShareTypeEnum, [number, CrewShare][]> = {
     [ShareTypeEnum.Amount]: idxMap.filter(([, { shareType }]) => shareType === ShareTypeEnum.Amount),
@@ -368,6 +379,18 @@ export function crewSharePayouts(
     }, afterPercents)
   }
   const allPaid = crewShares.reduce((acc, { state: paid }) => acc && paid, true)
+
+  // Finally we reimburse anyone who needs it
+  for (const [scName, amount] of Object.entries(ownerReimbursements)) {
+    const idx = crewShares.findIndex((cs) => cs.payeeScName === scName)
+    if (idx > -1) {
+      retVal[idx][0] += amount // pre-fee total
+      retVal[idx][1] += amount // post-fee net
+      payOrOwed(scName, amount, crewShares[idx].state) // reimbursements are always paid
+    } else {
+      // Optional: handle reimbursements for non-crew members if needed
+    }
+  }
 
   return {
     allPaid,
@@ -680,31 +703,14 @@ export async function calculateShipOrder(ds: DataStore, order: ShipMiningOrder):
   }
   // Here we are subtracting the expenses from the share amount
   finalShareAmt -= expensesValue
-  const ownerReimbursements =
-    order.expenses?.reduce(
-      (acc, exp) => {
-        acc[exp.ownerScName] = (acc[exp.ownerScName] || 0) + exp.amount
-        return acc
-      },
-      {} as Record<string, number>
-    ) || {}
 
   const { payouts, transferFees, remainder, allPaid, owed, paid } = crewSharePayouts(
     order.sellerscName || order.owner.scName,
     finalShareAmt,
     crewShares,
+    order.expenses || [],
     order.includeTransferFee
   )
-
-  for (const [scName, amount] of Object.entries(ownerReimbursements)) {
-    const idx = crewShares.findIndex((cs) => cs.payeeScName === scName)
-    if (idx > -1) {
-      payouts[idx][0] += amount // pre-fee total
-      payouts[idx][1] += amount // post-fee net
-    } else {
-      // Optional: handle reimbursements for non-crew members if needed
-    }
-  }
 
   // If we're sharing the unrefined value then add the difference to the job owner
   const myIdx = crewShares.findIndex((share) => share.payeeScName === order.owner.scName)
@@ -813,6 +819,7 @@ export async function calculateVehicleOrder(ds: DataStore, order: VehicleMiningO
     order.sellerscName || order.owner.scName,
     finalShareAmt,
     crewShares,
+    order.expenses || [],
     order.includeTransferFee
   )
   const payoutSummary = crewShares.reduce(
@@ -895,6 +902,7 @@ export async function calculateSalvageOrder(ds: DataStore, order: SalvageOrder):
     order.sellerscName || order.owner.scName,
     finalShareAmt,
     crewShares,
+    order.expenses || [],
     order.includeTransferFee
   )
   const payoutSummary = crewShares.reduce(
@@ -948,10 +956,12 @@ export async function calculateOtherOrder(ds: DataStore, order: OtherOrder): Pro
   const lossValue = order.state !== WorkOrderStateEnum.Failed ? 0 : order.shareAmount || 0
 
   shareAmount -= expensesValue
+
   const { payouts, transferFees, remainder, allPaid, owed, paid } = crewSharePayouts(
     order.sellerscName || order.owner.scName,
     shareAmount,
     crewShares,
+    order.expenses || [],
     order.includeTransferFee
   )
   const payoutSummary = crewShares.reduce(

@@ -154,6 +154,7 @@ const calculateShipFind = async (gravWells: GravityWell[], sf: SurveyFindScoreIn
       if (gravWellObj.id === 'STANTON' || gravWellObj.parents.includes('STANTON')) {
         if (oreNames.includes(ShipOreEnum.Riccite)) newObj.errors.push('Riccite does not occure in Stanton')
         if (oreNames.includes(ShipOreEnum.Stileron)) newObj.errors.push('Stileron does not occure in Stanton')
+        if (oreNames.includes(ShipOreEnum.Ice)) newObj.errors.push('Ice does not occure in Stanton')
       }
     }
 

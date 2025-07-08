@@ -273,6 +273,7 @@ export const BackwardStats = [
   'instability',
   'inertMaterials',
   'shatterDamage',
+  'overchargeRate',
 ]
 
 export type LaserLoadoutStats = LoadoutStats & {
