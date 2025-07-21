@@ -4,10 +4,11 @@ export default gql`
 schema {
   query: Query
   mutation: Mutation
-  subscription: Subscription
 }
 
 directive @admin_only on FIELD_DEFINITION
+
+directive @example(value: String) on ARGUMENT_DEFINITION | ENUM | FIELD_DEFINITION | INPUT_FIELD_DEFINITION | INPUT_OBJECT | INTERFACE | OBJECT | SCALAR
 
 directive @logged_in on FIELD_DEFINITION
 
@@ -177,6 +178,7 @@ interface DiscordGuildInterface {
   name: String!
 }
 
+"""GraphQL Enums and Unions"""
 enum EventNameEnum {
   INSERT
   MODIFY
@@ -294,52 +296,332 @@ enum MiningModuleEnum {
 }
 
 type Mutation {
-  addFriends(friends: [String]!): UserProfile @logged_in
-  addScoutingFind(scoutingFind: ScoutingFindInput!, sessionId: ID!, shipRocks: [ShipRockInput!], vehicleRocks: [VehicleRockInput!], wrecks: [SalvageWreckInput!]): ScoutingFind @logged_in
+  addFriends(
+    """A list of friend user IDs to add."""
+    friends: [String]!
+  ): UserProfile @logged_in
+  """Add a scouting find to a session."""
+  addScoutingFind(
+    """The scouting find data to add."""
+    scoutingFind: ScoutingFindInput!
+    """The session ID for the scouting find."""
+    sessionId: ID!
+    """(Optional) Ship rocks to associate with the find."""
+    shipRocks: [ShipRockInput!]
+    """(Optional) Vehicle rocks to associate with the find."""
+    vehicleRocks: [VehicleRockInput!]
+    """(Optional) Salvage wrecks to associate with the find."""
+    wrecks: [SalvageWreckInput!]
+  ): ScoutingFind @logged_in
   """We need this for users who cannot/will not use the app"""
-  addSessionMentions(scNames: [String]!, sessionId: ID!): Session @logged_in
-  blockProspector(block: Boolean!, userId: ID!): UserProfile @admin_only
+  addSessionMentions(
+    """The Star Citizen names to mention."""
+    scNames: [String]!
+    """The session ID to add mentions to."""
+    sessionId: ID!
+  ): Session @logged_in
+  blockProspector(
+    """True to block, false to unblock."""
+    block: Boolean!
+    """The user ID of the prospector to block or unblock."""
+    userId: ID!
+  ): UserProfile @admin_only
   """
   This is for when a user wants to claim a work order that has been delegated to them
   """
-  claimWorkOrder(orderId: ID!, sessionId: ID!): WorkOrder @logged_in
-  createLoadout(shipLoadout: MiningLoadoutInput!): MiningLoadout @logged_in
-  createSession(crewSharesDefaults: [CrewShareTemplateInput!], salvageOreDefaults: [SalvageOreEnum!], session: SessionInput!, sessionSettings: SessionSettingsInput, shipOreDefaults: [ShipOreEnum!], vehicleOreDefaults: [VehicleOreEnum!], workOrderDefaults: WorkOrderDefaultsInput): Session @logged_in
-  createWorkOrder(salvageOres: [SalvageRowInput!], sessionId: ID!, shares: [CrewShareInput!]!, shipOres: [RefineryRowInput!], vehicleOres: [VehicleMiningRowInput!], workOrder: WorkOrderInput!): WorkOrder @logged_in
-  deleteCrewShare(orderId: ID!, payeeScName: String!, sessionId: ID!): CrewShare @logged_in
-  deleteLoadout(loadoutId: String!): MiningLoadout @logged_in
-  deleteScoutingFind(scoutingFindId: ID!, sessionId: ID!): ScoutingFind @logged_in
-  deleteSession(sessionId: ID!): ID @logged_in
-  deleteUserProfile(leaveData: Boolean): ID @logged_in
-  deleteWorkOrder(orderId: ID!, sessionId: ID!): WorkOrder @logged_in
-  deliverWorkOrder(isSold: Boolean!, orderId: ID!, sessionId: ID!): WorkOrder @logged_in
-  failWorkOrder(orderId: ID!, reason: String, sessionId: ID!): WorkOrder @logged_in
-  joinScoutingFind(enRoute: Boolean, scoutingFindId: ID!, sessionId: ID!): ScoutingFind @logged_in
-  joinSession(joinId: ID!): SessionUser @logged_in
-  leaveScoutingFind(scoutingFindId: ID!, sessionId: ID!): ScoutingFind @logged_in
-  leaveSession(sessionId: ID!): ID @logged_in
-  markCrewSharePaid(isPaid: Boolean!, orderId: ID!, payeeScName: String!, sessionId: ID!): CrewShare @logged_in
-  mergeAccount(authToken: String!, authType: AuthTypeEnum!): UserProfile @admin_only
-  mergeAccountAdmin(primaryUserId: String!, secondaryUserId: String!): UserProfile @admin_only
-  refreshAvatar(remove: Boolean): UserProfile @logged_in
-  removeFriends(friends: [String]!): UserProfile @logged_in
-  removeSessionCrew(scNames: [String]!, sessionId: ID!): Session @logged_in
-  removeSessionMentions(scNames: [String]!, sessionId: ID!): Session @logged_in
+  claimWorkOrder(
+    """The work order ID to claim."""
+    orderId: ID!
+    """The session ID for the work order."""
+    sessionId: ID!
+  ): WorkOrder @logged_in
+  createLoadout(
+    """The mining loadout data to create."""
+    shipLoadout: MiningLoadoutInput!
+  ): MiningLoadout @logged_in
+  """
+  Create a new session with the provided details and defaults.
+  This is the public resolver for creating a session.
+  """
+  createSession(
+    """(Optional) Default crew share templates."""
+    crewSharesDefaults: [CrewShareTemplateInput!]
+    """(Optional) Default salvage ore types."""
+    salvageOreDefaults: [SalvageOreEnum!]
+    """The session details."""
+    session: SessionInput!
+    """(Optional) Default session settings."""
+    sessionSettings: SessionSettingsInput
+    """(Optional) Default ship ore types."""
+    shipOreDefaults: [ShipOreEnum!]
+    """(Optional) Default vehicle ore types."""
+    vehicleOreDefaults: [VehicleOreEnum!]
+    """(Optional) Default work order settings."""
+    workOrderDefaults: WorkOrderDefaultsInput
+  ): Session @logged_in
+  createWorkOrder(
+    """(Optional) Salvage ore rows for the work order."""
+    salvageOres: [SalvageRowInput!]
+    """The session ID for the work order."""
+    sessionId: ID!
+    """The crew shares for the work order."""
+    shares: [CrewShareInput!]!
+    """(Optional) Ship ore rows for the work order."""
+    shipOres: [RefineryRowInput!]
+    """(Optional) Vehicle ore rows for the work order."""
+    vehicleOres: [VehicleMiningRowInput!]
+    """The work order details."""
+    workOrder: WorkOrderInput!
+  ): WorkOrder @logged_in
+  deleteCrewShare(
+    """The work order ID for the crew share."""
+    orderId: ID!
+    """The Star Citizen name of the payee."""
+    payeeScName: String!
+    """The session ID for the crew share."""
+    sessionId: ID!
+  ): CrewShare @logged_in
+  deleteLoadout(
+    """The loadout ID to delete."""
+    loadoutId: String!
+  ): MiningLoadout @logged_in
+  deleteScoutingFind(
+    """The scouting find ID to delete."""
+    scoutingFindId: ID!
+    """The session ID for the scouting find."""
+    sessionId: ID!
+  ): ScoutingFind @logged_in
+  deleteSession(
+    """The session ID to delete."""
+    sessionId: ID!
+  ): ID @logged_in
+  deleteUserProfile(
+    """If true, leaves user data in place after deletion."""
+    leaveData: Boolean
+  ): ID @logged_in
+  deleteWorkOrder(
+    """The work order ID to delete."""
+    orderId: ID!
+    """The session ID for the work order."""
+    sessionId: ID!
+  ): WorkOrder @logged_in
+  """Marka. work order as delivered."""
+  deliverWorkOrder(
+    """True if the order is sold, false otherwise."""
+    isSold: Boolean!
+    """The work order ID to deliver."""
+    orderId: ID!
+    """The session ID for the work order."""
+    sessionId: ID!
+  ): WorkOrder @logged_in
+  failWorkOrder(
+    """The work order ID to fail."""
+    orderId: ID!
+    """(Optional) The reason for failing the work order."""
+    reason: String
+    """The session ID for the work order."""
+    sessionId: ID!
+  ): WorkOrder @logged_in
+  joinScoutingFind(
+    """(Optional) Whether the user is en route."""
+    enRoute: Boolean
+    """The scouting find ID to join."""
+    scoutingFindId: ID!
+    """The session ID for the scouting find."""
+    sessionId: ID!
+  ): ScoutingFind @logged_in
+  joinSession(
+    """The join ID for the session."""
+    joinId: ID!
+  ): SessionUser @logged_in
+  leaveScoutingFind(
+    """The scouting find ID to leave."""
+    scoutingFindId: ID!
+    """The session ID for the scouting find."""
+    sessionId: ID!
+  ): ScoutingFind @logged_in
+  leaveSession(
+    """The session ID to leave."""
+    sessionId: ID!
+  ): ID @logged_in
+  markCrewSharePaid(
+    """True if the share is paid, false otherwise."""
+    isPaid: Boolean!
+    """The work order ID for the crew share."""
+    orderId: ID!
+    """The Star Citizen name of the payee."""
+    payeeScName: String!
+    """The session ID for the crew share."""
+    sessionId: ID!
+  ): CrewShare @logged_in
+  mergeAccount(
+    """The authentication token for the account to merge."""
+    authToken: String!
+    """The authentication type for the account to merge."""
+    authType: AuthTypeEnum!
+  ): UserProfile @admin_only
+  mergeAccountAdmin(
+    """The primary user ID for the merge."""
+    primaryUserId: String!
+    """The secondary user ID to merge into the primary."""
+    secondaryUserId: String!
+  ): UserProfile
+  refreshAvatar(
+    """If true, removes the current avatar."""
+    remove: Boolean
+  ): UserProfile @logged_in
+  removeFriends(
+    """A list of friend user IDs to remove."""
+    friends: [String]!
+  ): UserProfile @logged_in
+  removeSessionCrew(
+    """The Star Citizen names of the crew to remove."""
+    scNames: [String]!
+    """The session ID to remove crew from."""
+    sessionId: ID!
+  ): Session @logged_in
+  removeSessionMentions(
+    """The Star Citizen names to remove from mentions."""
+    scNames: [String]!
+    """The session ID to remove mentions from."""
+    sessionId: ID!
+  ): Session @logged_in
   requestVerifyUserProfile: String @logged_in
-  rotateShareId(sessionId: ID!): Session @logged_in
-  setLookupData(data: JSONObject!, key: String!, lookupType: LookupTypeEnum!): Boolean @admin_only
-  setUserPlan(plan: UserPlanEnum!, userId: ID!): UserProfile @admin_only
-  updateLoadout(loadoutId: String!, shipLoadout: MiningLoadoutInput!): MiningLoadout @logged_in
-  updatePendingUsers(pendingUsers: [PendingUserInput!]!, sessionId: ID!): Session @logged_in
-  updateScoutingFind(scoutingFind: ScoutingFindInput!, scoutingFindId: ID!, sessionId: ID!, shipRocks: [ShipRockInput!], vehicleRocks: [VehicleRockInput!], wrecks: [SalvageWreckInput!]): ScoutingFind @logged_in
-  updateSession(crewSharesDefaults: [CrewShareTemplateInput!], salvageOreDefaults: [SalvageOreEnum!], session: SessionInput!, sessionId: ID!, sessionSettings: SessionSettingsInput, shipOreDefaults: [ShipOreEnum!], vehicleOreDefaults: [VehicleOreEnum!], workOrderDefaults: WorkOrderDefaultsInput): Session @logged_in
-  updateSessionUser(sessionId: ID!, sessionUser: SessionUserUpdate!, userId: ID!): SessionUser @logged_in
-  updateUserProfile(crewSharesDefaults: [CrewShareTemplateInput!], salvageOreDefaults: [SalvageOreEnum!], sessionSettings: SessionSettingsInput, shipOreDefaults: [ShipOreEnum!], userProfile: UserProfileInput!, vehicleOreDefaults: [VehicleOreEnum!], workOrderDefaults: WorkOrderDefaultsInput): UserProfile @logged_in
-  updateWorkOrder(orderId: ID!, salvageOres: [SalvageRowInput!], sessionId: ID!, shares: [CrewShareInput!], shipOres: [RefineryRowInput!], vehicleOres: [VehicleMiningRowInput!], workOrder: WorkOrderInput): WorkOrder @logged_in
-  upsertCrewShare(crewShare: CrewShareInput!, orderId: ID!, sessionId: ID!): CrewShare @logged_in
-  upsertSessionUser(sessionId: ID!, workSessionUser: SessionUserInput): SessionUser @logged_in
-  userAPIKey(revoke: Boolean, userId: ID): UserProfile @logged_in
-  verifyUserProfile(code: String): UserProfile @logged_in
+  rotateShareId(
+    """The session ID to rotate the share ID for."""
+    sessionId: ID!
+  ): Session @logged_in
+  """Set lookup data for populating dropdowns and other UI elements."""
+  setLookupData(
+    """The data to store for the lookup."""
+    data: JSONObject!
+    """The key for the lookup data to set."""
+    key: String!
+    """The type of lookup to set."""
+    lookupType: LookupTypeEnum!
+  ): Boolean @admin_only
+  setUserPlan(
+    """The plan to assign to the user."""
+    plan: UserPlanEnum!
+    """The user ID to update the plan for."""
+    userId: ID!
+  ): UserProfile @admin_only
+  updateLoadout(
+    """The loadout ID to update."""
+    loadoutId: String!
+    """The updated mining loadout data."""
+    shipLoadout: MiningLoadoutInput!
+  ): MiningLoadout @logged_in
+  """Modify the session's pending users."""
+  updatePendingUsers(
+    """The list of pending users to set."""
+    pendingUsers: [PendingUserInput!]!
+    """The session ID to update pending users for."""
+    sessionId: ID!
+  ): Session @logged_in
+  updateScoutingFind(
+    """The updated scouting find data."""
+    scoutingFind: ScoutingFindInput!
+    """The scouting find ID to update."""
+    scoutingFindId: ID!
+    """The session ID for the scouting find."""
+    sessionId: ID!
+    """(Optional) Updated ship rocks."""
+    shipRocks: [ShipRockInput!]
+    """(Optional) Updated vehicle rocks."""
+    vehicleRocks: [VehicleRockInput!]
+    """(Optional) Updated salvage wrecks."""
+    wrecks: [SalvageWreckInput!]
+  ): ScoutingFind @logged_in
+  """
+    Update an existing session with new details and optional settings.
+  This is the public resolver for updating a session.
+  """
+  updateSession(
+    """(Optional) Updated crew share templates."""
+    crewSharesDefaults: [CrewShareTemplateInput!]
+    """(Optional) Updated salvage ore types."""
+    salvageOreDefaults: [SalvageOreEnum!]
+    """The updated session details."""
+    session: SessionInput!
+    """The session ID to update."""
+    sessionId: ID!
+    """(Optional) Updated session settings."""
+    sessionSettings: SessionSettingsInput
+    """(Optional) Updated ship ore types."""
+    shipOreDefaults: [ShipOreEnum!]
+    """(Optional) Updated vehicle ore types."""
+    vehicleOreDefaults: [VehicleOreEnum!]
+    """(Optional) Updated work order defaults."""
+    workOrderDefaults: WorkOrderDefaultsInput
+  ): Session @logged_in
+  updateSessionUser(
+    """The session ID for the user update."""
+    sessionId: ID!
+    """The session user update data."""
+    sessionUser: SessionUserUpdate!
+    """The user ID to update."""
+    userId: ID!
+  ): SessionUser @logged_in
+  updateUserProfile(
+    """(Optional) Default crew share templates for the user."""
+    crewSharesDefaults: [CrewShareTemplateInput!]
+    """(Optional) Default salvage ore types for the user."""
+    salvageOreDefaults: [SalvageOreEnum!]
+    """(Optional) Default session settings for the user."""
+    sessionSettings: SessionSettingsInput
+    """(Optional) Default ship ore types for the user."""
+    shipOreDefaults: [ShipOreEnum!]
+    """The updated user profile information."""
+    userProfile: UserProfileInput!
+    """(Optional) Default vehicle ore types for the user."""
+    vehicleOreDefaults: [VehicleOreEnum!]
+    """(Optional) Default work order settings for the user."""
+    workOrderDefaults: WorkOrderDefaultsInput
+  ): UserProfile @logged_in
+  updateWorkOrder(
+    """The work order ID to update."""
+    orderId: ID!
+    """(Optional) Updated salvage ore rows."""
+    salvageOres: [SalvageRowInput!]
+    """The session ID for the work order."""
+    sessionId: ID!
+    """(Optional) Updated crew shares."""
+    shares: [CrewShareInput!]
+    """(Optional) Updated ship ore rows."""
+    shipOres: [RefineryRowInput!]
+    """(Optional) Updated vehicle ore rows."""
+    vehicleOres: [VehicleMiningRowInput!]
+    """(Optional) Updated work order details."""
+    workOrder: WorkOrderInput
+  ): WorkOrder @logged_in
+  upsertCrewShare(
+    """The crew share data to upsert."""
+    crewShare: CrewShareInput!
+    """The work order ID for the crew share."""
+    orderId: ID!
+    """The session ID for the crew share."""
+    sessionId: ID!
+  ): CrewShare @logged_in
+  upsertSessionUser(
+    """The session ID to update the user for."""
+    sessionId: ID!
+    """The session user data to upsert."""
+    workSessionUser: SessionUserInput
+  ): SessionUser @logged_in
+  userAPIKey(
+    """If true, revokes the API key."""
+    revoke: Boolean
+    """(Optional) The user ID to get or revoke the API key for."""
+    userId: ID
+  ): UserProfile @logged_in
+  """
+  Verify a user by pinging CIG's website and looking for a verification code in the text of the page
+  """
+  verifyUserProfile(
+    """The verification code sent to the user."""
+    code: String
+  ): UserProfile @logged_in
 }
 
 type MyDiscordGuild implements DiscordGuildInterface {
@@ -422,19 +704,88 @@ input PendingUserInput {
 }
 
 type Query {
-  captureRefineryOrder(imgUrl: String!): ShipMiningOrderCapture @logged_in
-  captureShipRockScan(imgUrl: String!): ShipRockCapture @logged_in
-  crewShares(nextToken: String, orderId: ID, sessionId: ID!): PaginatedCrewShares @logged_in
+  """
+  Capture and analyze a refinery order from an image URL.
+  
+  Arguments:
+    imgUrl: The URL of the image to analyze.
+  """
+  captureRefineryOrder(
+    """The URL of the image to analyze."""
+    imgUrl: String!
+  ): ShipMiningOrderCapture @logged_in
+  """Capture and analyze a ship rock scan from an image URL."""
+  captureShipRockScan(
+    """The URL of the image to analyze."""
+    imgUrl: String!
+  ): ShipRockCapture @logged_in
+  """Fetch paginated crew shares for a session and (optionally) an order."""
+  crewShares(
+    """(Optional) The pagination token for fetching the next page."""
+    nextToken: String
+    """(Optional) The unique identifier (GUID) of the work order."""
+    orderId: ID
+    """The unique identifier (GUID) of the session."""
+    sessionId: ID!
+  ): PaginatedCrewShares @logged_in
+  """
+  Returns lookup data for populating dropdowns and other UI elements.
+  This is the public resolver for the session user.
+  """
   lookups: LookupData
+  """
+  Returns the currently authenticated user's profile.
+  Requires authentication.
+  """
   profile: UserProfile @logged_in
-  scoutingFind(scoutingFindId: ID!, sessionId: ID!): ScoutingFind @logged_in
-  session(sessionId: ID!): Session @logged_in
-  sessionShare(joinId: ID!): SessionShare
-  sessionUpdates(lastCheck: String, sessionId: ID!): [SessionUpdate] @logged_in
-  sessionUser(sessionId: ID!): SessionUser @logged_in
-  surveyData(dataName: String!, epoch: String!): SurveyData
-  user(userId: ID!): User @logged_in
-  workOrder(orderId: ID!, sessionId: ID!): WorkOrder @logged_in
+  """Fetch a scouting find by session and scouting find ID."""
+  scoutingFind(
+    """The unique identifier (GUID) of the scouting find."""
+    scoutingFindId: ID!
+    """The unique identifier (GUID) of the session."""
+    sessionId: ID!
+  ): ScoutingFind @logged_in
+  """Fetch a session by its session ID."""
+  session(
+    """The unique identifier (GUID) of the session to fetch."""
+    sessionId: ID!
+  ): Session @logged_in
+  """Fetch a shared session using a public join ID."""
+  sessionShare(
+    """The public join identifier (GUID) for the session."""
+    joinId: ID!
+  ): SessionShare
+  """Fetch updates for a session since the last check timestamp."""
+  sessionUpdates(
+    """(Optional) The timestamp of the last check for updates."""
+    lastCheck: String
+    """The unique identifier (GUID) of the session."""
+    sessionId: ID!
+  ): [SessionUpdate] @logged_in
+  """Fetch the session user object for the current session."""
+  sessionUser(
+    """The unique identifier (GUID) of the session."""
+    sessionId: ID!
+  ): SessionUser @logged_in
+  """Fetch survey data for a given epoch and data name."""
+  surveyData(
+    """The name of the survey data set."""
+    dataName: String!
+    """The epoch to fetch survey data for."""
+    epoch: String!
+  ): SurveyData
+  """Fetch a user by their user ID (GUID)."""
+  user(
+    """The unique identifier (GUID) of the user to fetch."""
+    userId: ID! @example(value: "00000000-0000-0000-0000-000000000000")
+  ): User @logged_in
+  """Fetch a work order by session and order ID."""
+  workOrder(
+    """The unique identifier (GUID) of the work order."""
+    orderId: ID!
+    """The unique identifier (GUID) of the session."""
+    sessionId: ID!
+  ): WorkOrder @logged_in
 }
 
 enum RefineryEnum {
@@ -757,6 +1108,7 @@ type SessionSummaryWorkOrder {
   unpaidShares: Int
 }
 
+"""This is the object that represents a session update."""
 type SessionUpdate {
   data: SessionUpdateUnion
   eventDate: Timestamp!
@@ -764,6 +1116,7 @@ type SessionUpdate {
   sessionId: ID!
 }
 
+"""GraphQL Enums for Lookup Types"""
 union SessionUpdateUnion = CrewShare | OtherOrder | SalvageFind | SalvageOrder | Session | SessionUser | ShipClusterFind | ShipMiningOrder | VehicleClusterFind | VehicleMiningOrder
 
 """
@@ -972,10 +1325,9 @@ enum ShipRoleEnum {
   TURRET
 }
 
-type Subscription {
-  apiSubscription: APIEvent
-}
-
+"""
+This is object that represents the survey data for a specific epoch and data name.
+"""
 type SurveyData {
   data: JSONObject
   dataName: String!

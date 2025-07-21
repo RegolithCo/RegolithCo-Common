@@ -23,7 +23,7 @@ import {
   Session,
   UserProfile,
 } from './gen/schema.types'
-import { Buffer } from 'buffer/'
+import { Buffer } from 'buffer'
 import numeral from 'numeral'
 import { CrewHierarchy, JSONObject, UserSuggest } from './types'
 import dayjs from 'dayjs'

@@ -3,7 +3,11 @@
     {
       "name": "🏠 @regolithco/common",
       "path": "."
-    }
+    },
+    {
+      "name": "🧬 Schema",
+      "path": "GraphQL"
+    } 
   ],
   "settings": {
     "npm.packageManager": "yarn",

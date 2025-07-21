@@ -195,6 +195,7 @@ export type DiscordGuildInterface = {
   name: Scalars['String']['output'];
 };
 
+/** GraphQL Enums and Unions */
 export const EventNameEnum = {
   Insert: 'INSERT',
   Modify: 'MODIFY',
@@ -321,6 +322,7 @@ export type MiningModuleEnum = typeof MiningModuleEnum[keyof typeof MiningModule
 export type Mutation = {
   __typename: 'Mutation';
   addFriends?: Maybe<UserProfile>;
+  /** Add a scouting find to a session. */
   addScoutingFind?: Maybe<ScoutingFind>;
   /** We need this for users who cannot/will not use the app */
   addSessionMentions?: Maybe<Session>;
@@ -328,6 +330,10 @@ export type Mutation = {
   /** This is for when a user wants to claim a work order that has been delegated to them */
   claimWorkOrder?: Maybe<WorkOrder>;
   createLoadout?: Maybe<MiningLoadout>;
+  /**
+   * Create a new session with the provided details and defaults.
+   * This is the public resolver for creating a session.
+   */
   createSession?: Maybe<Session>;
   createWorkOrder?: Maybe<WorkOrder>;
   deleteCrewShare?: Maybe<CrewShare>;
@@ -336,6 +342,7 @@ export type Mutation = {
   deleteSession?: Maybe<Scalars['ID']['output']>;
   deleteUserProfile?: Maybe<Scalars['ID']['output']>;
   deleteWorkOrder?: Maybe<WorkOrder>;
+  /** Marka. work order as delivered. */
   deliverWorkOrder?: Maybe<WorkOrder>;
   failWorkOrder?: Maybe<WorkOrder>;
   joinScoutingFind?: Maybe<ScoutingFind>;
@@ -351,11 +358,17 @@ export type Mutation = {
   removeSessionMentions?: Maybe<Session>;
   requestVerifyUserProfile?: Maybe<Scalars['String']['output']>;
   rotateShareId?: Maybe<Session>;
+  /** Set lookup data for populating dropdowns and other UI elements. */
   setLookupData?: Maybe<Scalars['Boolean']['output']>;
   setUserPlan?: Maybe<UserProfile>;
   updateLoadout?: Maybe<MiningLoadout>;
+  /** Modify the session's pending users. */
   updatePendingUsers?: Maybe<Session>;
   updateScoutingFind?: Maybe<ScoutingFind>;
+  /**
+   *   Update an existing session with new details and optional settings.
+   * This is the public resolver for updating a session.
+   */
   updateSession?: Maybe<Session>;
   updateSessionUser?: Maybe<SessionUser>;
   updateUserProfile?: Maybe<UserProfile>;
@@ -363,6 +376,7 @@ export type Mutation = {
   upsertCrewShare?: Maybe<CrewShare>;
   upsertSessionUser?: Maybe<SessionUser>;
   userAPIKey?: Maybe<UserProfile>;
+  /** Verify a user by pinging CIG's website and looking for a verification code in the text of the page */
   verifyUserProfile?: Maybe<UserProfile>;
 };
 
@@ -732,18 +746,42 @@ export type PendingUserInput = {
 
 export type Query = {
   __typename: 'Query';
+  /**
+   * Capture and analyze a refinery order from an image URL.
+   *
+   * Arguments:
+   *   imgUrl: The URL of the image to analyze.
+   */
   captureRefineryOrder?: Maybe<ShipMiningOrderCapture>;
+  /** Capture and analyze a ship rock scan from an image URL. */
   captureShipRockScan?: Maybe<ShipRockCapture>;
+  /** Fetch paginated crew shares for a session and (optionally) an order. */
   crewShares?: Maybe<PaginatedCrewShares>;
+  /**
+   * Returns lookup data for populating dropdowns and other UI elements.
+   * This is the public resolver for the session user.
+   */
   lookups?: Maybe<LookupData>;
+  /**
+   * Returns the currently authenticated user's profile.
+   * Requires authentication.
+   */
   profile?: Maybe<UserProfile>;
+  /** Fetch a scouting find by session and scouting find ID. */
   scoutingFind?: Maybe<ScoutingFind>;
+  /** Fetch a session by its session ID. */
   session?: Maybe<Session>;
+  /** Fetch a shared session using a public join ID. */
   sessionShare?: Maybe<SessionShare>;
+  /** Fetch updates for a session since the last check timestamp. */
   sessionUpdates?: Maybe<Array<Maybe<SessionUpdate>>>;
+  /** Fetch the session user object for the current session. */
   sessionUser?: Maybe<SessionUser>;
+  /** Fetch survey data for a given epoch and data name. */
   surveyData?: Maybe<SurveyData>;
+  /** Fetch a user by their user ID (GUID). */
   user?: Maybe<User>;
+  /** Fetch a work order by session and order ID. */
   workOrder?: Maybe<WorkOrder>;
 };
 
@@ -1163,6 +1201,7 @@ export type SessionSummaryWorkOrder = {
   unpaidShares?: Maybe<Scalars['Int']['output']>;
 };
 
+/** This is the object that represents a session update. */
 export type SessionUpdate = {
   __typename: 'SessionUpdate';
   data?: Maybe<SessionUpdateUnion>;
@@ -1171,6 +1210,7 @@ export type SessionUpdate = {
   sessionId: Scalars['ID']['output'];
 };
 
+/** GraphQL Enums for Lookup Types */
 export type SessionUpdateUnion = CrewShare | OtherOrder | SalvageFind | SalvageOrder | Session | SessionUser | ShipClusterFind | ShipMiningOrder | VehicleClusterFind | VehicleMiningOrder;
 
 /**
@@ -1391,11 +1431,7 @@ export const ShipRoleEnum = {
 } as const;
 
 export type ShipRoleEnum = typeof ShipRoleEnum[keyof typeof ShipRoleEnum];
-export type Subscription = {
-  __typename: 'Subscription';
-  apiSubscription?: Maybe<ApiEvent>;
-};
-
+/** This is object that represents the survey data for a specific epoch and data name. */
 export type SurveyData = {
   __typename: 'SurveyData';
   data?: Maybe<Scalars['JSONObject']['output']>;
