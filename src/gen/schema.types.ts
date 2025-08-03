@@ -1440,17 +1440,6 @@ export type SurveyData = {
   lastUpdated?: Maybe<Scalars['Timestamp']['output']>;
 };
 
-/** These are the names of the reports that we generate for the SurveyCorps */
-export const SurveyDataReports = {
-  BonusMap: 'bonusMap',
-  LeaderBoard: 'leaderBoard',
-  ShipOreByGravProb: 'shipOreByGravProb',
-  ShipOreByRockClassProb: 'shipOreByRockClassProb',
-  ShipRockClassByGravProb: 'shipRockClassByGravProb',
-  VehicleProbs: 'vehicleProbs'
-} as const;
-
-export type SurveyDataReports = typeof SurveyDataReports[keyof typeof SurveyDataReports];
 export const SystemEnum = {
   Pyro: 'PYRO',
   Stanton: 'STANTON'

@@ -1335,18 +1335,6 @@ type SurveyData {
   lastUpdated: Timestamp
 }
 
-"""
-These are the names of the reports that we generate for the SurveyCorps
-"""
-enum SurveyDataReports {
-  bonusMap
-  leaderBoard
-  shipOreByGravProb
-  shipOreByRockClassProb
-  shipRockClassByGravProb
-  vehicleProbs
-}
-
 enum SystemEnum {
   PYRO
   STANTON

@@ -4,18 +4,6 @@ type LookupData {
   loadout: JSONObject
 }
 
-"""
-These are the names of the reports that we generate for the SurveyCorps
-"""
-enum SurveyDataReports {
-  vehicleProbs
-  shipOreByGravProb
-  shipOreByRockClassProb
-  shipRockClassByGravProb
-  bonusMap
-  leaderBoard
-}
-
 type CIGLookups {
   densitiesLookups: JSONObject
   methodsBonusLookup: JSONObject
