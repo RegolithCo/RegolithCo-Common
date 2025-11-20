@@ -373,8 +373,20 @@ export const OreTierNames: Record<OreTierEnum, string> = {
 }
 
 export const ShipOreTiers: Record<OreTierEnum, ShipOreEnum[]> = {
-  [OreTierEnum.STier]: [ShipOreEnum.Quantanium, ShipOreEnum.Stileron, ShipOreEnum.Riccite],
-  [OreTierEnum.ATier]: [ShipOreEnum.Taranite, ShipOreEnum.Bexalite, ShipOreEnum.Gold],
+  [OreTierEnum.STier]: [
+    //
+    ShipOreEnum.Quantanium,
+    ShipOreEnum.Stileron,
+    ShipOreEnum.Savrilium,
+    ShipOreEnum.Riccite,
+  ],
+  [OreTierEnum.ATier]: [
+    //
+    ShipOreEnum.Taranite,
+    ShipOreEnum.Lindinium,
+    ShipOreEnum.Bexalite,
+    ShipOreEnum.Gold,
+  ],
   [OreTierEnum.BTier]: [
     ShipOreEnum.Laranite,
     ShipOreEnum.Borase,
@@ -388,6 +400,7 @@ export const ShipOreTiers: Record<OreTierEnum, ShipOreEnum[]> = {
     ShipOreEnum.Silicon,
     ShipOreEnum.Iron,
     ShipOreEnum.Quartz,
+    ShipOreEnum.Torite,
     ShipOreEnum.Corundum,
     ShipOreEnum.Copper,
     ShipOreEnum.Tin,
