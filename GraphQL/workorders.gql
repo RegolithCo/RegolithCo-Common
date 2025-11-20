@@ -287,11 +287,15 @@ enum RefineryEnum {
   PYRO_ORBITUARY
   PYRO_CHECKMATE
   PYRO_STANTG
+  # NYX: 
+  NYX_LEVSKI
+  NYX_STANTG
 }
 
 enum SystemEnum {
   STANTON
   PYRO
+  NYX
 }
 
 enum RefineryMethodEnum {

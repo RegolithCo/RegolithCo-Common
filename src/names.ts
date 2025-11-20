@@ -26,6 +26,7 @@ export const InvalidSCNames: string[] = ['admin', 'administrator', 'moderator', 
 const SystemNames: Record<SystemEnum, string> = {
   [SystemEnum.Pyro]: 'Pyro',
   [SystemEnum.Stanton]: 'Stanton',
+  [SystemEnum.Nyx]: 'Nyx',
 }
 export const getSystemName = (system: SystemEnum) => (SystemNames[system] ? SystemNames[system] : system)
 
@@ -136,6 +137,9 @@ const RefineryNames: Record<RefineryEnum, string> = {
   [RefineryEnum.PyroOrbituary]: 'Orbituary Station',
   [RefineryEnum.PyroCheckmate]: 'Checkmate Station',
   [RefineryEnum.PyroStantg]: 'PYR-ST: Stanton Gateway',
+  // NYX
+  [RefineryEnum.NyxLevski]: 'Levski Station',
+  [RefineryEnum.NyxStantg]: 'NYX-ST: Stanton Gateway',
 }
 export const getRefineryName = (refinery: RefineryEnum) =>
   RefineryNames[refinery] ? RefineryNames[refinery] : refinery
@@ -157,6 +161,9 @@ const RefineryAbbrevs: Record<RefineryEnum, string> = {
   [RefineryEnum.PyroOrbituary]: 'ORBIT',
   [RefineryEnum.PyroCheckmate]: 'CHKMT',
   [RefineryEnum.PyroStantg]: 'PYR-ST',
+  // NYX
+  [RefineryEnum.NyxLevski]: 'LEVSKI',
+  [RefineryEnum.NyxStantg]: 'NYX-ST',
 }
 export const getRefineryAbbrev = (refinery: RefineryEnum) =>
   RefineryAbbrevs[refinery] ? RefineryAbbrevs[refinery] : refinery
@@ -172,12 +179,16 @@ export const RefinerySystemMap: Record<RefineryEnum, SystemEnum> = {
   [RefineryEnum.Micl2]: SystemEnum.Stanton,
   [RefineryEnum.Micl5]: SystemEnum.Stanton,
   [RefineryEnum.Magng]: SystemEnum.Stanton,
-  [RefineryEnum.Pyrog]: SystemEnum.Pyro,
   [RefineryEnum.Terrg]: SystemEnum.Stanton,
+  // Pyro
+  [RefineryEnum.Pyrog]: SystemEnum.Pyro,
   [RefineryEnum.PyroRuin]: SystemEnum.Pyro,
   [RefineryEnum.PyroOrbituary]: SystemEnum.Pyro,
   [RefineryEnum.PyroCheckmate]: SystemEnum.Pyro,
   [RefineryEnum.PyroStantg]: SystemEnum.Pyro,
+  // NYX
+  [RefineryEnum.NyxLevski]: SystemEnum.Nyx,
+  [RefineryEnum.NyxStantg]: SystemEnum.Nyx,
 }
 
 const RefineryMethodNames: Record<RefineryMethodEnum, string> = {
@@ -219,6 +230,10 @@ const ShipOreNames: Record<ShipOreEnum, string> = {
   [ShipOreEnum.Stileron]: 'Stileron',
   [ShipOreEnum.Ice]: 'Ice',
   [ShipOreEnum.Riccite]: 'Riccite',
+  // Nyx Ores
+  [ShipOreEnum.Torite]: 'Torite',
+  [ShipOreEnum.Lindinium]: 'Lindinium',
+  [ShipOreEnum.Savrilium]: 'Savrilium',
 }
 export const getShipOreName = (ore: ShipOreEnum) => (ShipOreNames[ore] ? ShipOreNames[ore] : ore)
 
@@ -253,6 +268,10 @@ const ShipOreAbbrev: Record<ShipOreEnum, [string, string]> = {
   [ShipOreEnum.Stileron]: ['Sti', 'Stil'],
   [ShipOreEnum.Ice]: ['Ice', 'Ice'],
   [ShipOreEnum.Riccite]: ['Ric', 'Ricc'],
+  // Nyx Ores
+  [ShipOreEnum.Torite]: ['Tor', 'Tori'],
+  [ShipOreEnum.Lindinium]: ['Lin', 'Lind'],
+  [ShipOreEnum.Savrilium]: ['Sav', 'Savr'],
 }
 export const getShipOreAbbrev = (ore: ShipOreEnum, abLen: 3 | 4) => {
   if (abLen === 3) return ShipOreAbbrev[ore] ? ShipOreAbbrev[ore][0] : ore

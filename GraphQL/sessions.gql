@@ -249,6 +249,10 @@ enum ShipOreEnum {
   STILERON
   TIN
   RICCITE
+  # New NYX materials 4.4
+  TORITE
+  LINDINIUM
+  SAVRILIUM
   # INERT
   INERTMATERIAL
 }

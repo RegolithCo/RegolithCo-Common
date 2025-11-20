@@ -5,6 +5,8 @@ import { ObjectValues } from './types'
  * This is an enumeration of all the SC Refineries
  */
 export const ScVersionEnum = {
+  SC4_4: '4.4',
+  SC4_3_2: '4.3.2',
   SC4_3_1: '4.3.1',
   SC4_3: '4.3',
   SC4_2_1: '4.2.1',
@@ -29,12 +31,14 @@ export const ScVersionEnum = {
 export type ScVersionEnum = ObjectValues<typeof ScVersionEnum>
 
 // This is the current deployed version
-export const scVersion: ScVersionEnum = ScVersionEnum.SC4_3_1
+export const scVersion: ScVersionEnum = ScVersionEnum.SC4_4
 
 /**
  * A list of all the SC Versions ever supported by Regolith and their start dates. We use this to determine the epoch of a version.
  */
 export const scVersionDates: Record<ScVersionEnum, Date> = {
+  [ScVersionEnum.SC4_4]: new Date('2025-11-19'),
+  [ScVersionEnum.SC4_3_2]: new Date('2025-10-17'),
   [ScVersionEnum.SC4_3_1]: new Date('2025-09-13'),
   [ScVersionEnum.SC4_3]: new Date('2025-08-22'),
   [ScVersionEnum.SC4_2_1]: new Date('2025-07-18'),
@@ -70,6 +74,7 @@ export const scVersionDates: Record<ScVersionEnum, Date> = {
  * When an epoch changes the Survey data resets and people have to re-collect it.
  */
 export const ScVersionEpochEnum = {
+  SC_EPOCH_4_4: '4.4',
   SC_EPOCH_4_1: '4.1',
   SC_EPOCH_4_0: '4.0',
 } as const
@@ -77,6 +82,10 @@ export type ScVersionEpochEnum = ObjectValues<typeof ScVersionEpochEnum>
 
 // This has to be chronological with the newest version at the top
 export const EpochMap: Record<ScVersionEpochEnum, ScVersionEnum[]> = {
+  [ScVersionEpochEnum.SC_EPOCH_4_4]: [
+    //
+    ScVersionEnum.SC4_4,
+  ],
   [ScVersionEpochEnum.SC_EPOCH_4_1]: [
     //
     ScVersionEnum.SC4_1,
@@ -84,6 +93,7 @@ export const EpochMap: Record<ScVersionEpochEnum, ScVersionEnum[]> = {
     ScVersionEnum.SC4_2_1,
     ScVersionEnum.SC4_3,
     ScVersionEnum.SC4_3_1,
+    ScVersionEnum.SC4_3_2,
   ],
   [ScVersionEpochEnum.SC_EPOCH_4_0]: [
     //
@@ -113,6 +123,11 @@ export const SystemRefineries: Record<SystemEnum, RefineryEnum[]> = {
     RefineryEnum.PyroOrbituary,
     RefineryEnum.PyroRuin,
     RefineryEnum.PyroStantg,
+  ],
+  [SystemEnum.Nyx]: [
+    // NYX
+    RefineryEnum.NyxLevski,
+    RefineryEnum.NyxStantg,
   ],
 }
 

@@ -857,6 +857,8 @@ export const RefineryEnum = {
   Micl1: 'MICL1',
   Micl2: 'MICL2',
   Micl5: 'MICL5',
+  NyxLevski: 'NYX_LEVSKI',
+  NyxStantg: 'NYX_STANTG',
   Pyrog: 'PYROG',
   PyroCheckmate: 'PYRO_CHECKMATE',
   PyroOrbituary: 'PYRO_ORBITUARY',
@@ -1368,14 +1370,17 @@ export const ShipOreEnum = {
   Inertmaterial: 'INERTMATERIAL',
   Iron: 'IRON',
   Laranite: 'LARANITE',
+  Lindinium: 'LINDINIUM',
   Quantanium: 'QUANTANIUM',
   Quartz: 'QUARTZ',
   Riccite: 'RICCITE',
+  Savrilium: 'SAVRILIUM',
   Silicon: 'SILICON',
   Stileron: 'STILERON',
   Taranite: 'TARANITE',
   Tin: 'TIN',
   Titanium: 'TITANIUM',
+  Torite: 'TORITE',
   Tungsten: 'TUNGSTEN'
 } as const;
 
@@ -1441,6 +1446,7 @@ export type SurveyData = {
 };
 
 export const SystemEnum = {
+  Nyx: 'NYX',
   Pyro: 'PYRO',
   Stanton: 'STANTON'
 } as const;
