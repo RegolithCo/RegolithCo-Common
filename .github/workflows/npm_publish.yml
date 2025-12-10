@@ -11,6 +11,9 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
 
     steps:
       - name: Checkout repository
@@ -52,9 +55,7 @@ jobs:
         run: |
           if [ "${{ env.CURRENT_VERSION }}" != "${{ env.LATEST_VERSION }}" ]; then
             echo "Publishing new version: ${{ env.CURRENT_VERSION }}"
-            npm publish --access public
+            npm publish --access public --provenance
           else
             echo "Version has not changed. Skipping publish."
           fi
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
