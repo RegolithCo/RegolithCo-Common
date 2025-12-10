@@ -51,16 +51,12 @@ jobs:
         id: latest_version
         run: echo "LATEST_VERSION=$(npm show @regolithco/common version || echo '0.0.0')" >> $GITHUB_ENV
 
-      - name: Update npm
-        run: npm install -g npm@latest
-      - run: npm ci
-      - run: npm run build --if-present
-      - run: npm test
-
       - name: Compare versions and publish if changed
         run: |
           if [ "${{ env.CURRENT_VERSION }}" != "${{ env.LATEST_VERSION }}" ]; then
             echo "Publishing new version: ${{ env.CURRENT_VERSION }}"
+            npm install -g npm@latest
+            npm run build --if-present
             npm publish --access public
           else
             echo "Version has not changed. Skipping publish."
