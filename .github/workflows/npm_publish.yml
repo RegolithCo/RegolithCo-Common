@@ -14,24 +14,16 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    env:
-      NODE_AUTH_TOKEN: ''
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '22'
           registry-url: 'https://registry.npmjs.org'
-
-      - name: Clear npm auth (required for trusted publishing)
-        run: |
-          npm config delete //registry.npmjs.org/:_authToken || true
-          rm -f ~/.npmrc
-          rm -f .npmrc
 
       - name: Enable Corepack
         run: corepack enable
@@ -59,11 +51,17 @@ jobs:
         id: latest_version
         run: echo "LATEST_VERSION=$(npm show @regolithco/common version || echo '0.0.0')" >> $GITHUB_ENV
 
+      - name: Update npm
+        run: npm install -g npm@latest
+      - run: npm ci
+      - run: npm run build --if-present
+      - run: npm test
+
       - name: Compare versions and publish if changed
         run: |
           if [ "${{ env.CURRENT_VERSION }}" != "${{ env.LATEST_VERSION }}" ]; then
             echo "Publishing new version: ${{ env.CURRENT_VERSION }}"
-            npm publish --access public --provenance
+            npm publish --access public
           else
             echo "Version has not changed. Skipping publish."
           fi
