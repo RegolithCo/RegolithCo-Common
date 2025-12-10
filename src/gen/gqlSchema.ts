@@ -704,21 +704,6 @@ input PendingUserInput {
 }
 
 type Query {
-  """
-  Capture and analyze a refinery order from an image URL.
-  
-  Arguments:
-    imgUrl: The URL of the image to analyze.
-  """
-  captureRefineryOrder(
-    """The URL of the image to analyze."""
-    imgUrl: String!
-  ): ShipMiningOrderCapture @logged_in
-  """Capture and analyze a ship rock scan from an image URL."""
-  captureShipRockScan(
-    """The URL of the image to analyze."""
-    imgUrl: String!
-  ): ShipRockCapture @logged_in
   """Fetch paginated crew shares for a session and (optionally) an order."""
   crewShares(
     """(Optional) The pagination token for fetching the next page."""

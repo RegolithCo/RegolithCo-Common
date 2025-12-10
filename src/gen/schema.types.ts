@@ -746,15 +746,6 @@ export type PendingUserInput = {
 
 export type Query = {
   __typename: 'Query';
-  /**
-   * Capture and analyze a refinery order from an image URL.
-   *
-   * Arguments:
-   *   imgUrl: The URL of the image to analyze.
-   */
-  captureRefineryOrder?: Maybe<ShipMiningOrderCapture>;
-  /** Capture and analyze a ship rock scan from an image URL. */
-  captureShipRockScan?: Maybe<ShipRockCapture>;
   /** Fetch paginated crew shares for a session and (optionally) an order. */
   crewShares?: Maybe<PaginatedCrewShares>;
   /**
@@ -783,16 +774,6 @@ export type Query = {
   user?: Maybe<User>;
   /** Fetch a work order by session and order ID. */
   workOrder?: Maybe<WorkOrder>;
-};
-
-
-export type QueryCaptureRefineryOrderArgs = {
-  imgUrl: Scalars['String']['input'];
-};
-
-
-export type QueryCaptureShipRockScanArgs = {
-  imgUrl: Scalars['String']['input'];
 };
 
 
