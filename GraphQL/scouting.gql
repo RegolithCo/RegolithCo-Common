@@ -230,7 +230,7 @@ type SalvageWreck {
   state: WreckStateEnum!
   isShip: Boolean! # If it's a ship or a panel
   shipCode: String
-  sellableAUEC: Int # an estimate of cash from selling cargo or components
+  sellableAUEC: BigInt # an estimate of cash from selling cargo or components
   # You can put in estimates for how much you can scrape from this wreck
   salvageOres: [SalvageWreckOre!]!
 }
@@ -238,7 +238,7 @@ input SalvageWreckInput {
   state: WreckStateEnum!
   isShip: Boolean! # If it's a ship or a panel
   shipCode: String
-  sellableAUEC: Int # an estimate of cash from selling cargo or components
+  sellableAUEC: BigInt # an estimate of cash from selling cargo or components
   # You can put in estimates for how much you can scrape from this wreck
   salvageOres: [SalvageWreckOreInput!]!
 }

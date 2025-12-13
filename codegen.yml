@@ -33,5 +33,6 @@ generates:
       strictScalars: true
       scalars:
         Timestamp: number
+        BigInt: bigint
         JSONObject: Record<string, any>
         RockType: ../types#RockType

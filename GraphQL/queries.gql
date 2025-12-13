@@ -1,6 +1,7 @@
 
 scalar JSONObject
 scalar Timestamp
+scalar BigInt
 
 directive @admin_only on FIELD_DEFINITION
 directive @logged_in on FIELD_DEFINITION

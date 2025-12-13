@@ -75,6 +75,8 @@ enum AuthTypeEnum {
   GOOGLE
 }
 
+scalar BigInt
+
 type CIGLookups {
   densitiesLookups: JSONObject
   methodsBonusLookup: JSONObject
@@ -653,7 +655,7 @@ type OtherOrder implements WorkOrderInterface {
   sellerscName: String
   session: Session
   sessionId: ID!
-  shareAmount: Int
+  shareAmount: BigInt
   state: WorkOrderStateEnum!
   updatedAt: Timestamp!
   version: String!
@@ -876,7 +878,7 @@ type SalvageOrder implements WorkOrderInterface {
   sellerscName: String
   session: Session
   sessionId: ID!
-  shareAmount: Int
+  shareAmount: BigInt
   state: WorkOrderStateEnum!
   updatedAt: Timestamp!
   version: String!
@@ -900,7 +902,7 @@ input SalvageRowInput {
 type SalvageWreck {
   isShip: Boolean!
   salvageOres: [SalvageWreckOre!]!
-  sellableAUEC: Int
+  sellableAUEC: BigInt
   shipCode: String
   state: WreckStateEnum!
 }
@@ -908,7 +910,7 @@ type SalvageWreck {
 input SalvageWreckInput {
   isShip: Boolean!
   salvageOres: [SalvageWreckOreInput!]!
-  sellableAUEC: Int
+  sellableAUEC: BigInt
   shipCode: String
   state: WreckStateEnum!
 }
@@ -1067,7 +1069,7 @@ enum SessionStateEnum {
 }
 
 type SessionSummary {
-  aUEC: Int
+  aUEC: BigInt
   activeMembers: Int
   allPaid: Boolean
   collectedSCU: Float
@@ -1223,7 +1225,7 @@ type ShipMiningOrder implements WorkOrderInterface {
   sellerscName: String
   session: Session
   sessionId: ID!
-  shareAmount: Int
+  shareAmount: BigInt
   shareRefinedValue: Boolean
   shipOres: [RefineryRow!]!
   state: WorkOrderStateEnum!
@@ -1461,7 +1463,7 @@ type VehicleMiningOrder implements WorkOrderInterface {
   sellerscName: String
   session: Session
   sessionId: ID!
-  shareAmount: Int
+  shareAmount: BigInt
   state: WorkOrderStateEnum!
   updatedAt: Timestamp!
   vehicleOres: [VehicleMiningRow!]!
@@ -1545,18 +1547,18 @@ input WorkOrderDefaultsInput {
   method: RefineryMethodEnum
   refinery: RefineryEnum
   sellStore: String
-  shareAmount: Int
+  shareAmount: BigInt
   shareRefinedValue: Boolean
 }
 
 type WorkOrderExpense {
-  amount: Int!
+  amount: BigInt!
   name: String!
   ownerScName: String!
 }
 
 input WorkOrderExpenseInput {
-  amount: Int!
+  amount: BigInt!
   name: String!
   ownerScName: String!
 }
@@ -1570,7 +1572,7 @@ input WorkOrderInput {
   note: String
   processDurationS: Int
   processStartTime: Timestamp
-  profit: Int
+  profit: BigInt
   refinery: RefineryEnum
   sellStore: String
   sellerUserId: ID
@@ -1579,7 +1581,7 @@ input WorkOrderInput {
   the owner is assumed to be the delegate
   """
   sellerscName: String
-  shareAmount: Int
+  shareAmount: BigInt
   shareRefinedValue: Boolean
 }
 
@@ -1605,7 +1607,7 @@ interface WorkOrderInterface {
   sellerscName: String
   session: Session
   sessionId: ID!
-  shareAmount: Int
+  shareAmount: BigInt
   state: WorkOrderStateEnum!
   updatedAt: Timestamp!
   version: String!

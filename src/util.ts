@@ -111,6 +111,8 @@ export function removeKeyRecursive(obj: any, removeKey: string) {
       }
     })
     return newObj
+  } else if (typeof obj === 'bigint') {
+    return obj.toString()
   } else {
     return obj
   }

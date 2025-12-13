@@ -84,9 +84,9 @@ export async function calcLoadoutStats(ds: DataStore, miningLoadout: MiningLoado
   const minPower = addReduceLasers(laserStats, 'minPower')
   const extrPower = addReduceLasers(laserStats, 'extrPower')
 
-  const extrPowerMod = totalModdedExtrPower / (totalUnModdedExtrPower || 1)
+  const extrPowerMod = activeLasers.length > 0 ? totalModdedExtrPower / (totalUnModdedExtrPower || 1) : 1
   const minPowerPct = 0 // Not really relevant for groups of lasers
-  const powerMod = totalModdedPower / (totalUnModdedPower || 1)
+  const powerMod = activeLasers.length > 0 ? totalModdedPower / (totalUnModdedPower || 1) : 1
   const retVal = {
     maxPower,
     minPower,
@@ -139,6 +139,7 @@ export async function calcLaserStats(ds: DataStore, activeLaser: ActiveMiningLas
   const loadoutLookup = await ds.getLookup('loadout')
 
   const laser = cloneDeep(loadoutLookup.lasers[activeLaser.laser as MiningLaserEnum] as MiningLaser)
+  if (!laser) return { ...baseStats, price: 0, priceNoStock: 0 }
   laser.stats = sanitizeStats(laser.stats)
   const isLaserOn = activeLaser.laserActive
   if (!isLaserOn) laser.stats = baseStats

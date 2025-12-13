@@ -63,6 +63,10 @@ import { calculatedOrderState, calculateWorkOrder } from '../equations'
 import dayjs from 'dayjs'
 import { scVersion } from '../constants'
 
+function randomBigInt(min: number, max: number): bigint {
+  return BigInt(random(min, max, false))
+}
+
 function getRandomElement<T>(arr: T[]): T {
   return arr[random(0, arr.length - 1, false)]
 }
@@ -360,7 +364,7 @@ export async function fakeOtherOrder(otherOrder?: OtherOrder, crewShares?: Parti
     ...interfaceOrder,
     state: WorkOrderStateEnum.Unknown,
     orderType: ActivityEnum.Other,
-    shareAmount: shareAmount || random(10000, 2000000),
+    shareAmount: shareAmount || randomBigInt(10000, 2000000),
     __typename: 'OtherOrder',
   }
   const allPaid = order.crewShares.every(({ state: paid }) => paid)
@@ -434,7 +438,7 @@ export function fakeSalvageWreck(wreck?: Partial<SalvageWreck>): SalvageWreck {
     isShip,
     state: randomEnum(WreckStateEnum),
     salvageOres: randomSalvageWreckOres(),
-    sellableAUEC: random(0, 10000, false),
+    sellableAUEC: randomBigInt(0, 10000),
     shipCode: isShip ? '165' : null,
     ...(wreck ? wreck : {}),
     __typename: 'SalvageWreck',

@@ -13,6 +13,7 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
+  BigInt: { input: bigint; output: bigint; }
   JSONObject: { input: Record<string, any>; output: Record<string, any>; }
   RockType: { input: RockType; output: RockType; }
   Timestamp: { input: number; output: number; }
@@ -687,7 +688,7 @@ export type OtherOrder = WorkOrderInterface & {
   sellerscName?: Maybe<Scalars['String']['output']>;
   session?: Maybe<Session>;
   sessionId: Scalars['ID']['output'];
-  shareAmount?: Maybe<Scalars['Int']['output']>;
+  shareAmount?: Maybe<Scalars['BigInt']['output']>;
   state: WorkOrderStateEnum;
   updatedAt: Scalars['Timestamp']['output'];
   version: Scalars['String']['output'];
@@ -935,7 +936,7 @@ export type SalvageOrder = WorkOrderInterface & {
   sellerscName?: Maybe<Scalars['String']['output']>;
   session?: Maybe<Session>;
   sessionId: Scalars['ID']['output'];
-  shareAmount?: Maybe<Scalars['Int']['output']>;
+  shareAmount?: Maybe<Scalars['BigInt']['output']>;
   state: WorkOrderStateEnum;
   updatedAt: Scalars['Timestamp']['output'];
   version: Scalars['String']['output'];
@@ -962,7 +963,7 @@ export type SalvageWreck = {
   __typename: 'SalvageWreck';
   isShip: Scalars['Boolean']['output'];
   salvageOres: Array<SalvageWreckOre>;
-  sellableAUEC?: Maybe<Scalars['Int']['output']>;
+  sellableAUEC?: Maybe<Scalars['BigInt']['output']>;
   shipCode?: Maybe<Scalars['String']['output']>;
   state: WreckStateEnum;
 };
@@ -970,7 +971,7 @@ export type SalvageWreck = {
 export type SalvageWreckInput = {
   isShip: Scalars['Boolean']['input'];
   salvageOres: Array<SalvageWreckOreInput>;
-  sellableAUEC?: InputMaybe<Scalars['Int']['input']>;
+  sellableAUEC?: InputMaybe<Scalars['BigInt']['input']>;
   shipCode?: InputMaybe<Scalars['String']['input']>;
   state: WreckStateEnum;
 };
@@ -1154,7 +1155,7 @@ export const SessionStateEnum = {
 export type SessionStateEnum = typeof SessionStateEnum[keyof typeof SessionStateEnum];
 export type SessionSummary = {
   __typename: 'SessionSummary';
-  aUEC?: Maybe<Scalars['Int']['output']>;
+  aUEC?: Maybe<Scalars['BigInt']['output']>;
   activeMembers?: Maybe<Scalars['Int']['output']>;
   allPaid?: Maybe<Scalars['Boolean']['output']>;
   collectedSCU?: Maybe<Scalars['Float']['output']>;
@@ -1319,7 +1320,7 @@ export type ShipMiningOrder = WorkOrderInterface & {
   sellerscName?: Maybe<Scalars['String']['output']>;
   session?: Maybe<Session>;
   sessionId: Scalars['ID']['output'];
-  shareAmount?: Maybe<Scalars['Int']['output']>;
+  shareAmount?: Maybe<Scalars['BigInt']['output']>;
   shareRefinedValue?: Maybe<Scalars['Boolean']['output']>;
   shipOres: Array<RefineryRow>;
   state: WorkOrderStateEnum;
@@ -1590,7 +1591,7 @@ export type VehicleMiningOrder = WorkOrderInterface & {
   sellerscName?: Maybe<Scalars['String']['output']>;
   session?: Maybe<Session>;
   sessionId: Scalars['ID']['output'];
-  shareAmount?: Maybe<Scalars['Int']['output']>;
+  shareAmount?: Maybe<Scalars['BigInt']['output']>;
   state: WorkOrderStateEnum;
   updatedAt: Scalars['Timestamp']['output'];
   vehicleOres: Array<VehicleMiningRow>;
@@ -1680,19 +1681,19 @@ export type WorkOrderDefaultsInput = {
   method?: InputMaybe<RefineryMethodEnum>;
   refinery?: InputMaybe<RefineryEnum>;
   sellStore?: InputMaybe<Scalars['String']['input']>;
-  shareAmount?: InputMaybe<Scalars['Int']['input']>;
+  shareAmount?: InputMaybe<Scalars['BigInt']['input']>;
   shareRefinedValue?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type WorkOrderExpense = {
   __typename: 'WorkOrderExpense';
-  amount: Scalars['Int']['output'];
+  amount: Scalars['BigInt']['output'];
   name: Scalars['String']['output'];
   ownerScName: Scalars['String']['output'];
 };
 
 export type WorkOrderExpenseInput = {
-  amount: Scalars['Int']['input'];
+  amount: Scalars['BigInt']['input'];
   name: Scalars['String']['input'];
   ownerScName: Scalars['String']['input'];
 };
@@ -1706,7 +1707,7 @@ export type WorkOrderInput = {
   note?: InputMaybe<Scalars['String']['input']>;
   processDurationS?: InputMaybe<Scalars['Int']['input']>;
   processStartTime?: InputMaybe<Scalars['Timestamp']['input']>;
-  profit?: InputMaybe<Scalars['Int']['input']>;
+  profit?: InputMaybe<Scalars['BigInt']['input']>;
   refinery?: InputMaybe<RefineryEnum>;
   sellStore?: InputMaybe<Scalars['String']['input']>;
   sellerUserId?: InputMaybe<Scalars['ID']['input']>;
@@ -1715,7 +1716,7 @@ export type WorkOrderInput = {
    * the owner is assumed to be the delegate
    */
   sellerscName?: InputMaybe<Scalars['String']['input']>;
-  shareAmount?: InputMaybe<Scalars['Int']['input']>;
+  shareAmount?: InputMaybe<Scalars['BigInt']['input']>;
   shareRefinedValue?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
@@ -1741,7 +1742,7 @@ export type WorkOrderInterface = {
   sellerscName?: Maybe<Scalars['String']['output']>;
   session?: Maybe<Session>;
   sessionId: Scalars['ID']['output'];
-  shareAmount?: Maybe<Scalars['Int']['output']>;
+  shareAmount?: Maybe<Scalars['BigInt']['output']>;
   state: WorkOrderStateEnum;
   updatedAt: Scalars['Timestamp']['output'];
   version: Scalars['String']['output'];

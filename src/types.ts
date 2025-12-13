@@ -41,9 +41,9 @@ export type RegolithStatsSummary = {
   refineries: Record<RefineryEnum, number>
   vehicleOres: Record<VehicleOreEnum, number>
   salvageOres: Record<SalvageOreEnum, number>
-  grossProfitaUEC: number
+  grossProfitaUEC: bigint
   rawOreSCU: number
-  lossaUEC: number
+  lossaUEC: bigint
 }
 
 export type RegolithMonthStats = {
@@ -80,16 +80,16 @@ export type OreProcessingLookup = Record<ShipOreEnum, RefineryModifiers>
 export type MethodsBonusLookup = Record<RefineryMethodEnum, RefineryModifiers>
 
 export type ShipLookups = Vehicle[]
-export type OwedPaid = Record<string, Record<string, number>>
+export type OwedPaid = Record<string, Record<string, bigint>>
 
-export type ShareAmtArr = [beforeXfer: number, afterXfer: number, xFerAmt: number]
+export type ShareAmtArr = [beforeXfer: bigint, afterXfer: bigint, xFerAmt: bigint]
 export type CrewSharePayout = {
   allPaid: boolean
   payouts: ShareAmtArr[]
   owed: OwedPaid
   paid: OwedPaid
-  transferFees: number
-  remainder?: number
+  transferFees: bigint
+  remainder?: bigint
 }
 
 // We rework this slightly so it's easier to work with
@@ -127,23 +127,23 @@ export type WorkOrderSummary = {
   payoutSummary: Record<string, ShareAmtArr>
   owed: OwedPaid
   paid: OwedPaid
-  remainder?: number
+  remainder?: bigint
   crewShareSummary?: ShareAmtArr[]
   oreSummary: OreSummary
   // Yield SCU is a strange number because it's rounded up for each ore to the nearest SCU
   // This includes refined OR unrefined depending
   yieldSCU: number
-  transferFees: number
+  transferFees: bigint
   refiningTime?: number
-  unrefinedValue?: number
-  payoutsTotal: number
-  refinedValue?: number
+  unrefinedValue?: bigint
+  payoutsTotal: bigint
+  refinedValue?: bigint
   remainingTime?: number
   completionTime?: number
-  expensesValue: number
-  lossValue: number
-  grossValue: number
-  shareAmount: number
+  expensesValue: bigint
+  lossValue: bigint
+  grossValue: bigint
+  shareAmount: bigint
 }
 
 export type OreSummary = Partial<Record<AnyOreEnum, { collected: number; refined: number; isRefined: boolean }>>
@@ -159,15 +159,15 @@ export type SessionBreakdown = Omit<Omit<WorkOrderSummary, 'sellerScName'>, 'cal
   // This includes refined OR unrefined depending
   yieldSCU: number
   lastFinishedOrder: number | null
-  expensesValue: number
-  transferFees: number
-  lossValue: number
-  grossValue: number
-  shareAmount: number
+  expensesValue: bigint
+  transferFees: bigint
+  lossValue: bigint
+  grossValue: bigint
+  shareAmount: bigint
 }
 
 export type FindSummary = {
-  value: number
+  value: bigint
   volume: number
 }
 

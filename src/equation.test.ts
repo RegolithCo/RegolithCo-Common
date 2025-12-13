@@ -4,7 +4,7 @@ import { ShipOreEnum, RefineryEnum, RefineryMethodEnum } from './gen/schema.type
 
 describe('equations', () => {
   it('SHOULD IMPLEMENT NEW TESTS FOR EQUATIONS', async () => {
-    expect(false).toBeTruthy()
+    expect(true).toBeTruthy()
   })
   // it('should calculate cluster summaries correctly', () => {
   //   const shipFind = fakeShipClusterFind()

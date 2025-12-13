@@ -41,7 +41,12 @@ import {
   jsRound,
   DataStore,
   RockVolumeSummary,
+  ShareAmtArr,
 } from './index'
+
+function toBigIntSafe(val: number): bigint {
+  return BigInt(Math.round(isNaN(val) ? 0 : val))
+}
 
 /**
  * Translate the ores dictionary into a useful, sorted ores array we can store in the db
@@ -136,7 +141,7 @@ export async function shipRockCalc(ds: DataStore, rock: ShipRock): Promise<RockS
     return {
       ore,
       details: {
-        value: oreNetProfit,
+        value: toBigIntSafe(oreNetProfit),
         volume: oreVolume_SCU,
       },
     }
@@ -157,7 +162,7 @@ export async function shipRockCalc(ds: DataStore, rock: ShipRock): Promise<RockS
 
   return {
     rock: {
-      value: rockValue,
+      value: toBigIntSafe(rockValue),
       volume: rockVolume,
     },
     byOre,
@@ -167,7 +172,7 @@ export async function shipRockCalc(ds: DataStore, rock: ShipRock): Promise<RockS
 export async function clusterCalc(ds: DataStore, cluster: ScoutingFind): Promise<FindClusterSummary> {
   const { clusterType } = cluster
   const retVal: FindClusterSummary = {
-    value: 0,
+    value: 0n,
     volume: 0,
     byOre: {},
     byRock: [],
@@ -184,7 +189,7 @@ export async function clusterCalc(ds: DataStore, cluster: ScoutingFind): Promise
       Object.entries(rockCalc.byOre).forEach(([ore, { value, volume }]) => {
         if (!retVal.byOre[ore]) {
           retVal.byOre[ore] = {
-            value: 0,
+            value: 0n,
             volume: 0,
           }
         }
@@ -206,7 +211,7 @@ export async function clusterCalc(ds: DataStore, cluster: ScoutingFind): Promise
       for (const { ore, percent } of ores) {
         if (!retVal.byOre[ore]) {
           retVal.byOre[ore] = {
-            value: 0,
+            value: 0n,
             volume: 0,
           }
         }
@@ -222,44 +227,45 @@ export async function clusterCalc(ds: DataStore, cluster: ScoutingFind): Promise
         // 8250aUEC / (275 * 100) = 0.3cSCU
         // 0.3 / 100 = 0.003 SCU
         // 0.003 * 50 = 0.15 mass
-        retVal.byOre[ore].value += grossValue
+        retVal.byOre[ore].value += toBigIntSafe(grossValue)
         retVal.byOre[ore].volume += oreVolumeSCU
-        retVal.value += grossValue
+        retVal.value += toBigIntSafe(grossValue)
         retVal.volume += oreVolumeSCU
       }
       retVal.byRock.push({
-        value: rockValue,
+        value: toBigIntSafe(rockValue),
         volume: rockVolume,
       })
     }
   } else if (clusterType === ScoutingFindTypeEnum.Salvage) {
     const { wrecks } = cluster as SalvageFind
-    retVal.value = wrecks.reduce((acc, wreck) => acc + (wreck.sellableAUEC || 0), 0)
+    const wrecksRef = wrecks || []
+    retVal.value = wrecksRef.reduce((acc, wreck) => acc + (wreck.sellableAUEC || 0n), 0n)
     retVal.volume = 0
 
-    const wreckRef = wrecks || []
-    for (const wreck of wreckRef) {
+    for (const wreck of wrecksRef) {
       let wreckSCUSum = 0
-      let wreckValueSum = 0
+      let wreckValueSum = 0n
       for (const { ore, scu } of wreck.salvageOres) {
         if (!retVal.byOre[ore]) {
           retVal.byOre[ore] = {
-            value: 0,
+            value: 0n,
             volume: 0,
           }
         }
         const price = await findPrice(ds, ore)
         retVal.byOre[ore].volume += scu
-        retVal.byOre[ore].value += price * scu
+        const val = toBigIntSafe(price * scu)
+        retVal.byOre[ore].value += val
 
         wreckSCUSum += scu
-        wreckValueSum += price * scu
+        wreckValueSum += val
 
         retVal.volume += scu
-        retVal.value += price * scu
+        retVal.value += val
       }
       retVal.byRock.push({
-        value: (wreck.sellableAUEC || 0) + wreckValueSum,
+        value: (wreck.sellableAUEC || 0n) + wreckValueSum,
         volume: wreckSCUSum,
       })
     }
@@ -268,7 +274,7 @@ export async function clusterCalc(ds: DataStore, cluster: ScoutingFind): Promise
     retVal.oreSort = Object
       // Sort by value
       .entries(retVal.byOre)
-      .sort(([, a], [, b]) => b.value - a.value)
+      .sort(([, a], [, b]) => (b.value > a.value ? 1 : b.value < a.value ? -1 : 0))
       .map(([key]) => key as ShipOreEnum)
   }
   return retVal
@@ -283,7 +289,7 @@ export async function clusterCalc(ds: DataStore, cluster: ScoutingFind): Promise
  */
 export function crewSharePayouts(
   sellerName: string,
-  netProfit: number,
+  netProfit: bigint,
   crewShares: CrewShare[],
   expenses: WorkOrderExpense[],
   includeTransferFees = true
@@ -293,10 +299,10 @@ export function crewSharePayouts(
   const ownerReimbursements =
     expenses?.reduce(
       (acc, exp) => {
-        acc[exp.ownerScName] = (acc[exp.ownerScName] || 0) + exp.amount
+        acc[exp.ownerScName] = (acc[exp.ownerScName] || 0n) + exp.amount
         return acc
       },
-      {} as Record<string, number>
+      {} as Record<string, bigint>
     ) || {}
 
   const payClasses: Record<ShareTypeEnum, [number, CrewShare][]> = {
@@ -304,49 +310,51 @@ export function crewSharePayouts(
     [ShareTypeEnum.Percent]: idxMap.filter(([, { shareType }]) => shareType === ShareTypeEnum.Percent),
     [ShareTypeEnum.Share]: idxMap.filter(([, { shareType }]) => shareType === ShareTypeEnum.Share),
   }
-  const retVal = new Array(crewShares.length).fill(0)
+  const retVal: ShareAmtArr[] = new Array(crewShares.length).fill([0n, 0n, 0n])
   // We subtract off the transfer fees from the net profit
-  let transferFees = 0
+  let transferFees = 0n
 
   const owed: OwedPaid = {}
   const paid: OwedPaid = {}
 
-  const payOrOwed = (scName: string, amt: number, isPayed: boolean) => {
+  const payOrOwed = (scName: string, amt: bigint, isPayed: boolean) => {
     const payObj = isPayed ? paid : owed
     if (!payObj[sellerName]) payObj[sellerName] = {}
-    if (!payObj[sellerName][scName]) payObj[sellerName][scName] = 0
+    if (!payObj[sellerName][scName]) payObj[sellerName][scName] = 0n
     payObj[sellerName][scName] += amt
   }
 
   // First we pay out the constant amounts
   const afterPayouts = payClasses[ShareTypeEnum.Amount].reduce((acc, [idx, { share, payeeScName, state }]) => {
     const isMe = payeeScName === sellerName
-    const transferFee = includeTransferFees && !isMe ? TRANSFER_FEES * share : 0
-    retVal[idx] = [share, share, transferFee]
+    const shareBig = toBigIntSafe(share)
+    const transferFee = includeTransferFees && !isMe ? (shareBig * 5n) / 1000n : 0n
+    retVal[idx] = [shareBig, shareBig, transferFee]
     transferFees += transferFee
     // We subtract off the transfer fee as well for constant amounts so that
     // the recipient gets exactly what they expect. The transfer fee is absorbed by the
     // Percent and Share types
-    if (share > 0) payOrOwed(payeeScName, share, isMe || state)
-    return acc - share - transferFee
+    if (shareBig > 0n) payOrOwed(payeeScName, shareBig, isMe || state)
+    return acc - shareBig - transferFee
   }, netProfit)
 
   // What's left is split up by percents
-  let afterPercents = 0
-  if (afterPayouts < 0) {
+  let afterPercents = 0n
+  if (afterPayouts < 0n) {
     afterPercents = afterPayouts
     // If there's nothing left then nobody gets nuthin
     payClasses[ShareTypeEnum.Percent].forEach(([idx]) => {
-      retVal[idx] = [0, 0, 0]
+      retVal[idx] = [0n, 0n, 0n]
     })
   } else {
     afterPercents = payClasses[ShareTypeEnum.Percent].reduce((acc, [idx, { share, payeeScName, state }]) => {
       const isMe = payeeScName === sellerName
-      const rawShare = afterPayouts * share
-      const transferFee = includeTransferFees && !isMe ? TRANSFER_FEES * rawShare : 0
+      const shareFactor = toBigIntSafe(share * 10000)
+      const rawShare = (afterPayouts * shareFactor) / 10000n
+      const transferFee = includeTransferFees && !isMe ? (rawShare * 5n) / 1000n : 0n
       retVal[idx] = [rawShare, rawShare - transferFee, transferFee]
       transferFees += transferFee
-      if (retVal[idx][1] > 0) payOrOwed(payeeScName, retVal[idx][1], isMe || state)
+      if (retVal[idx][1] > 0n) payOrOwed(payeeScName, retVal[idx][1], isMe || state)
       return acc - rawShare
     }, afterPayouts)
   }
@@ -356,24 +364,26 @@ export function crewSharePayouts(
   // Avoid divide by zero
   if (totalShares === 0) totalShares = 1
   // Calculate the shares
-  let afterShares = 0
-  if (afterPercents < 0) {
+  let afterShares = 0n
+  if (afterPercents < 0n) {
     afterShares = afterPercents
     payClasses[ShareTypeEnum.Share].forEach(([idx]) => {
-      retVal[idx] = [0, 0, 0]
+      retVal[idx] = [0n, 0n, 0n]
     })
   } else {
+    const totalSharesBig = toBigIntSafe(totalShares * 100)
     afterShares = payClasses[ShareTypeEnum.Share].reduce((acc, [idx, { share, payeeScName, state }]) => {
       const isMe = payeeScName === sellerName
-      const rawShare = (afterPercents * share) / totalShares
-      if (rawShare < 0) {
-        retVal[idx] = [0, 0, 0]
+      const shareBig = toBigIntSafe(share * 100)
+      const rawShare = (afterPercents * shareBig) / totalSharesBig
+      if (rawShare < 0n) {
+        retVal[idx] = [0n, 0n, 0n]
         return acc - rawShare
       } else {
-        const transferFee = includeTransferFees && !isMe ? TRANSFER_FEES * rawShare : 0
+        const transferFee = includeTransferFees && !isMe ? (rawShare * 5n) / 1000n : 0n
         transferFees += transferFee
         retVal[idx] = [rawShare, rawShare - transferFee, transferFee]
-        if (retVal[idx][1] > 0) payOrOwed(payeeScName, retVal[idx][1], isMe || state)
+        if (retVal[idx][1] > 0n) payOrOwed(payeeScName, retVal[idx][1], isMe || state)
         return acc - rawShare
       }
     }, afterPercents)
@@ -398,7 +408,7 @@ export function crewSharePayouts(
     paid,
     payouts: retVal,
     transferFees,
-    remainder: jsRound(afterShares, 0),
+    remainder: afterShares,
   }
 }
 
@@ -626,7 +636,7 @@ export async function calculateWorkOrder(ds: DataStore, order: WorkOrder): Promi
  */
 export async function calculateShipOrder(ds: DataStore, order: ShipMiningOrder): Promise<WorkOrderSummary> {
   // first calculate the value of the ore
-  let refinedValue = 0
+  let refinedValue = 0n
   const ores = order.shipOres || []
   const crewShares = order.crewShares || []
   let yieldSCU = 0
@@ -649,18 +659,18 @@ export async function calculateShipOrder(ds: DataStore, order: ShipMiningOrder):
     const finalStore = order.shareRefinedValue ? order.sellStore : null
     const price = await findPrice(ds, ore, finalStore, false)
     const finalBoxes = Math.ceil(amt / 100)
-    return price * finalBoxes
+    return toBigIntSafe(price * finalBoxes)
   })
 
   const oreValues = await Promise.all(orePromises)
 
-  const unrefinedValue = oreValues.reduce((acc, value) => acc + value, 0)
+  const unrefinedValue = oreValues.reduce((acc, value) => acc + value, 0n)
 
   // let refiningTime = 0
 
   let finalSellStore = null
   const expensesValue = totalExpenses(order)
-  let lossValue = 0
+  let lossValue = 0n
   const bestSeller = await findAllStoreChoices(ds, oreSummary, order.isRefined, true)
   try {
     finalSellStore = order.sellStore || bestSeller[0].code || null
@@ -687,17 +697,17 @@ export async function calculateShipOrder(ds: DataStore, order: ShipMiningOrder):
   } else {
     yieldSCU = ores.reduce((acc, { amt }) => acc + Math.ceil(amt / 100), 0)
   }
-  let finalShareAmt = 0
-  let grossValue = 0
+  let finalShareAmt = 0n
+  let grossValue = 0n
   if (order.state !== WorkOrderStateEnum.Failed) {
     if (order.isRefined && !order.shareRefinedValue) {
       finalShareAmt = unrefinedValue
-    } else if (order.shareAmount && order.shareAmount >= -1)
+    } else if (order.shareAmount && order.shareAmount >= -1n)
       finalShareAmt = !order.isRefined || order.shareRefinedValue ? order.shareAmount : unrefinedValue
     else finalShareAmt = order.isRefined ? (order.shareRefinedValue ? refinedValue : unrefinedValue) : unrefinedValue
     grossValue = finalShareAmt
   } else {
-    if (order.shareAmount && order.shareAmount >= -1)
+    if (order.shareAmount && order.shareAmount >= -1n)
       lossValue = !order.isRefined || order.shareRefinedValue ? order.shareAmount : unrefinedValue
     else lossValue = order.isRefined ? (order.shareRefinedValue ? refinedValue : unrefinedValue) : unrefinedValue
   }
@@ -717,7 +727,7 @@ export async function calculateShipOrder(ds: DataStore, order: ShipMiningOrder):
   if (myIdx > -1 && order.isRefined && !order.shareRefinedValue) {
     // Make sure to add the amount BEFORE subtracting the transfer fee
     let refinedUnrefinedDiff = refinedValue - unrefinedValue
-    if (order.shareAmount && order.shareAmount >= -1) {
+    if (order.shareAmount && order.shareAmount >= -1n) {
       refinedUnrefinedDiff = order.shareAmount - unrefinedValue
     }
     payouts[myIdx][0] += refinedUnrefinedDiff
@@ -728,7 +738,7 @@ export async function calculateShipOrder(ds: DataStore, order: ShipMiningOrder):
   // dictionary for convenience
   const payoutSummary = crewShares.reduce(
     (acc, { payeeScName }, idx) => {
-      if (!acc[payeeScName]) acc[payeeScName] = [0, 0, 0]
+      if (!acc[payeeScName]) acc[payeeScName] = [0n, 0n, 0n]
       acc[payeeScName][0] += payouts[idx][0]
       acc[payeeScName][1] += payouts[idx][1]
       acc[payeeScName][2] += payouts[idx][2]
@@ -740,7 +750,7 @@ export async function calculateShipOrder(ds: DataStore, order: ShipMiningOrder):
   // The amount the owner needs to transfer to other people (Not including transfer fees)
   const payoutsTotal = Object.entries(payoutSummary)
     .filter(([scName]) => scName !== order.owner.scName)
-    .reduce((acc, [, val]) => acc + val[0], 0)
+    .reduce((acc, [, val]) => acc + val[0], 0n)
   const refiningTime = (order.processDurationS || 0) * 1000
   const { remainingTime, completionTime } = calculateDoneTime(order.processStartTime, refiningTime, order.isRefined)
 
@@ -794,23 +804,23 @@ export async function calculateVehicleOrder(ds: DataStore, order: VehicleMiningO
   // NOTE: That we store mSCU for vehicles so there are some tricky factor of 10 conversions
   const profitPromises = Object.entries(oreSummary).map(async ([ore, amt]) => {
     const price = await findPrice(ds, ore as VehicleOreEnum, order.sellStore)
-    return (amt.collected * price) / 100
+    return toBigIntSafe((amt.collected * price) / 100)
   })
 
   const profits = await Promise.all(profitPromises)
 
-  let grossProfit = profits.reduce((acc, profit) => acc + profit, 0)
+  let grossProfit = profits.reduce((acc, profit) => acc + profit, 0n)
 
-  let finalShareAmt = 0
+  let finalShareAmt = 0n
   const expensesValue = totalExpenses(order)
-  let lossValue = 0
+  let lossValue = 0n
   if (order.state !== WorkOrderStateEnum.Failed) {
-    if (order.shareAmount && order.shareAmount >= 0) finalShareAmt = order.shareAmount
+    if (order.shareAmount && order.shareAmount >= 0n) finalShareAmt = order.shareAmount
     else finalShareAmt = grossProfit
   } else {
-    if (order.shareAmount && order.shareAmount >= 0) lossValue = order.shareAmount
+    if (order.shareAmount && order.shareAmount >= 0n) lossValue = order.shareAmount
     else lossValue = grossProfit
-    grossProfit = 0
+    grossProfit = 0n
   }
 
   finalShareAmt -= expensesValue
@@ -824,7 +834,7 @@ export async function calculateVehicleOrder(ds: DataStore, order: VehicleMiningO
   )
   const payoutSummary = crewShares.reduce(
     (acc, { payeeScName }, idx) => {
-      if (!acc[payeeScName]) acc[payeeScName] = [0, 0, 0]
+      if (!acc[payeeScName]) acc[payeeScName] = [0n, 0n, 0n]
       // Before transfer
       acc[payeeScName][0] += payouts[idx][0]
       // After transfer
@@ -839,7 +849,7 @@ export async function calculateVehicleOrder(ds: DataStore, order: VehicleMiningO
   // The amount the owner needs to transfer to other people (Not including transfer fees)
   const payoutsTotal = Object.entries(payoutSummary)
     .filter(([scName]) => scName !== order.owner.scName)
-    .reduce((acc, [, val]) => acc + val[0], 0)
+    .reduce((acc, [, val]) => acc + val[0], 0n)
 
   return {
     allPaid,
@@ -879,22 +889,22 @@ export async function calculateSalvageOrder(ds: DataStore, order: SalvageOrder):
   // Calculate total profit from the sale
   const profitPromises = Object.entries(oreSummary).map(async ([ore, amt]) => {
     const price = await findPrice(ds, ore as SalvageOreEnum, order.sellStore)
-    return (amt.collected * price) / 100
+    return toBigIntSafe((amt.collected * price) / 100)
   })
 
   const profits = await Promise.all(profitPromises)
 
-  let grossProfit = profits.reduce((acc, profit) => acc + profit, 0)
-  let finalShareAmt = 0
+  let grossProfit = profits.reduce((acc, profit) => acc + profit, 0n)
+  let finalShareAmt = 0n
   const expensesValue = totalExpenses(order)
-  let lossValue = 0
+  let lossValue = 0n
   if (order.state !== WorkOrderStateEnum.Failed) {
-    if (order.shareAmount && order.shareAmount >= 0) finalShareAmt = order.shareAmount
+    if (order.shareAmount && order.shareAmount >= 0n) finalShareAmt = order.shareAmount
     else finalShareAmt = grossProfit
   } else {
-    if (order.shareAmount && order.shareAmount >= 0) lossValue = order.shareAmount
+    if (order.shareAmount && order.shareAmount >= 0n) lossValue = order.shareAmount
     else lossValue = grossProfit
-    grossProfit = 0
+    grossProfit = 0n
   }
   finalShareAmt -= expensesValue
 
@@ -907,7 +917,7 @@ export async function calculateSalvageOrder(ds: DataStore, order: SalvageOrder):
   )
   const payoutSummary = crewShares.reduce(
     (acc, { payeeScName }, idx) => {
-      if (!acc[payeeScName]) acc[payeeScName] = [0, 0, 0]
+      if (!acc[payeeScName]) acc[payeeScName] = [0n, 0n, 0n]
       acc[payeeScName][0] += payouts[idx][0]
       acc[payeeScName][1] += payouts[idx][1]
       acc[payeeScName][2] += payouts[idx][2]
@@ -919,7 +929,7 @@ export async function calculateSalvageOrder(ds: DataStore, order: SalvageOrder):
   // The amount the owner needs to transfer to other people (Not including transfer fees)
   const payoutsTotal = Object.entries(payoutSummary)
     .filter(([scName]) => scName !== order.owner.scName)
-    .reduce((acc, [, val]) => acc + val[0], 0)
+    .reduce((acc, [, val]) => acc + val[0], 0n)
 
   return {
     allPaid,
@@ -941,19 +951,19 @@ export async function calculateSalvageOrder(ds: DataStore, order: SalvageOrder):
   }
 }
 
-export function totalExpenses(order: WorkOrder): number {
+export function totalExpenses(order: WorkOrder): bigint {
   const expenses = order.expenses || []
-  return expenses.reduce((acc, { amount }) => acc + amount, 0)
+  return expenses.reduce((acc, { amount }) => acc + amount, 0n)
 }
 
 export async function calculateOtherOrder(ds: DataStore, order: OtherOrder): Promise<WorkOrderSummary> {
   // first calculate the value of the ore
-  const grossProfit = order.state === WorkOrderStateEnum.Failed ? 0 : order.shareAmount || 0
+  const grossProfit = order.state === WorkOrderStateEnum.Failed ? 0n : order.shareAmount || 0n
   const yieldSCU = 0
   let shareAmount = grossProfit
   const crewShares = order.crewShares || []
   const expensesValue = totalExpenses(order)
-  const lossValue = order.state !== WorkOrderStateEnum.Failed ? 0 : order.shareAmount || 0
+  const lossValue = order.state !== WorkOrderStateEnum.Failed ? 0n : order.shareAmount || 0n
 
   shareAmount -= expensesValue
 
@@ -966,7 +976,7 @@ export async function calculateOtherOrder(ds: DataStore, order: OtherOrder): Pro
   )
   const payoutSummary = crewShares.reduce(
     (acc, { payeeScName }, idx) => {
-      if (!acc[payeeScName]) acc[payeeScName] = [0, 0, 0]
+      if (!acc[payeeScName]) acc[payeeScName] = [0n, 0n, 0n]
       acc[payeeScName][0] += payouts[idx][0]
       acc[payeeScName][1] += payouts[idx][1]
       acc[payeeScName][2] += payouts[idx][2]
@@ -978,7 +988,7 @@ export async function calculateOtherOrder(ds: DataStore, order: OtherOrder): Pro
   // The amount the owner needs to transfer to other people (Not including transfer fees)
   const payoutsTotal = Object.entries(payoutSummary)
     .filter(([scName]) => scName !== order.owner.scName)
-    .reduce((acc, [, val]) => acc + val[0], 0)
+    .reduce((acc, [, val]) => acc + val[0], 0n)
 
   return {
     allPaid,
@@ -1011,10 +1021,10 @@ export async function sessionReduce(ds: DataStore, orders: WorkOrderInterface[])
   let rawOreCollected = 0
   let lastFinishedOrder = null
 
-  let shareAmount = 0
-  let grossValue = 0
-  let expensesValue = 0
-  let lossValue = 0
+  let shareAmount = 0n
+  let grossValue = 0n
+  let expensesValue = 0n
+  let lossValue = 0n
   let yieldSCU = 0
 
   for (const order of orders) {
@@ -1025,21 +1035,21 @@ export async function sessionReduce(ds: DataStore, orders: WorkOrderInterface[])
       payoutSummary: {},
       owed: {},
       paid: {},
-      remainder: 0,
+      remainder: 0n,
       crewShareSummary: [],
       oreSummary: {},
       yieldSCU: 0,
-      transferFees: 0,
+      transferFees: 0n,
       refiningTime: 0,
-      unrefinedValue: 0,
-      payoutsTotal: 0,
-      refinedValue: 0,
+      unrefinedValue: 0n,
+      payoutsTotal: 0n,
+      refinedValue: 0n,
       remainingTime: 0,
       completionTime: 0,
-      shareAmount: 0,
-      expensesValue: 0,
-      lossValue: 0,
-      grossValue: 0,
+      shareAmount: 0n,
+      expensesValue: 0n,
+      lossValue: 0n,
+      grossValue: 0n,
     }
     if (order.orderType === ActivityEnum.ShipMining) {
       orderBreakdown = await calculateShipOrder(ds, order as ShipMiningOrder)
@@ -1071,7 +1081,7 @@ export async function sessionReduce(ds: DataStore, orders: WorkOrderInterface[])
   const payoutSummary = Object.values(orderBreakdowns).reduce(
     (acc, { payoutSummary }) => {
       Object.keys(payoutSummary).forEach((scName) => {
-        if (!acc[scName]) acc[scName] = [0, 0, 0]
+        if (!acc[scName]) acc[scName] = [0n, 0n, 0n]
         acc[scName][0] += payoutSummary[scName][0]
         acc[scName][1] += payoutSummary[scName][1]
         acc[scName][2] += payoutSummary[scName][2]
@@ -1084,7 +1094,7 @@ export async function sessionReduce(ds: DataStore, orders: WorkOrderInterface[])
   return {
     allPaid: Object.values(orderBreakdowns).every(({ allPaid }) => allPaid),
     orderBreakdowns: orderBreakdowns,
-    transferFees: Object.values(orderBreakdowns).reduce((acc, { transferFees }) => acc + transferFees, 0),
+    transferFees: Object.values(orderBreakdowns).reduce((acc, { transferFees }) => acc + transferFees, 0n),
     payoutSummary,
     // We need to combine the objects from each owed object inside orderBreakdowns
     owed: Object.values(orderBreakdowns).reduce((acc, { owed }) => {
@@ -1092,7 +1102,7 @@ export async function sessionReduce(ds: DataStore, orders: WorkOrderInterface[])
         const innerObj = owed[payeeName]
         Object.keys(innerObj).forEach((scName) => {
           if (!acc[payeeName]) acc[payeeName] = {}
-          if (!acc[payeeName][scName]) acc[payeeName][scName] = 0
+          if (!acc[payeeName][scName]) acc[payeeName][scName] = 0n
           acc[payeeName][scName] += innerObj[scName]
         })
       })
@@ -1103,7 +1113,7 @@ export async function sessionReduce(ds: DataStore, orders: WorkOrderInterface[])
         const innerObj = paid[payeeName]
         Object.keys(innerObj).forEach((scName) => {
           if (!acc[payeeName]) acc[payeeName] = {}
-          if (!acc[payeeName][scName]) acc[payeeName][scName] = 0
+          if (!acc[payeeName][scName]) acc[payeeName][scName] = 0n
           acc[payeeName][scName] += innerObj[scName]
         })
       })
@@ -1117,9 +1127,9 @@ export async function sessionReduce(ds: DataStore, orders: WorkOrderInterface[])
     grossValue,
     expensesValue,
     lossValue,
-    payoutsTotal: Object.values(orderBreakdowns).reduce((acc, { payoutsTotal }) => acc + payoutsTotal, 0),
-    unrefinedValue: Object.values(orderBreakdowns).reduce((acc, { unrefinedValue }) => acc + unrefinedValue, 0),
-    refinedValue: Object.values(orderBreakdowns).reduce((acc, { refinedValue }) => acc + refinedValue, 0),
+    payoutsTotal: Object.values(orderBreakdowns).reduce((acc, { payoutsTotal }) => acc + payoutsTotal, 0n),
+    unrefinedValue: Object.values(orderBreakdowns).reduce((acc, { unrefinedValue }) => acc + unrefinedValue, 0n),
+    refinedValue: Object.values(orderBreakdowns).reduce((acc, { refinedValue }) => acc + refinedValue, 0n),
   }
 }
 
@@ -1149,8 +1159,8 @@ export async function calculateRefinedValue(
   method: RefineryMethodEnum,
   storeCode?: string,
   oreSummary?: OreSummary
-): Promise<{ refinedValue: number; refinedYieldSCU: number }> {
-  if (!ores || !ores.length || !refinery || !method) return { refinedValue: 0, refinedYieldSCU: 0 }
+): Promise<{ refinedValue: bigint; refinedYieldSCU: number }> {
+  if (!ores || !ores.length || !refinery || !method) return { refinedValue: 0n, refinedYieldSCU: 0 }
   let refinedYieldSCU = 0
   const orePromises = ores.map(async ({ amt, ore }) => {
     if (Object.values(ShipOreEnum).includes(ore as unknown as ShipOreEnum)) {
@@ -1163,17 +1173,16 @@ export async function calculateRefinedValue(
       }
       const refinedPrice = await findPrice(ds, ore, storeCode, true)
       const oreYldSCU = Math.ceil(oreYld / 100)
-      return oreYldSCU * refinedPrice
+      return toBigIntSafe(oreYldSCU * refinedPrice)
     }
     const unrefinedPrice = await findPrice(ds, ore, storeCode)
     const oreYldSCU = Math.ceil(amt / 100)
-    return oreYldSCU * unrefinedPrice
+    return toBigIntSafe(oreYldSCU * unrefinedPrice)
   })
 
   const oreValues = await Promise.all(orePromises)
 
-  const refinedValue = oreValues.reduce((acc, value) => acc + value, 0)
-  if (isNaN(refinedValue)) return { refinedValue: 0, refinedYieldSCU: 0 }
+  const refinedValue = oreValues.reduce((acc, value) => acc + value, 0n)
   return { refinedValue, refinedYieldSCU }
 }
 

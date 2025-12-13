@@ -22,7 +22,7 @@ interface WorkOrderInterface {
   expenses: [WorkOrderExpense!]
   isSold: Boolean # set when the order is sold defaults to false for ship orders and true for everything else
   # This is the total amount of aUEC that the user sold for. It is optional and a purely calculated value is used if it is not set
-  shareAmount: Int
+  shareAmount: BigInt
   # The UEX code for the sell store.
   sellStore: String
   
@@ -34,13 +34,13 @@ interface WorkOrderInterface {
 
 type WorkOrderExpense {
   name: String!
-  amount: Int!
+  amount: BigInt!
   ownerScName: String!
 }
 
 input WorkOrderExpenseInput {
   name: String!
-  amount: Int!
+  amount: BigInt!
   ownerScName: String!
 }
 
@@ -75,7 +75,7 @@ type VehicleMiningOrder implements WorkOrderInterface {
   expenses: [WorkOrderExpense!]
   isSold: Boolean # set when the order is sold defaults to false for ship orders and true for everything else
   # This is the total amount of aUEC that the user sold for. It is optional and a purely calculated value is used if it is not set
-  shareAmount: Int
+  shareAmount: BigInt
   # The UEX code for the sell store.
   sellStore: String  
 
@@ -112,7 +112,7 @@ type OtherOrder implements WorkOrderInterface {
   expenses: [WorkOrderExpense!]
   isSold: Boolean # set when the order is sold defaults to false for ship orders and true for everything else
   # This is the total amount of aUEC that the user sold for. It is optional and a purely calculated value is used if it is not set
-  shareAmount: Int
+  shareAmount: BigInt
   # The UEX code for the sell store.
   sellStore: String  
 
@@ -147,7 +147,7 @@ type SalvageOrder implements WorkOrderInterface {
   expenses: [WorkOrderExpense!]
   isSold: Boolean # set when the order is sold defaults to false for ship orders and true for everything else
   # This is the total amount of aUEC that the user sold for. It is optional and a purely calculated value is used if it is not set
-  shareAmount: Int
+  shareAmount: BigInt
   # The UEX code for the sell store.
   sellStore: String  
 
@@ -183,7 +183,7 @@ type ShipMiningOrder implements WorkOrderInterface {
   expenses: [WorkOrderExpense!]
   isSold: Boolean # set when the order is sold
   # This is the total amount of aUEC that the user sold for. It is optional and a purely calculated value is used if it is not set
-  shareAmount: Int
+  shareAmount: BigInt
   # The UEX code for the sell store.
   sellStore: String  
 
@@ -256,7 +256,7 @@ input WorkOrderDefaultsInput {
   shareRefinedValue: Boolean
   method: RefineryMethodEnum
   # other
-  shareAmount: Int
+  shareAmount: BigInt
   # The UEX code for the sell store.
   sellStore: String  
 }
@@ -320,8 +320,8 @@ input WorkOrderInput {
   method: RefineryMethodEnum
   isSold: Boolean # set when the order is sold
 
-  profit: Int
-  shareAmount: Int
+  profit: BigInt
+  shareAmount: BigInt
   sellStore: String
   """
   This is the user that the work order is delegated to. It is optional and if not set, 

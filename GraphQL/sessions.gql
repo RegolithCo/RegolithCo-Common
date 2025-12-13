@@ -133,7 +133,7 @@ type SessionShare {
 # This is a purely queried type that we store on the session object
 # Any action will invalidate this summary
 type SessionSummary {
-  aUEC: Int
+  aUEC: BigInt
   collectedSCU: Float
   # This one is a special number because boxes of individual ore round up.
   yieldSCU: Float
