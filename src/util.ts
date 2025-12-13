@@ -89,6 +89,15 @@ export function jsRound(num: number, dec: number) {
   return Math.round((num + Number.EPSILON) * mult) / mult
 }
 
+/**
+ * Convert a number to bigint safely
+ * @param val
+ * @returns
+ */
+export function toBigIntSafe(val: number): bigint {
+  return BigInt(Math.round(isNaN(val) ? 0 : val))
+}
+
 export function createSafeFileName(input: string, guid: string): string {
   // Remove unwanted characters
   const cleanInput = input.replace(/[^a-zA-Z0-9-_]/g, '')

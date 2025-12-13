@@ -42,11 +42,8 @@ import {
   DataStore,
   RockVolumeSummary,
   ShareAmtArr,
+  toBigIntSafe,
 } from './index'
-
-function toBigIntSafe(val: number): bigint {
-  return BigInt(Math.round(isNaN(val) ? 0 : val))
-}
 
 /**
  * Translate the ores dictionary into a useful, sorted ores array we can store in the db
