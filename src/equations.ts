@@ -54,7 +54,7 @@ export function oresDict2Array<T extends RefineryRow | VehicleMiningRow | Salvag
     ore: oreName,
   }))
 
-  // TODO: Sort in the order that the refinery does
+  retVal.sort((a, b) => a.ore.localeCompare(b.ore))
   return retVal as T[]
 }
 
@@ -70,10 +70,11 @@ export function shipRockVolumeCalc(densityLookup: Record<ShipOreEnum, number>, r
 
   // We need to go through this twice
   const propDensities = ores.map(({ ore, percent }) => {
-    const density = densityLookup[ore]
+    const density = densityLookup[ore] || 0
     return density * percent * FUDGE_FACTOR
   })
-  const maxVolume = mass / propDensities.reduce((a, b) => a + b, 0)
+  const totalPropDensity = propDensities.reduce((a, b) => a + b, 0)
+  const maxVolume = totalPropDensity === 0 ? 0 : mass / totalPropDensity
   const volumes = ores.map(({ percent }) => maxVolume * percent)
 
   const byOreArray = ores.map(({ ore }, idx) => {
@@ -117,10 +118,11 @@ export async function shipRockCalc(ds: DataStore, rock: ShipRock): Promise<RockS
   // We need to go through this twice
   const densityLookup = await ds.getLookup('densitiesLookups')
   const propDensities = ores.map(({ ore, percent }) => {
-    const density = densityLookup[ore]
+    const density = densityLookup[ore] || 0
     return density * percent * FUDGE_FACTOR
   })
-  const maxVolume = mass / propDensities.reduce((a, b) => a + b, 0)
+  const totalPropDensity = propDensities.reduce((a, b) => a + b, 0)
+  const maxVolume = totalPropDensity === 0 ? 0 : mass / totalPropDensity
   const volumes = ores.map(({ percent }) => maxVolume * percent)
 
   const byOrePromises = ores.map(async ({ ore }, idx) => {
@@ -448,7 +450,9 @@ export async function oreAmtCalc(
     processingBonus = oreProcessingLookup[ore][0]
   }
 
-  const finalOreYield = oreYield / (processingBonus * refineryBonus * methodBonus)
+  const denominator = processingBonus * refineryBonus * methodBonus
+  if (denominator === 0) return 0
+  const finalOreYield = oreYield / denominator
   return Math.round(finalOreYield)
 }
 
@@ -1130,7 +1134,6 @@ export async function sessionReduce(ds: DataStore, orders: WorkOrderInterface[])
   }
 }
 
-// TODO: CHANGE ME
 export function calculateDoneTime(
   processStartTime: number,
   refiningTime: number,
@@ -1149,6 +1152,10 @@ export function calculateDoneTime(
   return { remainingTime, completionTime }
 }
 
+function isShipOre(ore: string): ore is ShipOreEnum {
+  return (Object.values(ShipOreEnum) as string[]).includes(ore)
+}
+
 export async function calculateRefinedValue(
   ds: DataStore,
   ores: RefineryRow[],
@@ -1160,8 +1167,8 @@ export async function calculateRefinedValue(
   if (!ores || !ores.length || !refinery || !method) return { refinedValue: 0n, refinedYieldSCU: 0 }
   let refinedYieldSCU = 0
   const orePromises = ores.map(async ({ amt, ore }) => {
-    if (Object.values(ShipOreEnum).includes(ore as unknown as ShipOreEnum)) {
-      const oreYld = await yieldCalc(ds, amt, ore as unknown as ShipOreEnum, refinery, method)
+    if (isShipOre(ore)) {
+      const oreYld = await yieldCalc(ds, amt, ore, refinery, method)
       if (oreSummary) {
         if (!oreSummary[ore]) oreSummary[ore] = { collected: 0, refined: 0, isRefined: true }
         oreSummary[ore].collected = amt
@@ -1204,7 +1211,6 @@ export function calculatedOrderState(
   // Next we've got two refinery states
   if (orderType === ActivityEnum.ShipMining && isRefined) {
     // If there's time left then this thing is refining
-    // TODO: CHANGE ME
     if (processStartTime && remainingTime > 0) {
       return WorkOrderStateEnum.RefiningStarted
     }
@@ -1299,6 +1305,7 @@ export async function findAllStoreChoices(
           else if (Object.values(VehicleOreEnum).includes(ore as VehicleOreEnum)) priceType = 'gems'
           else if (Object.values(SalvageOreEnum).includes(ore as SalvageOreEnum)) priceType = 'salvage'
 
+          if (!prices[priceType]) return acc
           const orePrice = prices[priceType][ore]
           if (!orePrice) return acc
           const finalBoxAmt = isShipOrder
