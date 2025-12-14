@@ -1437,7 +1437,7 @@ export type UexLookups = {
   __typename: 'UEXLookups';
   bodies?: Maybe<Scalars['JSONObject']['output']>;
   maxPrices?: Maybe<Scalars['JSONObject']['output']>;
-  refineryBonusLookup?: Maybe<Scalars['JSONObject']['output']>;
+  refineryBonuses?: Maybe<Scalars['JSONObject']['output']>;
   ships?: Maybe<Scalars['JSONObject']['output']>;
   tradeports?: Maybe<Scalars['JSONObject']['output']>;
 };

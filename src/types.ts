@@ -109,7 +109,7 @@ export type GravityWell = {
 }
 
 export type Lookups = {
-  refineryBonusLookup: Record<RefineryEnum, Record<ShipOreEnum, number>>
+  refineryBonuses: Record<RefineryEnum, Record<ShipOreEnum, number>>
   oreProcessingLookup: OreProcessingLookup
   methodsBonusLookup: MethodsBonusLookup
   shipLookups: ShipLookups

@@ -426,18 +426,18 @@ export async function oreAmtCalc(
   refinery: RefineryEnum,
   method: RefineryMethodEnum
 ): Promise<number> {
-  const [oreProcessingLookup, refineryBonusLookup, methodsBonusLookup] = await Promise.all([
+  const [oreProcessingLookup, refineryBonuses, methodsBonusLookup] = await Promise.all([
     ds.getLookup('oreProcessingLookup'),
-    ds.getLookup('refineryBonusLookup'),
+    ds.getLookup('refineryBonuses'),
     ds.getLookup('methodsBonusLookup'),
   ])
   let processingBonus = 1
   let refineryBonus = 1
   let methodBonus = 1
-  if (!refineryBonusLookup[refinery]) log.debug(`oreAmtCalc: Refinery ${refinery} not found`)
-  else if (!refineryBonusLookup[refinery][ore]) log.debug(`oreAmtCalc: Refinery ore ${refinery} ${ore} not found`)
+  if (!refineryBonuses[refinery]) log.debug(`oreAmtCalc: Refinery ${refinery} not found`)
+  else if (!refineryBonuses[refinery][ore]) log.debug(`oreAmtCalc: Refinery ore ${refinery} ${ore} not found`)
   else {
-    refineryBonus = refineryBonusLookup[refinery][ore][0]
+    refineryBonus = refineryBonuses[refinery][ore][0]
   }
 
   if (!methodsBonusLookup[method]) log.debug(`oreAmtCalc: Method ${method} not found`)
@@ -471,18 +471,18 @@ export async function yieldCalc(
   refinery: RefineryEnum,
   method: RefineryMethodEnum
 ): Promise<number> {
-  const [oreProcessingLookup, refineryBonusLookup, methodsBonusLookup] = await Promise.all([
+  const [oreProcessingLookup, refineryBonuses, methodsBonusLookup] = await Promise.all([
     ds.getLookup('oreProcessingLookup'),
-    ds.getLookup('refineryBonusLookup'),
+    ds.getLookup('refineryBonuses'),
     ds.getLookup('methodsBonusLookup'),
   ])
   let processingBonus = 1
   let refineryBonus = 1
   let methodBonus = 1
-  if (!refineryBonusLookup[refinery]) log.debug(`yieldCalc: Refinery ${refinery} not found`)
-  else if (!refineryBonusLookup[refinery][ore]) log.debug(`yieldCalc: Refinery ore ${refinery} ${ore} not found`)
+  if (!refineryBonuses[refinery]) log.debug(`yieldCalc: Refinery ${refinery} not found`)
+  else if (!refineryBonuses[refinery][ore]) log.debug(`yieldCalc: Refinery ore ${refinery} ${ore} not found`)
   else {
-    refineryBonus = refineryBonusLookup[refinery][ore][0]
+    refineryBonus = refineryBonuses[refinery][ore][0]
   }
 
   if (!methodsBonusLookup[method]) log.debug(`yieldCalc: Method ${method} not found`)
@@ -510,12 +510,12 @@ export async function yieldModCalc(
   refinery: RefineryEnum,
   method: RefineryMethodEnum
 ): Promise<number> {
-  const [refineryBonusLookup, methodsBonusLookup] = await Promise.all([
-    ds.getLookup('refineryBonusLookup'),
+  const [refineryBonuses, methodsBonusLookup] = await Promise.all([
+    ds.getLookup('refineryBonuses'),
     ds.getLookup('methodsBonusLookup'),
   ])
 
-  return refineryBonusLookup[refinery][ore][0] * methodsBonusLookup[method][0]
+  return refineryBonuses[refinery][ore][0] * methodsBonusLookup[method][0]
 }
 
 /**
@@ -534,13 +534,12 @@ export async function getRefiningCost(
   refinery: RefineryEnum,
   method: RefineryMethodEnum
 ) {
-  const [oreProcessingLookup, refineryBonusLookup, methodsBonusLookup] = await Promise.all([
+  const [oreProcessingLookup, refineryBonuses, methodsBonusLookup] = await Promise.all([
     ds.getLookup('oreProcessingLookup'),
-    ds.getLookup('refineryBonusLookup'),
+    ds.getLookup('refineryBonuses'),
     ds.getLookup('methodsBonusLookup'),
   ])
-  const refBonus =
-    refineryBonusLookup[refinery] && refineryBonusLookup[refinery][ore] ? refineryBonusLookup[refinery][ore][2] : 1
+  const refBonus = refineryBonuses[refinery] && refineryBonuses[refinery][ore] ? refineryBonuses[refinery][ore][2] : 1
   const oreCost = oreProcessingLookup[ore][2]
   const methodBonus = methodsBonusLookup[method][2]
   return amt * refBonus * oreCost * methodBonus
@@ -552,12 +551,11 @@ export async function getRefiningCostMod(
   refinery: RefineryEnum,
   method: RefineryMethodEnum
 ) {
-  const [refineryBonusLookup, methodsBonusLookup] = await Promise.all([
-    ds.getLookup('refineryBonusLookup'),
+  const [refineryBonuses, methodsBonusLookup] = await Promise.all([
+    ds.getLookup('refineryBonuses'),
     ds.getLookup('methodsBonusLookup'),
   ])
-  const refBonus =
-    refineryBonusLookup[refinery] && refineryBonusLookup[refinery][ore] ? refineryBonusLookup[refinery][ore][2] : 1
+  const refBonus = refineryBonuses[refinery] && refineryBonuses[refinery][ore] ? refineryBonuses[refinery][ore][2] : 1
   const methodBonus = methodsBonusLookup[method][2]
   return refBonus * methodBonus
 }
@@ -577,14 +575,13 @@ export async function getRefiningTime(
   refinery: RefineryEnum,
   method: RefineryMethodEnum
 ) {
-  const [oreProcessingLookup, refineryBonusLookup, methodsBonusLookup] = await Promise.all([
+  const [oreProcessingLookup, refineryBonuses, methodsBonusLookup] = await Promise.all([
     ds.getLookup('oreProcessingLookup'),
-    ds.getLookup('refineryBonusLookup'),
+    ds.getLookup('refineryBonuses'),
     ds.getLookup('methodsBonusLookup'),
   ])
   if (!oreProcessingLookup[ore] || !methodsBonusLookup[method]) return NaN
-  const refBonus =
-    refineryBonusLookup[refinery] && refineryBonusLookup[refinery][ore] ? refineryBonusLookup[refinery][ore][1] : 1
+  const refBonus = refineryBonuses[refinery] && refineryBonuses[refinery][ore] ? refineryBonuses[refinery][ore][1] : 1
   const oreTime = oreProcessingLookup[ore][1]
   const methodBonus = methodsBonusLookup[method][1]
 
@@ -598,13 +595,12 @@ export async function getRefiningTimeMod(
   refinery: RefineryEnum,
   method: RefineryMethodEnum
 ) {
-  const [refineryBonusLookup, methodsBonusLookup] = await Promise.all([
-    ds.getLookup('refineryBonusLookup'),
+  const [refineryBonuses, methodsBonusLookup] = await Promise.all([
+    ds.getLookup('refineryBonuses'),
     ds.getLookup('methodsBonusLookup'),
   ])
 
-  const refBonus =
-    refineryBonusLookup[refinery] && refineryBonusLookup[refinery][ore] ? refineryBonusLookup[refinery][ore][1] : 1
+  const refBonus = refineryBonuses[refinery] && refineryBonuses[refinery][ore] ? refineryBonuses[refinery][ore][1] : 1
   const methodBonus = methodsBonusLookup[method][1]
 
   return refBonus * methodBonus
