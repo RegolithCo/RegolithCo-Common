@@ -1338,6 +1338,7 @@ scalar Timestamp
 type UEXLookups {
   bodies: JSONObject
   maxPrices: JSONObject
+  refinery_bonuses: JSONObject
   ships: JSONObject
   tradeports: JSONObject
 }

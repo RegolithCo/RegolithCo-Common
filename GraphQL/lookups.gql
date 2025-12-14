@@ -16,6 +16,7 @@ type UEXLookups {
   maxPrices: JSONObject
   ships: JSONObject
   tradeports: JSONObject
+  refinery_bonuses: JSONObject
 }
 
 enum AuthTypeEnum {
