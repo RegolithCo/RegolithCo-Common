@@ -109,7 +109,7 @@ export type GravityWell = {
 }
 
 export type Lookups = {
-  refineryBonusLookup: RefineryBonusLookup
+  refineryBonusLookup: Record<RefineryEnum, Record<ShipOreEnum, number>>
   oreProcessingLookup: OreProcessingLookup
   methodsBonusLookup: MethodsBonusLookup
   shipLookups: ShipLookups
@@ -117,7 +117,6 @@ export type Lookups = {
   priceStatsLookups: UEXPriceStats
   densitiesLookups: Record<ShipOreEnum, number>
   gravityWellLookups: GravityWell[]
-  refineryBonuses: Record<RefineryEnum, Record<ShipOreEnum, number>>
   loadout: LoadoutLookup
 }
 
