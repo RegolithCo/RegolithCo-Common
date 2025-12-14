@@ -4,7 +4,7 @@ import * as lookupMocks from './lookupMocks.json'
 const LOOKUP_MAP: Record<string, unknown> = {
   densitiesLookups: lookupMocks.data.lookups.CIG.densitiesLookups as Lookups['densitiesLookups'],
   methodsBonusLookup: lookupMocks.data.lookups.CIG.methodsBonusLookup as Lookups['methodsBonusLookup'],
-  refineryBonusLookup: lookupMocks.data.lookups.CIG.refineryBonusLookup as Lookups['refineryBonusLookup'],
+  refineryBonuses: lookupMocks.data.lookups.UEX.refineryBonuses as Lookups['refineryBonuses'],
   oreProcessingLookup: lookupMocks.data.lookups.CIG.oreProcessingLookup as Lookups['oreProcessingLookup'],
   gravityWellLookups: lookupMocks.data.lookups.UEX.bodies as Lookups['gravityWellLookups'],
   priceStatsLookups: lookupMocks.data.lookups.UEX.maxPrices as Lookups['priceStatsLookups'],

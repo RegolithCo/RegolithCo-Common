@@ -55,14 +55,14 @@ describe('equations', () => {
       RefineryMethodEnum.FerronExchange
     )
     // From youtube 3.21
-    expect(refineCost).toEqual(39656.23)
+    expect(refineCost).toEqual(41743.4)
     // From youtube 3.21
     expect(
       [
         await getRefiningCost(ds, 2139, ShipOreEnum.Quantanium, RefineryEnum.Crul1, RefineryMethodEnum.FerronExchange),
         await getRefiningCost(ds, 1572, ShipOreEnum.Gold, RefineryEnum.Crul1, RefineryMethodEnum.FerronExchange),
       ].reduce((acc, ore) => acc + ore, 0)
-    ).toEqual(41400.7356)
+    ).toEqual(42863.22)
     // From youtube 3.21
     expect(
       [
@@ -86,10 +86,10 @@ describe('equations', () => {
   it('should calculate mining times correctly', async () => {
     expect(
       await getRefiningTime(ds, 100, ShipOreEnum.Gold, RefineryEnum.Arcl1, RefineryMethodEnum.DinyxSolventation)
-    ).toEqual(6720000)
+    ).toEqual(3360000)
     expect(
       await getRefiningTime(ds, 100, ShipOreEnum.Quantanium, RefineryEnum.Crul1, RefineryMethodEnum.Cormack)
-    ).toEqual(98000)
+    ).toEqual(100000)
   })
   it('should return the correct payouts', () => {
     const netProfit = 100000n

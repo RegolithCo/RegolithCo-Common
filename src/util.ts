@@ -98,6 +98,17 @@ export function toBigIntSafe(val: number): bigint {
   return BigInt(Math.round(isNaN(val) ? 0 : val))
 }
 
+/**
+ * JSON stringify that converts bigints to strings
+ * @param data
+ * @returns
+ */
+export function jsonSerializeBigInt(data: unknown): string {
+  return JSON.stringify(data, (_key, value) => {
+    return typeof value === 'bigint' ? value.toString() : value
+  })
+}
+
 export function createSafeFileName(input: string, guid: string): string {
   // Remove unwanted characters
   const cleanInput = input.replace(/[^a-zA-Z0-9-_]/g, '')

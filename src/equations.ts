@@ -950,7 +950,14 @@ export async function calculateSalvageOrder(ds: DataStore, order: SalvageOrder):
 
 export function totalExpenses(order: WorkOrder): bigint {
   const expenses = order.expenses || []
-  return expenses.reduce((acc, { amount }) => acc + amount, 0n)
+  return expenses.reduce((acc, { amount }) => {
+    if (amount == null) return acc
+    let val = 0n
+    if (typeof amount === 'bigint') val = amount
+    else if (typeof amount === 'number') val = BigInt(Math.round(amount))
+    else if (typeof amount === 'string') val = BigInt(amount)
+    return acc + val
+  }, 0n)
 }
 
 export async function calculateOtherOrder(ds: DataStore, order: OtherOrder): Promise<WorkOrderSummary> {

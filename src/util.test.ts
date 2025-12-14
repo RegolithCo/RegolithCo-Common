@@ -24,6 +24,7 @@ import {
   scoutingFindDestructured,
   makeAvatar,
   formatCardNumber,
+  jsonSerializeBigInt,
 } from './util'
 import {
   ActivityEnum,
@@ -515,6 +516,41 @@ describe('util.ts', () => {
 
     it('strips trailing zeros', () => {
       expect(formatCardNumber(1000000)).toEqual(['1.00', 'million'])
+    })
+  })
+
+  describe('jsonSerializeBigInt', () => {
+    it('should serialize BigInt to string', () => {
+      const data = { value: BigInt('12345678901234567890') }
+      const result = jsonSerializeBigInt(data)
+      expect(result).toBe('{"value":"12345678901234567890"}')
+    })
+
+    it('should serialize nested BigInt to string', () => {
+      const data = { nested: { value: BigInt('98765432109876543210') } }
+      const result = jsonSerializeBigInt(data)
+      expect(result).toBe('{"nested":{"value":"98765432109876543210"}}')
+    })
+
+    it('should handle mixed types correctly', () => {
+      const data = {
+        id: 1,
+        name: 'test',
+        big: BigInt(100),
+        arr: [BigInt(1), 2, '3'],
+      }
+      const result = jsonSerializeBigInt(data)
+      expect(result).toBe('{"id":1,"name":"test","big":"100","arr":["1",2,"3"]}')
+    })
+
+    it('should handle null and undefined', () => {
+      expect(jsonSerializeBigInt(null)).toBe('null')
+      expect(jsonSerializeBigInt(undefined)).toBeUndefined()
+    })
+
+    it('should handle empty objects and arrays', () => {
+      expect(jsonSerializeBigInt({})).toBe('{}')
+      expect(jsonSerializeBigInt([])).toBe('[]')
     })
   })
 })

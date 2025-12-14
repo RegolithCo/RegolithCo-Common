@@ -6780,7 +6780,12 @@
               "salvage": {}
             }
           }
-        ]
+        ],
+        "refineryBonuses": {
+          "CRUL1": {
+            "ALUMINUM": 1.05
+          }
+        }
       },
       "loadout": {
         "lasers": {
