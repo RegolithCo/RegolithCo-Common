@@ -1,6 +1,6 @@
 {
   "name": "@regolithco/common",
-  "version": "1.4.8",
+  "version": "1.4.9",
   "main": "dist/index.js",
   "module": "dist_esnext/index.js",
   "repository": {
