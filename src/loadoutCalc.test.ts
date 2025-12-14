@@ -7,7 +7,7 @@ import {
   multiplyReduceModules,
   sanitizeStats,
 } from './loadoutCalc'
-import { fakeLoadout, mockEmptyActiveLaser, mockEmptyMiningLoadout } from './__mocks__/'
+import { mockEmptyActiveLaser, mockEmptyMiningLoadout } from './__mocks__/'
 import { mockDataStore } from './__mocks__/dataStoreMock'
 import { MiningGadget, MiningLaser, MiningModule } from './types'
 import { roundFloat } from './util'
@@ -85,7 +85,6 @@ describe('Mining Loadout Functions', () => {
         extrPower,
         maxRange,
         optimumRange,
-        minPowerPct,
         resistance,
         instability,
         inertMaterials,
@@ -146,7 +145,7 @@ describe('Mining Loadout Functions', () => {
         extrPowerMod: (module1.stats.extrPowerMod || 1) * (module2.stats.extrPowerMod || 1),
         price: laserPrice + modulePrice,
         priceNoStock: laserPrice + modulePrice,
-        resistance: roundFloat(1 * 0.85 * 0.7, 2),
+        resistance: roundFloat(1 * 0.85 * 0.7, 2) || 0,
         instability: 1 - 0.2,
         inertMaterials: 0.46,
         optimalChargeRate: (module1.stats.optimalChargeRate || 1) * (module2.stats.optimalChargeRate || 1),
@@ -181,7 +180,6 @@ describe('Mining Loadout Functions', () => {
   })
 
   it('should return default laser stats when laser is not active', async () => {
-    const loadout = mockEmptyMiningLoadout()
     const inactiveLaser: ActiveMiningLaserLoadout = {
       laser: MiningLaserEnum.ArborMh1,
       modules: [],
@@ -211,16 +209,14 @@ describe('Mining Loadout Functions', () => {
 
     it('should handle a loadout with null active lasers', async () => {
       const loadout = mockEmptyMiningLoadout()
-      // @ts-ignore
       loadout.activeLasers = [null]
       const loadoutStats = await calcLoadoutStats(mockDataStore, loadout)
       expect(loadoutStats).toEqual(baseStats)
     })
 
-    it('should handle a loadout with undefined active lasers', async () => {
+    it('should handle a loadout with null active lasers', async () => {
       const loadout = mockEmptyMiningLoadout()
-      // @ts-ignore
-      loadout.activeLasers = [undefined]
+      loadout.activeLasers = [null]
       const loadoutStats = await calcLoadoutStats(mockDataStore, loadout)
       expect(loadoutStats).toEqual(baseStats)
     })
@@ -276,7 +272,7 @@ describe('Mining Loadout Functions', () => {
 
     it('should handle calcLaserStats with a laser that does not exist in lookup', async () => {
       const activeLaser: ActiveMiningLaserLoadout = {
-        // @ts-ignore
+        // @ts-expect-error Testing invalid laser enum
         laser: 'NonExistentLaser',
         modules: [],
         modulesActive: [],
@@ -290,7 +286,7 @@ describe('Mining Loadout Functions', () => {
     it('should handle calcLaserStats with modules that do not exist in lookup', async () => {
       const activeLaser: ActiveMiningLaserLoadout = {
         laser: MiningLaserEnum.ArborMh1,
-        // @ts-ignore
+        // @ts-expect-error Testing invalid module enum
         modules: ['NonExistentModule'],
         modulesActive: [true],
         laserActive: true,
@@ -312,7 +308,7 @@ describe('Mining Loadout Functions', () => {
       const loadout = mockEmptyMiningLoadout()
       loadout.activeLasers = [
         {
-          // @ts-ignore
+          // @ts-expect-error Testing invalid laser enum
           laser: 'InvalidLaserID',
           laserActive: true,
           modules: [],

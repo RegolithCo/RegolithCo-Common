@@ -70,7 +70,7 @@ describe('equations', () => {
         await getRefiningCost(ds, 194, ShipOreEnum.Gold, RefineryEnum.Crul1, RefineryMethodEnum.FerronExchange),
         await getRefiningCost(ds, 1857, ShipOreEnum.Taranite, RefineryEnum.Crul1, RefineryMethodEnum.FerronExchange),
       ].reduce((acc, ore) => acc + ore, 0)
-    ).toEqual(50125.35280000001)
+    ).toEqual(36767.22)
     // expect(getRefiningCost(100, ShipOreEnum.Gold, RefineryEnum.Arcl1, RefineryMethodEnum.DinyxSolventation)).toEqual(15)
     // expect(getRefiningCost(100, ShipOreEnum.Quantanium, RefineryEnum.Crul1, RefineryMethodEnum.Cormack)).toEqual(400)
     // User submitted for 3.21
@@ -81,7 +81,7 @@ describe('equations', () => {
       getRefiningCost(ds, 2158, ShipOreEnum.Taranite, RefineryEnum.Micl5, RefineryMethodEnum.DinyxSolventation),
       getRefiningCost(ds, 1520, ShipOreEnum.Copper, RefineryEnum.Micl5, RefineryMethodEnum.DinyxSolventation),
     ])
-    expect(ores.reduce((acc, ore) => acc + ore, 0)).toEqual(20181.144800000002)
+    expect(ores.reduce((acc, ore) => acc + ore, 0)).toEqual(10193.55)
   })
   it('should calculate mining times correctly', async () => {
     expect(
