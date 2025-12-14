@@ -81,7 +81,6 @@ type CIGLookups {
   densitiesLookups: JSONObject
   methodsBonusLookup: JSONObject
   oreProcessingLookup: JSONObject
-  refineryBonusLookup: JSONObject
 }
 
 type CrewShare {
@@ -1338,7 +1337,7 @@ scalar Timestamp
 type UEXLookups {
   bodies: JSONObject
   maxPrices: JSONObject
-  refinery_bonuses: JSONObject
+  refineryBonusLookup: JSONObject
   ships: JSONObject
   tradeports: JSONObject
 }

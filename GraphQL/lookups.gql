@@ -8,7 +8,6 @@ type CIGLookups {
   densitiesLookups: JSONObject
   methodsBonusLookup: JSONObject
   oreProcessingLookup: JSONObject
-  refineryBonusLookup: JSONObject
 }
 
 type UEXLookups {
@@ -16,7 +15,7 @@ type UEXLookups {
   maxPrices: JSONObject
   ships: JSONObject
   tradeports: JSONObject
-  refinery_bonuses: JSONObject
+  refineryBonusLookup: JSONObject
 }
 
 enum AuthTypeEnum {

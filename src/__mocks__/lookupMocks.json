@@ -4412,9 +4412,6 @@
             "__typename": "Vehicle"
           }
         ],
-        "refinery_bonuses": {
-          
-        },
         "tradeports": [
           {
             "system": "ST",

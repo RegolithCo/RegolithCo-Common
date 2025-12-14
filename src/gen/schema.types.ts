@@ -93,7 +93,6 @@ export type CigLookups = {
   densitiesLookups?: Maybe<Scalars['JSONObject']['output']>;
   methodsBonusLookup?: Maybe<Scalars['JSONObject']['output']>;
   oreProcessingLookup?: Maybe<Scalars['JSONObject']['output']>;
-  refineryBonusLookup?: Maybe<Scalars['JSONObject']['output']>;
 };
 
 export type CrewShare = {
@@ -1438,7 +1437,7 @@ export type UexLookups = {
   __typename: 'UEXLookups';
   bodies?: Maybe<Scalars['JSONObject']['output']>;
   maxPrices?: Maybe<Scalars['JSONObject']['output']>;
-  refinery_bonuses?: Maybe<Scalars['JSONObject']['output']>;
+  refineryBonusLookup?: Maybe<Scalars['JSONObject']['output']>;
   ships?: Maybe<Scalars['JSONObject']['output']>;
   tradeports?: Maybe<Scalars['JSONObject']['output']>;
 };
