@@ -117,6 +117,7 @@ export type Lookups = {
   priceStatsLookups: UEXPriceStats
   densitiesLookups: Record<ShipOreEnum, number>
   gravityWellLookups: GravityWell[]
+  refineryBonuses: Record<RefineryEnum, Record<ShipOreEnum, number>>
   loadout: LoadoutLookup
 }
 
