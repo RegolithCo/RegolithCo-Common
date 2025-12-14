@@ -437,7 +437,7 @@ export async function oreAmtCalc(
   if (!refineryBonuses[refinery]) log.debug(`oreAmtCalc: Refinery ${refinery} not found`)
   else if (!refineryBonuses[refinery][ore]) log.debug(`oreAmtCalc: Refinery ore ${refinery} ${ore} not found`)
   else {
-    refineryBonus = refineryBonuses[refinery][ore][0]
+    refineryBonus = refineryBonuses[refinery][ore]
   }
 
   if (!methodsBonusLookup[method]) log.debug(`oreAmtCalc: Method ${method} not found`)
@@ -471,6 +471,7 @@ export async function yieldCalc(
   refinery: RefineryEnum,
   method: RefineryMethodEnum
 ): Promise<number> {
+  if (typeof oreAmt !== 'number' || isNaN(oreAmt)) return 0
   const [oreProcessingLookup, refineryBonuses, methodsBonusLookup] = await Promise.all([
     ds.getLookup('oreProcessingLookup'),
     ds.getLookup('refineryBonuses'),
@@ -482,7 +483,7 @@ export async function yieldCalc(
   if (!refineryBonuses[refinery]) log.debug(`yieldCalc: Refinery ${refinery} not found`)
   else if (!refineryBonuses[refinery][ore]) log.debug(`yieldCalc: Refinery ore ${refinery} ${ore} not found`)
   else {
-    refineryBonus = refineryBonuses[refinery][ore][0]
+    refineryBonus = refineryBonuses[refinery][ore]
   }
 
   if (!methodsBonusLookup[method]) log.debug(`yieldCalc: Method ${method} not found`)
@@ -493,7 +494,6 @@ export async function yieldCalc(
   else {
     processingBonus = oreProcessingLookup[ore][0]
   }
-
   return oreAmt * processingBonus * refineryBonus * methodBonus
 }
 
@@ -515,7 +515,7 @@ export async function yieldModCalc(
     ds.getLookup('methodsBonusLookup'),
   ])
 
-  return refineryBonuses[refinery][ore][0] * methodsBonusLookup[method][0]
+  return refineryBonuses[refinery][ore] * methodsBonusLookup[method][0]
 }
 
 /**
@@ -1173,8 +1173,8 @@ export async function calculateRefinedValue(
         if (!oreSummary[ore]) oreSummary[ore] = { collected: 0, refined: 0, isRefined: true }
         oreSummary[ore].collected = amt
         oreSummary[ore].refined = oreYld
-        refinedYieldSCU += Math.ceil(oreYld / 100)
       }
+      refinedYieldSCU += Math.ceil(oreYld / 100)
       const refinedPrice = await findPrice(ds, ore, storeCode, true)
       const oreYldSCU = Math.ceil(oreYld / 100)
       return toBigIntSafe(oreYldSCU * refinedPrice)
