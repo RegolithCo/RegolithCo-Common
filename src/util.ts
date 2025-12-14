@@ -94,8 +94,26 @@ export function jsRound(num: number, dec: number) {
  * @param val
  * @returns
  */
-export function toBigIntSafe(val: number): bigint {
-  return BigInt(Math.round(isNaN(val) ? 0 : val))
+export function toBigIntSafe(val: bigint | number | string | null | undefined): bigint {
+  if (val == null) return 0n
+  if (typeof val === 'bigint') return val
+  if (typeof val === 'number') {
+    if (isNaN(val)) return 0n
+    return BigInt(Math.round(val))
+  }
+  if (typeof val === 'string') {
+    if (val.trim() === '') return 0n
+    const num = parseFloat(val)
+    if (!isNaN(num)) {
+      return BigInt(Math.round(num))
+    }
+    try {
+      return BigInt(val)
+    } catch {
+      return 0n
+    }
+  }
+  return 0n
 }
 
 /**

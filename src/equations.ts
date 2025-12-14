@@ -298,7 +298,7 @@ export function crewSharePayouts(
   const ownerReimbursements =
     expenses?.reduce(
       (acc, exp) => {
-        acc[exp.ownerScName] = (acc[exp.ownerScName] || 0n) + exp.amount
+        acc[exp.ownerScName] = (acc[exp.ownerScName] || 0n) + toBigIntSafe(exp.amount)
         return acc
       },
       {} as Record<string, bigint>
@@ -699,13 +699,13 @@ export async function calculateShipOrder(ds: DataStore, order: ShipMiningOrder):
   if (order.state !== WorkOrderStateEnum.Failed) {
     if (order.isRefined && !order.shareRefinedValue) {
       finalShareAmt = unrefinedValue
-    } else if (order.shareAmount && order.shareAmount >= -1n)
-      finalShareAmt = !order.isRefined || order.shareRefinedValue ? order.shareAmount : unrefinedValue
+    } else if (order.shareAmount != null && toBigIntSafe(order.shareAmount) >= -1n)
+      finalShareAmt = !order.isRefined || order.shareRefinedValue ? toBigIntSafe(order.shareAmount) : unrefinedValue
     else finalShareAmt = order.isRefined ? (order.shareRefinedValue ? refinedValue : unrefinedValue) : unrefinedValue
     grossValue = finalShareAmt
   } else {
-    if (order.shareAmount && order.shareAmount >= -1n)
-      lossValue = !order.isRefined || order.shareRefinedValue ? order.shareAmount : unrefinedValue
+    if (order.shareAmount != null && toBigIntSafe(order.shareAmount) >= -1n)
+      lossValue = !order.isRefined || order.shareRefinedValue ? toBigIntSafe(order.shareAmount) : unrefinedValue
     else lossValue = order.isRefined ? (order.shareRefinedValue ? refinedValue : unrefinedValue) : unrefinedValue
   }
   // Here we are subtracting the expenses from the share amount
@@ -724,8 +724,8 @@ export async function calculateShipOrder(ds: DataStore, order: ShipMiningOrder):
   if (myIdx > -1 && order.isRefined && !order.shareRefinedValue) {
     // Make sure to add the amount BEFORE subtracting the transfer fee
     let refinedUnrefinedDiff = refinedValue - unrefinedValue
-    if (order.shareAmount && order.shareAmount >= -1n) {
-      refinedUnrefinedDiff = order.shareAmount - unrefinedValue
+    if (order.shareAmount != null && toBigIntSafe(order.shareAmount) >= -1n) {
+      refinedUnrefinedDiff = toBigIntSafe(order.shareAmount) - unrefinedValue
     }
     payouts[myIdx][0] += refinedUnrefinedDiff
     payouts[myIdx][1] += refinedUnrefinedDiff
@@ -812,10 +812,11 @@ export async function calculateVehicleOrder(ds: DataStore, order: VehicleMiningO
   const expensesValue = totalExpenses(order)
   let lossValue = 0n
   if (order.state !== WorkOrderStateEnum.Failed) {
-    if (order.shareAmount && order.shareAmount >= 0n) finalShareAmt = order.shareAmount
+    if (order.shareAmount != null && toBigIntSafe(order.shareAmount) >= 0n)
+      finalShareAmt = toBigIntSafe(order.shareAmount)
     else finalShareAmt = grossProfit
   } else {
-    if (order.shareAmount && order.shareAmount >= 0n) lossValue = order.shareAmount
+    if (order.shareAmount != null && toBigIntSafe(order.shareAmount) >= 0n) lossValue = toBigIntSafe(order.shareAmount)
     else lossValue = grossProfit
     grossProfit = 0n
   }
@@ -896,10 +897,11 @@ export async function calculateSalvageOrder(ds: DataStore, order: SalvageOrder):
   const expensesValue = totalExpenses(order)
   let lossValue = 0n
   if (order.state !== WorkOrderStateEnum.Failed) {
-    if (order.shareAmount && order.shareAmount >= 0n) finalShareAmt = order.shareAmount
+    if (order.shareAmount != null && toBigIntSafe(order.shareAmount) >= 0n)
+      finalShareAmt = toBigIntSafe(order.shareAmount)
     else finalShareAmt = grossProfit
   } else {
-    if (order.shareAmount && order.shareAmount >= 0n) lossValue = order.shareAmount
+    if (order.shareAmount != null && toBigIntSafe(order.shareAmount) >= 0n) lossValue = toBigIntSafe(order.shareAmount)
     else lossValue = grossProfit
     grossProfit = 0n
   }
@@ -951,23 +953,18 @@ export async function calculateSalvageOrder(ds: DataStore, order: SalvageOrder):
 export function totalExpenses(order: WorkOrder): bigint {
   const expenses = order.expenses || []
   return expenses.reduce((acc, { amount }) => {
-    if (amount == null) return acc
-    let val = 0n
-    if (typeof amount === 'bigint') val = amount
-    else if (typeof amount === 'number') val = BigInt(Math.round(amount))
-    else if (typeof amount === 'string') val = BigInt(amount)
-    return acc + val
+    return acc + toBigIntSafe(amount)
   }, 0n)
 }
 
 export async function calculateOtherOrder(ds: DataStore, order: OtherOrder): Promise<WorkOrderSummary> {
   // first calculate the value of the ore
-  const grossProfit = order.state === WorkOrderStateEnum.Failed ? 0n : order.shareAmount || 0n
+  const grossProfit = order.state === WorkOrderStateEnum.Failed ? 0n : toBigIntSafe(order.shareAmount)
   const yieldSCU = 0
   let shareAmount = grossProfit
   const crewShares = order.crewShares || []
   const expensesValue = totalExpenses(order)
-  const lossValue = order.state !== WorkOrderStateEnum.Failed ? 0n : order.shareAmount || 0n
+  const lossValue = order.state !== WorkOrderStateEnum.Failed ? 0n : toBigIntSafe(order.shareAmount)
 
   shareAmount -= expensesValue
 

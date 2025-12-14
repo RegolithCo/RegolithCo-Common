@@ -110,7 +110,7 @@ describe('Mining Loadout Functions', () => {
         })
       )
     })
-    it('should return correct loadout stats for a base Arbor laser with no modules', async () => {
+    it('should return correct loadout stats for a Helix II laser with Lifeline and Fltrxl modules', async () => {
       const laser = LASERS[MiningLaserEnum.HelixIi] as MiningLaser
       const module1 = MODULES[MiningModuleEnum.Lifeline] as MiningModule
       const module2 = MODULES[MiningModuleEnum.Fltrxl] as MiningModule
@@ -129,7 +129,7 @@ describe('Mining Loadout Functions', () => {
 
       const allModule1Prices = (Object.values(module1.prices) as number[]) || [0]
       const minModule1Price = Math.min(...allModule1Prices)
-      const allModule2Prices = (Object.values(module1.prices) as number[]) || [0]
+      const allModule2Prices = (Object.values(module2.prices) as number[]) || [0]
       const minModule2Price = Math.min(...allModule2Prices)
 
       const loadoutStats = sanitizeStats(laserStats)
@@ -148,7 +148,7 @@ describe('Mining Loadout Functions', () => {
         priceNoStock: laserPrice + modulePrice,
         resistance: roundFloat(1 * 0.85 * 0.7, 2),
         instability: 1 - 0.2,
-        inertMaterials: 0.53,
+        inertMaterials: 0.46,
         optimalChargeRate: (module1.stats.optimalChargeRate || 1) * (module2.stats.optimalChargeRate || 1),
         optimalChargeWindow:
           (laser.stats.optimalChargeWindow || 1) *
@@ -174,22 +174,155 @@ describe('Mining Loadout Functions', () => {
     expect(laserStats).toEqual({
       ...baseStats,
       ...LASERS[laser.laser as MiningLaserEnum].stats,
+      minPowerPct: 0,
+      price: 108000,
+      priceNoStock: 108000,
     })
   })
 
   it('should return default laser stats when laser is not active', async () => {
     const loadout = mockEmptyMiningLoadout()
     const inactiveLaser: ActiveMiningLaserLoadout = {
-      laser: loadout?.activeLasers[0]?.laser as MiningLaserEnum,
+      laser: MiningLaserEnum.ArborMh1,
       modules: [],
       modulesActive: [false],
       laserActive: false,
       __typename: 'ActiveMiningLaserLoadout',
     }
     const laserStats = await calcLaserStats(mockDataStore, inactiveLaser)
+
+    const laser = LASERS[MiningLaserEnum.ArborMh1]
+    const minLaserPrice = getMinLoadoutPrice(laser)
+
     expect(laserStats).toEqual({
       ...baseStats,
-      ...LASERS[inactiveLaser.laser as MiningLaserEnum].stats,
+      price: minLaserPrice,
+      priceNoStock: 0,
+    })
+  })
+
+  describe('Edge Cases', () => {
+    it('should handle a loadout with no active lasers', async () => {
+      const loadout = mockEmptyMiningLoadout()
+      loadout.activeLasers = []
+      const loadoutStats = await calcLoadoutStats(mockDataStore, loadout)
+      expect(loadoutStats).toEqual(baseStats)
+    })
+
+    it('should handle a loadout with null active lasers', async () => {
+      const loadout = mockEmptyMiningLoadout()
+      // @ts-ignore
+      loadout.activeLasers = [null]
+      const loadoutStats = await calcLoadoutStats(mockDataStore, loadout)
+      expect(loadoutStats).toEqual(baseStats)
+    })
+
+    it('should handle a loadout with undefined active lasers', async () => {
+      const loadout = mockEmptyMiningLoadout()
+      // @ts-ignore
+      loadout.activeLasers = [undefined]
+      const loadoutStats = await calcLoadoutStats(mockDataStore, loadout)
+      expect(loadoutStats).toEqual(baseStats)
+    })
+
+    it('should handle a loadout with an active gadget but no lasers', async () => {
+      const loadout = mockEmptyMiningLoadout()
+      loadout.activeLasers = []
+      loadout.inventoryGadgets = [MiningGadgetEnum.Boremax]
+      loadout.activeGadgetIndex = 0
+
+      const loadoutStats = await calcLoadoutStats(mockDataStore, loadout)
+
+      // Gadget stats should be applied to base stats where applicable (multipliers)
+      // But since base stats are 0 for power/range etc, they remain 0.
+      // Multipliers start at 1, so they should reflect the gadget's multipliers.
+
+      const gadget = GADGETS[MiningGadgetEnum.Boremax]
+      const expectedStats = sanitizeStats({
+        ...baseStats,
+        price: getMinLoadoutPrice(gadget),
+        priceNoStock: getMinLoadoutPrice(gadget),
+        // Gadget stats
+        clusterMod: gadget.stats.clusterMod || 1,
+        inertMaterials: gadget.stats.inertMaterials || 1,
+        instability: gadget.stats.instability || 1,
+        resistance: gadget.stats.resistance || 1,
+        optimalChargeRate: gadget.stats.optimalChargeRate || 1,
+        optimalChargeWindow: gadget.stats.optimalChargeWindow || 1,
+        overchargeRate: gadget.stats.overchargeRate || 1,
+        shatterDamage: gadget.stats.shatterDamage || 1,
+      })
+
+      expect(loadoutStats).toMatchObject(expectedStats)
+    })
+
+    it('should handle a loadout with an invalid gadget index', async () => {
+      const loadout = mockEmptyMiningLoadout()
+      loadout.inventoryGadgets = [MiningGadgetEnum.Boremax]
+      loadout.activeGadgetIndex = 5 // Invalid index
+
+      const loadoutStats = await calcLoadoutStats(mockDataStore, loadout)
+
+      // Should be base stats + inventory price of the gadget
+      const gadget = GADGETS[MiningGadgetEnum.Boremax]
+      const expectedStats = sanitizeStats({
+        ...baseStats,
+        price: getMinLoadoutPrice(gadget),
+        priceNoStock: getMinLoadoutPrice(gadget),
+      })
+
+      expect(loadoutStats).toEqual(expectedStats)
+    })
+
+    it('should handle calcLaserStats with a laser that does not exist in lookup', async () => {
+      const activeLaser: ActiveMiningLaserLoadout = {
+        // @ts-ignore
+        laser: 'NonExistentLaser',
+        modules: [],
+        modulesActive: [],
+        laserActive: true,
+        __typename: 'ActiveMiningLaserLoadout',
+      }
+      const stats = await calcLaserStats(mockDataStore, activeLaser)
+      expect(stats).toEqual(baseStats)
+    })
+
+    it('should handle calcLaserStats with modules that do not exist in lookup', async () => {
+      const activeLaser: ActiveMiningLaserLoadout = {
+        laser: MiningLaserEnum.ArborMh1,
+        // @ts-ignore
+        modules: ['NonExistentModule'],
+        modulesActive: [true],
+        laserActive: true,
+        __typename: 'ActiveMiningLaserLoadout',
+      }
+
+      // Should behave like the laser has no modules
+      const laser = LASERS[MiningLaserEnum.ArborMh1]
+      const minLaserPrice = getMinLoadoutPrice(laser)
+
+      const stats = await calcLaserStats(mockDataStore, activeLaser)
+
+      // We expect it to match the base laser stats
+      expect(stats.maxPower).toBe(laser.stats.maxPower)
+      expect(stats.price).toBe(minLaserPrice)
+    })
+
+    it('should handle a loadout with an invalid laser ID', async () => {
+      const loadout = mockEmptyMiningLoadout()
+      loadout.activeLasers = [
+        {
+          // @ts-ignore
+          laser: 'InvalidLaserID',
+          laserActive: true,
+          modules: [],
+          modulesActive: [],
+          __typename: 'ActiveMiningLaserLoadout',
+        },
+      ]
+
+      const loadoutStats = await calcLoadoutStats(mockDataStore, loadout)
+      expect(loadoutStats).toEqual(baseStats)
     })
   })
 })

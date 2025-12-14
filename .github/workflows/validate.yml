@@ -1,6 +1,9 @@
-name: Validate Pull Requests
+name: Validate
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
     branches:
       - main

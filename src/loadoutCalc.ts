@@ -54,13 +54,13 @@ export async function calcLoadoutStats(ds: DataStore, miningLoadout: MiningLoado
   const totalUnModdedPower = activeLasers.reduce((acc, al) => {
     if (!al || !al.laser || !al.laserActive) return acc
     const laser = loadoutLookup.lasers[al.laser as MiningLaserEnum]
-    return acc + (laser.stats.maxPower || 0)
+    return acc + (laser?.stats?.maxPower || 0)
   }, 0)
 
   const totalUnModdedExtrPower = activeLasers.reduce((acc, al) => {
     if (!al || !al.laser || !al.laserActive) return acc
     const laser = loadoutLookup.lasers[al.laser as MiningLaserEnum]
-    return acc + (laser.stats.extrPower || 0)
+    return acc + (laser?.stats?.extrPower || 0)
   }, 0)
 
   const totalModdedPower = laserStats.reduce((acc, ls) => acc + ls.maxPower, 0)
@@ -84,9 +84,9 @@ export async function calcLoadoutStats(ds: DataStore, miningLoadout: MiningLoado
   const minPower = addReduceLasers(laserStats, 'minPower')
   const extrPower = addReduceLasers(laserStats, 'extrPower')
 
-  const extrPowerMod = activeLasers.length > 0 ? totalModdedExtrPower / (totalUnModdedExtrPower || 1) : 1
+  const extrPowerMod = totalUnModdedExtrPower > 0 ? totalModdedExtrPower / totalUnModdedExtrPower : 1
   const minPowerPct = 0 // Not really relevant for groups of lasers
-  const powerMod = activeLasers.length > 0 ? totalModdedPower / (totalUnModdedPower || 1) : 1
+  const powerMod = totalUnModdedPower > 0 ? totalModdedPower / totalUnModdedPower : 1
   const retVal = {
     maxPower,
     minPower,
