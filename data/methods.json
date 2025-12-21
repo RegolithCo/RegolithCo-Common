@@ -1,0 +1,47 @@
+{
+  "CORMACK": [
+    0.371,
+    0.25,
+    2
+  ],
+  "ELECTROSTAROLYSIS": [
+    0.45,
+    1,
+    2
+  ],
+  "FERRON_EXCHANGE": [
+    0.5293,
+    4,
+    2
+  ],
+  "DINYX_SOLVENTATION": [
+    0.5293,
+    12,
+    1
+  ],
+  "GASKIN_PROCESS": [
+    0.45,
+    0.5,
+    6
+  ],
+  "KAZEN_WINNOWING": [
+    0.371,
+    0.75,
+    1
+  ],
+  "PYROMETRIC_CHROMALYSIS": [
+    0.5293,
+    2,
+    6
+  ],
+  "THERMONATIC_DEPOSITION": [
+    0.45,
+    3,
+    1
+  ],
+  "XCR_REACTION": [
+    0.371,
+    0.125,
+    6
+  ]
+}
