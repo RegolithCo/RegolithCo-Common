@@ -41,3 +41,16 @@ ANDROMEDA,Constellation Andromeda,RSI,96.00,0.00
 ## `gravityWells.tsv`
 
 from: https://docs.google.com/spreadsheets/d/1otgi3l1rTw5--vlEndv4cvvlPyzxjoKl8IuPxlJLzTc/edit?gid=0#gid=0
+
+## `densities.sjon`
+
+This gets synced to the data bucket at `/Data/CIG/densities.json`. The densities are used for mass and volume calculations.
+
+```json
+{
+  "ALUMINUM": 2.7,
+  "BISMUTH": 9.78,
+  "CASSITERITE": 6.99,
+  ...
+}
+```
