@@ -480,21 +480,37 @@ export async function yieldCalc(
   let processingBonus = 1
   let refineryBonus = 1
   let methodBonus = 1
-  if (!refineryBonuses[refinery]) log.debug(`yieldCalc: Refinery ${refinery} not found`)
-  else if (!refineryBonuses[refinery][ore]) log.debug(`yieldCalc: Refinery ore ${refinery} ${ore} not found`)
-  else {
-    refineryBonus = refineryBonuses[refinery][ore]
+
+  // Get refineryBonus, ensure it's a valid number
+  if (!refineryBonuses[refinery]) {
+    log.debug(`yieldCalc: Refinery ${refinery} not found`)
+  } else if (!refineryBonuses[refinery][ore]) {
+    log.debug(`yieldCalc: Refinery ore ${refinery} ${ore} not found`)
+  } else {
+    const val = refineryBonuses[refinery][ore]
+    refineryBonus = typeof val === 'number' && isFinite(val) ? val : 1
   }
 
-  if (!methodsBonusLookup[method]) log.debug(`yieldCalc: Method ${method} not found`)
-  else {
-    methodBonus = methodsBonusLookup[method][0]
+  // Get methodBonus, ensure it's a valid number
+  if (!methodsBonusLookup[method]) {
+    log.debug(`yieldCalc: Method ${method} not found`)
+  } else {
+    const val = methodsBonusLookup[method][0]
+    methodBonus = typeof val === 'number' && isFinite(val) ? val : 1
   }
-  if (!oreProcessingLookup[ore]) log.debug(`yieldCalc: Ore ${ore} not found`)
-  else {
-    processingBonus = oreProcessingLookup[ore][0]
+
+  // Get processingBonus, ensure it's a valid number
+  if (!oreProcessingLookup[ore]) {
+    log.debug(`yieldCalc: Ore ${ore} not found`)
+  } else {
+    const val = oreProcessingLookup[ore][0]
+    processingBonus = typeof val === 'number' && isFinite(val) ? val : 1
   }
-  return oreAmt * processingBonus * refineryBonus * methodBonus
+
+  // Final calculation, ensure all are numbers and not NaN
+  const result = oreAmt * processingBonus * refineryBonus * methodBonus
+  if (typeof result !== 'number' || isNaN(result) || !isFinite(result)) return 0
+  return result
 }
 
 /**
