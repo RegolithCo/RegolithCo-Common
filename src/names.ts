@@ -385,9 +385,9 @@ export const ShipOreTiers: Record<OreTierEnum, ShipOreEnum[]> = {
     ShipOreEnum.Taranite,
     ShipOreEnum.Lindinium,
     ShipOreEnum.Bexalite,
-    ShipOreEnum.Gold,
   ],
   [OreTierEnum.BTier]: [
+    ShipOreEnum.Gold,
     ShipOreEnum.Laranite,
     ShipOreEnum.Borase,
     ShipOreEnum.Beryl,

@@ -5,6 +5,7 @@ import { ObjectValues } from './types'
  * This is an enumeration of all the SC Refineries
  */
 export const ScVersionEnum = {
+  SC4_5: '4.5',
   SC4_4: '4.4',
   SC4_3_2: '4.3.2',
   SC4_3_1: '4.3.1',
@@ -31,12 +32,13 @@ export const ScVersionEnum = {
 export type ScVersionEnum = ObjectValues<typeof ScVersionEnum>
 
 // This is the current deployed version
-export const scVersion: ScVersionEnum = ScVersionEnum.SC4_4
+export const scVersion: ScVersionEnum = ScVersionEnum.SC4_5
 
 /**
  * A list of all the SC Versions ever supported by Regolith and their start dates. We use this to determine the epoch of a version.
  */
 export const scVersionDates: Record<ScVersionEnum, Date> = {
+  [ScVersionEnum.SC4_5]: new Date('2025-12-17'),
   [ScVersionEnum.SC4_4]: new Date('2025-11-19'),
   [ScVersionEnum.SC4_3_2]: new Date('2025-10-17'),
   [ScVersionEnum.SC4_3_1]: new Date('2025-09-13'),
@@ -85,6 +87,7 @@ export const EpochMap: Record<ScVersionEpochEnum, ScVersionEnum[]> = {
   [ScVersionEpochEnum.SC_EPOCH_4_4]: [
     //
     ScVersionEnum.SC4_4,
+    ScVersionEnum.SC4_5,
   ],
   [ScVersionEpochEnum.SC_EPOCH_4_1]: [
     //

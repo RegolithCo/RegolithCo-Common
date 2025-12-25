@@ -485,6 +485,7 @@ export async function yieldCalc(
   if (!refineryBonuses[refinery]) {
     log.debug(`yieldCalc: Refinery ${refinery} not found`)
   } else if (!refineryBonuses[refinery][ore]) {
+    // This is ok. It just means that the refinery doesn't offer a bonus or penalty for this ore
     log.debug(`yieldCalc: Refinery ore ${refinery} ${ore} not found`)
   } else {
     const val = refineryBonuses[refinery][ore]
