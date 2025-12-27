@@ -83,6 +83,11 @@ type CIGLookups {
   oreProcessingLookup: JSONObject
 }
 
+enum CaptureTypeEnum {
+  ShipMiningOrderCapture
+  ShipRockCapture
+}
+
 type CrewShare {
   createdAt: Timestamp!
   note: String
@@ -753,6 +758,18 @@ type Query {
     """The unique identifier (GUID) of the session."""
     sessionId: ID!
   ): SessionUser @logged_in
+  """
+  Upload an OCR image for processing.
+  Returns a signed URL for the uploaded image.
+  """
+  submitOCRImage(
+    """The type of capture."""
+    captureType: CaptureTypeEnum!
+    """Added context for the capture."""
+    metadata: JSONObject!
+    """The unique identifier (GUID) of the session."""
+    sessionId: ID!
+  ): String @logged_in
   """Fetch survey data for a given epoch and data name."""
   surveyData(
     """The name of the survey data set."""

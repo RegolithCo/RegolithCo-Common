@@ -111,6 +111,19 @@ type Query {
     """(Optional) The timestamp of the last check for updates."""
     lastCheck: String
   ): [SessionUpdate] @logged_in
+  
+  """
+  Upload an OCR image for processing.
+  Returns a signed URL for the uploaded image.
+  """
+  submitOCRImage(
+    """The unique identifier (GUID) of the session."""
+    sessionId: ID!,
+    """The type of capture."""
+    captureType: CaptureTypeEnum!,
+    """Added context for the capture."""
+    metadata: JSONObject!
+  ): String @logged_in
 }
 type Mutation { 
   """Set lookup data for populating dropdowns and other UI elements."""
@@ -517,4 +530,9 @@ type SurveyData {
   dataName: String!
   lastUpdated: Timestamp
   data: JSONObject
+}
+
+enum CaptureTypeEnum {
+  ShipRockCapture
+  ShipMiningOrderCapture
 }

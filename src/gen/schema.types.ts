@@ -95,6 +95,12 @@ export type CigLookups = {
   oreProcessingLookup?: Maybe<Scalars['JSONObject']['output']>;
 };
 
+export const CaptureTypeEnum = {
+  ShipMiningOrderCapture: 'ShipMiningOrderCapture',
+  ShipRockCapture: 'ShipRockCapture'
+} as const;
+
+export type CaptureTypeEnum = typeof CaptureTypeEnum[keyof typeof CaptureTypeEnum];
 export type CrewShare = {
   __typename: 'CrewShare';
   createdAt: Scalars['Timestamp']['output'];
@@ -768,6 +774,11 @@ export type Query = {
   sessionUpdates?: Maybe<Array<Maybe<SessionUpdate>>>;
   /** Fetch the session user object for the current session. */
   sessionUser?: Maybe<SessionUser>;
+  /**
+   * Upload an OCR image for processing.
+   * Returns a signed URL for the uploaded image.
+   */
+  submitOCRImage?: Maybe<Scalars['String']['output']>;
   /** Fetch survey data for a given epoch and data name. */
   surveyData?: Maybe<SurveyData>;
   /** Fetch a user by their user ID (GUID). */
@@ -807,6 +818,13 @@ export type QuerySessionUpdatesArgs = {
 
 
 export type QuerySessionUserArgs = {
+  sessionId: Scalars['ID']['input'];
+};
+
+
+export type QuerySubmitOcrImageArgs = {
+  captureType: CaptureTypeEnum;
+  metadata: Scalars['JSONObject']['input'];
   sessionId: Scalars['ID']['input'];
 };
 
